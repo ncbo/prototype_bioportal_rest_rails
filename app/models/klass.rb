@@ -4,20 +4,22 @@ class Klass
 
   attr_accessor :id, :ontology, :label, :synonym, :definition, :obsolete
 
+  # Serialization options
+  serialize_default :id, :label, :synonym, :definition, :obsolete
+  serialize_methods :properties, :child_count, :parents, :children
+
+  # Include custom serialization DSL
+  include LinkedData::Serializer
+
+  # Include queries from query module
+  include LinkedData::Queries::Klass
+
   def self.init
     @synonym = []; @definition = [];
   end
 
   def initialize(id, ontology, label, synonym, definition, obsolete = false, options = {})
     @id = id; @ontology = ontology; @label = label; @synonym = synonym; @definition = definition; @obsolete = obsolete
-  end
-
-  def default_serialize
-    [:id, :label, :synonym, :definition, :obsolete]
-  end
-
-  def methods_serialize
-    [:properties, :child_count, :parents, :children]
   end
 
   # Custom json representation.
@@ -27,14 +29,14 @@ class Klass
       # This calls the super method (the one we override) to get a plain hash of our object
       obj_hash = super
       # Add in the methods that should get serialized
-      methods_serialize.each do |method|
+      serialize_methods.each do |method|
         obj_hash[method.to_s] = self.send(method.to_s)
       end
       # Take out the only option since we want to serialize everything in the object
       options.extract!(:only)
     else
       # If we get fields to serialize from the controller, use those. Otherwise, use defaults.
-      options[:only] = options[:only].nil? || options[:only].empty? ? default_serialize : options[:only]
+      options[:only] = options[:only].nil? || options[:only].empty? ? serialize_default : options[:only]
       # Convert field names to strings
       options[:only].map! {|e| e.to_s} if options[:only]
       obj_hash = super.as_json(options)
@@ -56,10 +58,6 @@ class Klass
     RDFUtil.query("ASK FROM <http://bioportal.bioontology.org/ontologies/%%ONT%%> WHERE { <%%ID%%> ?p ?o } ".gsub("%%ONT%%", @ontology).gsub("%%ID%%", @id))["boolean"]
   end
 
-  OBSOLETE_QUERY = <<-EOS
-    PREFIX owl: <http://www.w3.org/2002/07/owl#>
-    ASK FROM <http://bioportal.bioontology.org/ontologies/%%ONT%%> WHERE { <%%ID%%> a owl:DeprecatedClass }
-  EOS
   def self.default_attr
     @label = predicate_values("skos:prefLabel", @ontology).shift
     @synonym.concat predicate_values("skos:altLabel", @ontology)
@@ -69,19 +67,6 @@ class Klass
     @obsolete = RDFUtil.query(OBSOLETE_QUERY.gsub("%%ONT%%", @ontology).gsub("%%ID%%", @id))["boolean"] unless @obsolete
   end
 
-  PREDICATE_QUERY = <<-EOS
-    PREFIX owl:  <http://www.w3.org/2002/07/owl#>
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-
-    SELECT DISTINCT *
-    FROM <http://bioportal.bioontology.org/ontologies/%%ONT%%>
-    FROM <http://bioportal.bioontology.org/ontologies/globals>
-    WHERE
-    {
-      <%%ID%%> %%PRED%% ?o
-    }
-  EOS
   def self.predicate_values(predicate, ont_id)
     query = PREDICATE_QUERY.gsub("%%ONT%%", ont_id).gsub("%%ID%%", @id).gsub("%%PRED%%", predicate)
     results = RDFUtil.query(query)
@@ -99,16 +84,6 @@ class Klass
     convert_describe_results(results)
   end
 
-  CHILD_COUNT_QUERY = <<-EOS
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-    SELECT (COUNT(?s) as ?childcount)
-    FROM <http://bioportal.bioontology.org/ontologies/%%ONT%%>
-    WHERE
-    {
-      ?s rdfs:subClassOf <%%ID%%>
-    }
-  EOS
   def child_count
     RDFUtil.query(CHILD_COUNT_QUERY.gsub("%%ID%%", @id).gsub("%%ONT%%", @ontology))[0]["childcount"]["value"].to_i
   end
@@ -124,31 +99,11 @@ class Klass
     results_converted
   end
 
-  CHILDREN_QUERY = <<-EOS
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-    SELECT ?child
-    FROM <http://bioportal.bioontology.org/ontologies/%%ONT%%>
-    WHERE
-    {
-      ?child rdfs:subClassOf <%%ID%%>
-    }
-  EOS
   def children
     children = RDFUtil.query(CHILDREN_QUERY.gsub("%%ID%%", @id).gsub("%%ONT%%", @ontology))
     RDFUtil.sparql_select_values(children)
   end
 
-  PARENTS_QUERY = <<-EOS
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-    SELECT ?parent
-    FROM <http://bioportal.bioontology.org/ontologies/%%ONT%%>
-    WHERE
-    {
-      <%%ID%%> rdfs:subClassOf ?parent
-    }
-  EOS
   def parents
     parents = RDFUtil.query(PARENTS_QUERY.gsub("%%ID%%", @id).gsub("%%ONT%%", @ontology))
     RDFUtil.sparql_select_values(parents)

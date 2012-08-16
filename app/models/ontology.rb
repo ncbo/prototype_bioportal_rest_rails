@@ -1,17 +1,25 @@
 require File.expand_path('../linked_data/linked_data_record', __FILE__)
 require File.expand_path('../linked_data/rdf_util', __FILE__)
 
-class Ontology < LinkedDataRecord
+class Ontology < LinkedData::LinkedDataRecord
   # Validations
   include ActiveModel::Validations
   validates_presence_of :administrator, :name
   # validates_presence_of :id, :name, :description, :contact, :format, :released, :viewingRestriction
 
+  # Potnentially aliasing names from triplestore to something more Ruby-like
   # alias :id :acronym
 
+  # Options for serializing (which fields)
+  serialize_default :lastVersion, :administrator, :acronym, :name, :description, :contact, :homepage
+
+  # Necessary values for working with LinkedDataRecord
   @prefix = "http://bioportal.bioontology.org/ontologies/"
   @rdf_type = "http://omv.ontoware.org/2005/05/ontology#Ontology"
   @ontology_container = "http://bioportal.bioontology.org/metadata/OntologyContainer"
+
+  # Get queries from query module
+  include LinkedData::Queries::Ontology
 
   def self.find(id = nil, options = {})
     id ||= options[:id]
@@ -21,23 +29,6 @@ class Ontology < LinkedDataRecord
       self.describe(id)
     end
   end
-
-  def default_serialize
-    [:lastVersion, :administrator, :acronym, :name, :description, :contact, :homepage]
-  end
-
-  ALL_ONTS = <<-EOS
-    PREFIX bp: <http://bioportal.bioontology.org/metadata/>
-
-    SELECT DISTINCT *
-    WHERE
-    {
-      ?s a bp:OntologyContainer .
-      ?s ?p ?o .
-      OPTIONAL { ?s bp:relatedOntology ?viewOf }
-      FILTER (!bound(?viewOf))
-    }
-  EOS
 
   def self.all
     results = RDFUtil.query(ALL_ONTS)
