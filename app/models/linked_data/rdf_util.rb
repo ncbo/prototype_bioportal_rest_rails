@@ -48,7 +48,6 @@ class RDFUtil
 
   def self.sparql_select_values(results)
     container = []
-    puts results
     results.each do |result|
       triple = result.first[1]
       container << convert_xsd(triple["type"], triple["datatype"], triple["value"])

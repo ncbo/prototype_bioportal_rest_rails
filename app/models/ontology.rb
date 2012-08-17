@@ -1,9 +1,8 @@
-require File.expand_path('../linked_data/linked_data_record', __FILE__)
+# require File.expand_path('../linked_data/record', __FILE__)
 require File.expand_path('../linked_data/rdf_util', __FILE__)
 
-class Ontology < LinkedData::LinkedDataRecord
+class Ontology < LinkedData::Record
   # Validations
-  include ActiveModel::Validations
   validates_presence_of :administrator, :name
   # validates_presence_of :id, :name, :description, :contact, :format, :released, :viewingRestriction
 
@@ -13,9 +12,12 @@ class Ontology < LinkedData::LinkedDataRecord
   # Options for serializing (which fields)
   serialize_default :lastVersion, :administrator, :acronym, :name, :description, :contact, :homepage
 
-  # Necessary values for working with LinkedDataRecord
+  # Necessary values for working with Record
   @prefix = "http://bioportal.bioontology.org/ontologies/"
   @rdf_type = "http://omv.ontoware.org/2005/05/ontology#Ontology"
+
+  # Extra values to combine ontology revisions with ontology containers
+  class << self; attr_reader :ontology_container end
   @ontology_container = "http://bioportal.bioontology.org/metadata/OntologyContainer"
 
   # Get queries from query module
@@ -26,7 +28,7 @@ class Ontology < LinkedData::LinkedDataRecord
     if id.downcase.to_s.eql?("all")
       self.all
     else
-      self.describe(id)
+      self.describe(id.upcase)
     end
   end
 

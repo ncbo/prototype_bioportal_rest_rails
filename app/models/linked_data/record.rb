@@ -2,20 +2,42 @@ require File.expand_path('../rdf_util', __FILE__)
 
 
 module LinkedData
-  class LinkedDataRecord < OpenStruct
-    # Required fields for subclasses
-    attr_accessor :prefix, :rdf_type
-
-    # Internal usage
-    attr_accessor :predicate_map
-
+  class Record < OpenStruct
+    include ActiveModel::Validations
+    include ActiveModel::Serialization
+    include LinkedData::Queries::Record
     # Custom serializer
     include LinkedData::Serializer
 
-    def initialize(table = nil, predicate_map = nil)
-      table = table.nil? ? {} : table
+    ####
+    # Methods to adhere to ActiveModel API
+    ####
+    attr_accessor :attributes
+    def initialize(attributes = {})
+      table = attributes[:table].nil? ? {} : attributes[:table]
       super(table)
-      @predicate_map = predicate_map unless predicate_map.nil?
+      @predicate_map = attributes[:predicate_map] unless attributes[:predicate_map].nil?
+      @attributes = @table
+    end
+
+    def read_attribute_for_validation(key)
+      @attributes[key]
+    end
+
+    ####
+    # Custom methods for 4store interaction and object building
+    ####
+
+    # Required fields for subclasses
+    class << self; attr_reader :prefix, :rdf_type end
+
+    # Internal usage
+    class << self; attr_reader :predicate_map end
+
+    def as_json(options = {})
+      options[:only] = options[:only].nil? || options[:only].empty? ? serializable_fields_default : options[:only]
+      options.extract!(:only) if options[:only] && options[:only].include?("all")
+      @table.as_json(options)
     end
 
     def self.describe(id = nil)
@@ -40,7 +62,7 @@ module LinkedData
         values_cardinality = self.predicates[predicate][:cardinality] == 1 ? values.shift : values
         @table[short_name] = values_cardinality
       end
-      self.new(@table, @predicate_map)
+      self.new(:table => @table, :predicate_map => @predicate_map)
     end
 
     def self.convert_describe_results(results, object_id)
@@ -53,13 +75,6 @@ module LinkedData
       end
       results_converted
     end
-
-    PREDICATE_QUERY = <<-EOS
-      SELECT ?s ?p (COUNT(?o) as ?c) WHERE {
-          ?s a <%%RDF_TYPE%%> .
-          ?s ?p ?o .
-      } GROUP BY ?s ?p
-    EOS
 
     def self.predicates(rdf_type = nil)
       if @predicates.nil?

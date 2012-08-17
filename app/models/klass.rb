@@ -1,18 +1,19 @@
 require File.expand_path('../linked_data/rdf_util', __FILE__)
 
 class Klass
-
-  attr_accessor :id, :ontology, :label, :synonym, :definition, :obsolete
-
-  # Serialization options
-  serialize_default :id, :label, :synonym, :definition, :obsolete
-  serialize_methods :properties, :child_count, :parents, :children
+  include ActiveModel::Serialization
 
   # Include custom serialization DSL
   include LinkedData::Serializer
 
   # Include queries from query module
   include LinkedData::Queries::Klass
+
+  attr_accessor :id, :ontology, :label, :synonym, :definition, :obsolete
+
+  # Serialization options
+  serialize_default :id, :label, :synonym, :definition, :obsolete
+  serialize_methods :properties, :child_count, :parents, :children
 
   def self.init
     @synonym = []; @definition = [];
@@ -24,22 +25,22 @@ class Klass
 
   # Custom json representation.
   def as_json(options = {})
-    # Output all the attributes for a class
+    # If we need all attributes, then don't restrict using :only and include methods. Otherwise, just serialize the default or what's requested.
     if options[:only] && options[:only].include?("all")
       # This calls the super method (the one we override) to get a plain hash of our object
       obj_hash = super
-      # Add in the methods that should get serialized
-      serialize_methods.each do |method|
-        obj_hash[method.to_s] = self.send(method.to_s)
-      end
+      serialize_methods(obj_hash)
       # Take out the only option since we want to serialize everything in the object
       options.extract!(:only)
     else
       # If we get fields to serialize from the controller, use those. Otherwise, use defaults.
-      options[:only] = options[:only].nil? || options[:only].empty? ? serialize_default : options[:only]
+      options[:only] = options[:only].nil? || options[:only].empty? ? serializable_fields_default : options[:only]
+      # If the options contain methods, then include those in a separate parameter by using an intersection
+      methods = options[:only].map {|e| e.to_sym} & serializable_methods
       # Convert field names to strings
       options[:only].map! {|e| e.to_s} if options[:only]
       obj_hash = super.as_json(options)
+      serialize_methods(obj_hash, methods)
     end
     obj_hash
   end
@@ -107,6 +108,15 @@ class Klass
   def parents
     parents = RDFUtil.query(PARENTS_QUERY.gsub("%%ID%%", @id).gsub("%%ONT%%", @ontology))
     RDFUtil.sparql_select_values(parents)
+  end
+
+  private
+
+  def serialize_methods(hash, methods = nil)
+    methods ||= serializable_methods
+    methods.each do |method|
+      hash[method.to_s] = self.send(method.to_s)
+    end
   end
 
 end
