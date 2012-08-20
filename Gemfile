@@ -22,7 +22,7 @@ gem 'sqlite3'
 # gem 'capistrano', :group => :development
 
 # Debugging
-gem 'debugger'
+gem 'debugger', :group => :development
 
 # HTTP server
 gem 'puma'
