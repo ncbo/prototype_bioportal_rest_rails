@@ -24,3 +24,5 @@ gem 'sqlite3'
 # Debugging
 gem 'debugger'
 
+# HTTP server
+gem 'puma'
