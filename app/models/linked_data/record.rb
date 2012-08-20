@@ -28,7 +28,7 @@ module LinkedData
     # Custom methods for 4store interaction and object building
     ####
 
-    # Required fields for subclasses
+    # These values should be provided in the subclass and are required
     class << self; attr_reader :prefix, :rdf_type end
 
     # Internal usage
@@ -40,10 +40,28 @@ module LinkedData
       @table.as_json(options)
     end
 
-    def self.describe(id = nil)
-      query = "DESCRIBE <#{@prefix}#{id}>"
-      results = RDFUtil.query(query)
-      results_converted = convert_describe_results(results, "#{@prefix}#{id}")
+    def self.describe(ids = [], embed = [])
+      results_converted = {}
+      ids.each do |id|
+        query = "DESCRIBE <#{id}>"
+        results = RDFUtil.query(query)
+
+        # TODO: This should not happen, but we're going to make quash it for now
+        return nil if results.empty?
+
+        results_converted.merge! convert_describe_results(results, "#{id}")
+      end
+
+      # The value of the "embeds" list are predicates from the above objects whose values we should look up.
+      embed.each do |predicate|
+        id = results_converted[predicate].dup
+        id = id.kind_of?(Array) ? id.shift : id
+        query = "DESCRIBE <#{id}>"
+        results = RDFUtil.query(query)
+        converted = convert_describe_results(results, id)
+        results_converted.merge! converted unless converted.nil?
+      end
+
       self.shorten(results_converted)
     end
 

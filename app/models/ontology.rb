@@ -28,7 +28,7 @@ class Ontology < LinkedData::Record
     if id.downcase.to_s.eql?("all")
       self.all
     else
-      self.describe(id.upcase)
+      self.describe(id.upcase, options)
     end
   end
 
@@ -53,30 +53,12 @@ class Ontology < LinkedData::Record
     onts_list
   end
 
-  def self.describe(id = nil)
-    query = "DESCRIBE <#{@prefix}#{id}>"
-    results = RDFUtil.query(query)
-
-    # TODO: This should not happen, but we're going to make quash it for now
-    return nil if results.empty?
-
-    results_converted = convert_describe_results(results, "#{@prefix}#{id}")
-
-    # Combine the ontology version information for the latest version if no version id is passed
-    unless id.include?("/")
-      last_version = results_converted["http://bioportal.bioontology.org/metadata/lastVersion"].first
-      results_converted.merge! latest_version(last_version)
+  def self.describe(id = nil, options = {})
+    if options[:version]
+      super(["#{@prefix}#{id}", "#{@prefix}#{id}/#{options[:version]}"])
+    else
+      super(["#{@prefix}#{id}"], ["http://bioportal.bioontology.org/metadata/lastVersion"])
     end
-
-    self.shorten(results_converted)
-  end
-
-  def self.latest_version(id)
-    query = "DESCRIBE <#{id}>"
-    results = RDFUtil.query(query)
-    # TODO: This should not happen, but we're going to make quash it for now
-    return nil if results.empty?
-    convert_describe_results(results, id)
   end
 
   def self.predicates(rdf_type = nil)
