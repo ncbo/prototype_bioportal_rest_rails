@@ -14,11 +14,7 @@ class Ontology < LinkedData::Record
 
   # Necessary values for working with Record
   @prefix = "http://bioportal.bioontology.org/ontologies/"
-  @rdf_type = "http://omv.ontoware.org/2005/05/ontology#Ontology"
-
-  # Extra values to combine ontology revisions with ontology containers
-  class << self; attr_reader :ontology_container end
-  @ontology_container = "http://bioportal.bioontology.org/metadata/OntologyContainer"
+  @rdf_type = ["http://omv.ontoware.org/2005/05/ontology#Ontology", "http://bioportal.bioontology.org/metadata/OntologyContainer"]
 
   # Get queries from query module
   include LinkedData::Queries::Ontology
@@ -59,29 +55,6 @@ class Ontology < LinkedData::Record
     else
       super(["#{@prefix}#{id}"], ["http://bioportal.bioontology.org/metadata/lastVersion"])
     end
-  end
-
-  def self.predicates(rdf_type = nil)
-    if !$PREDICATES.nil?
-      @predicates = $PREDICATES
-    else
-      if @predicates.nil?
-        rdf_type ||= @rdf_type
-        results = RDFUtil.query(PREDICATE_QUERY.gsub("%%RDF_TYPE%%", @rdf_type))
-        results.concat RDFUtil.query(PREDICATE_QUERY.gsub("%%RDF_TYPE%%", @ontology_container))
-        @predicates = {}
-        results.each do |result|
-          predicate = RDFUtil.convert_xsd(result["p"]["type"], result["p"]["datatype"], result["p"]["value"])
-          cardinality = RDFUtil.convert_xsd(result["c"]["type"], result["c"]["datatype"], result["c"]["value"])
-          if !@predicates[predicate].nil? && @predicates[predicate][:cardinality] < cardinality
-            @predicates[predicate][:cardinality] = cardinality
-          elsif @predicates[predicate].nil?
-            @predicates[predicate] = {:cardinality => cardinality}
-          end
-        end
-      end
-    end
-    @predicates
   end
 
 end

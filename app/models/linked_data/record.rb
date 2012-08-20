@@ -46,7 +46,7 @@ module LinkedData
         query = "DESCRIBE <#{id}>"
         results = RDFUtil.query(query)
 
-        # TODO: This should not happen, but we're going to make quash it for now
+        # TODO: This should not happen but it is, so we're going to make quash it for now
         return nil if results.empty?
 
         results_converted.merge! convert_describe_results(results, "#{id}")
@@ -64,6 +64,35 @@ module LinkedData
 
       self.shorten(results_converted)
     end
+
+    def self.predicates(rdf_type = nil)
+      if !$PREDICATES.nil?
+        @predicates = $PREDICATES
+      else
+        if @predicates.nil?
+          rdf_type = @rdf_type.kind_of?(Array) ? rdf_type : [@rdf_type]
+          results = []
+          rdf_type.each do |type|
+            result = RDFUtil.query(PREDICATE_QUERY.gsub("%%RDF_TYPE%%", type))
+            results.concat result unless result.nil?
+          end
+          @predicates = {}
+          results.each do |result|
+            predicate = RDFUtil.convert_xsd(result["p"]["type"], result["p"]["datatype"], result["p"]["value"])
+            cardinality = RDFUtil.convert_xsd(result["c"]["type"], result["c"]["datatype"], result["c"]["value"])
+            # puts result["s"]["value"], predicate, cardinality, "\n" if cardinality > 1
+            if !@predicates[predicate].nil? && @predicates[predicate][:cardinality] < cardinality
+              @predicates[predicate][:cardinality] = cardinality
+            elsif @predicates[predicate].nil?
+              @predicates[predicate] = {:cardinality => cardinality}
+            end
+          end
+        end
+      end
+      @predicates
+    end
+
+    protected
 
     def self.shorten(results)
       @predicate_map = {}
@@ -92,25 +121,6 @@ module LinkedData
         results_converted[predicate] = values_objs
       end
       results_converted
-    end
-
-    def self.predicates(rdf_type = nil)
-      if @predicates.nil?
-        rdf_type ||= @rdf_type
-        results = RDFUtil.query(PREDICATE_QUERY.gsub("%%RDF_TYPE%%", @rdf_type))
-        @predicates = {}
-        results.each do |result|
-          predicate = RDFUtil.convert_xsd(result["p"]["type"], result["p"]["datatype"], result["p"]["value"])
-          cardinality = RDFUtil.convert_xsd(result["c"]["type"], result["c"]["datatype"], result["c"]["value"])
-          # puts result["s"]["value"], predicate, cardinality, "\n" if cardinality > 1
-          if !@predicates[predicate].nil? && @predicates[predicate][:cardinality] < cardinality
-            @predicates[predicate][:cardinality] = cardinality
-          elsif @predicates[predicate].nil?
-            @predicates[predicate] = {:cardinality => cardinality}
-          end
-        end
-      end
-      @predicates
     end
 
   end
