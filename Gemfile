@@ -7,7 +7,7 @@ gem 'rails', '3.2.3'
 
 gem 'rails-api'
 
-gem 'sqlite3'
+gem 'sqlite3', :group => :development
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -25,4 +25,4 @@ gem 'sqlite3'
 gem 'debugger', :group => :development
 
 # HTTP server
-gem 'puma'
+gem 'puma', :group => :development
