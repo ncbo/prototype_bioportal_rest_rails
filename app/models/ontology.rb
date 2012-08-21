@@ -12,9 +12,14 @@ class Ontology < LinkedData::Record
   # Options for serializing (which fields)
   serialize_default :lastVersion, :administrator, :acronym, :name, :description, :contact, :homepage
 
-  # Necessary values for working with Record
+  # Necessary values for working with LinkedData::Record
   @prefix = "http://bioportal.bioontology.org/ontologies/"
   @rdf_type = ["http://omv.ontoware.org/2005/05/ontology#Ontology", "http://bioportal.bioontology.org/metadata/OntologyContainer"]
+
+  # Define Restful relationships for outputting links
+  include Restful
+  resource_path "/ontologies/:id"
+  related_resources :metrics => Metrics, :properties => "/ontologies/:id/properties"
 
   # Get queries from query module
   include LinkedData::Queries::Ontology
@@ -55,6 +60,14 @@ class Ontology < LinkedData::Record
     else
       super(["#{@prefix}#{id}"], ["http://bioportal.bioontology.org/metadata/lastVersion"])
     end
+  end
+
+  def id
+    self.acronym.upcase rescue ""
+  end
+
+  def id=(id)
+    @table["acronym"] = id
   end
 
 end

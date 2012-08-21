@@ -67,10 +67,11 @@ module LinkedData
 
     def self.predicates(rdf_type = nil)
       if !$PREDICATES.nil?
+        puts "predicates from cache"
         @predicates = $PREDICATES
       else
         if @predicates.nil?
-          rdf_type = @rdf_type.kind_of?(Array) ? rdf_type : [@rdf_type]
+          rdf_type = @rdf_type.kind_of?(Array) ? @rdf_type : [@rdf_type]
           results = []
           rdf_type.each do |type|
             result = RDFUtil.query(PREDICATE_QUERY.gsub("%%RDF_TYPE%%", type))
@@ -89,7 +90,7 @@ module LinkedData
           end
         end
       end
-      @predicates
+      $PREDICATES = @predicates
     end
 
     protected

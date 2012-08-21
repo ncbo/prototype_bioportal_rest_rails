@@ -7,7 +7,7 @@ class OntologiesController < ApplicationController
 
   def show
     ont = Ontology.find(params[:id], :version => params[:version])
-    render :json => ont.as_json(serializer_options)
+    restful_render(ont)
   end
 
 end
