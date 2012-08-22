@@ -67,7 +67,6 @@ module LinkedData
 
     def self.predicates(rdf_type = nil)
       if !$PREDICATES.nil?
-        puts "predicates from cache"
         @predicates = $PREDICATES
       else
         if @predicates.nil?
@@ -91,6 +90,10 @@ module LinkedData
         end
       end
       $PREDICATES = @predicates
+    end
+
+    def self.exists?(id)
+      RDFUtil.query("ASK WHERE { <%%ID%%> ?p ?o }".gsub("%%ID%%", "#{@prefix}/#{id}"))["boolean"]
     end
 
     protected

@@ -1,4 +1,4 @@
 class Metrics
   include Restful
-  resource_path "/ontologies/:id/metrics"
+  resource_path "/ontologies/:ontology/metrics"
 end

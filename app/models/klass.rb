@@ -15,6 +15,11 @@ class Klass
   serialize_default :id, :label, :synonym, :definition, :obsolete
   serialize_methods :properties, :child_count, :parents, :children
 
+  # Define Restful relationships for outputting links
+  include Restful
+  resource_path "/ontologies/:ontology/classes/:klass"
+  related_resources :ontology => Ontology, :resources => "/resource_index/by_concept?conceptid=:klass"
+
   def self.init
     @synonym = []; @definition = [];
   end

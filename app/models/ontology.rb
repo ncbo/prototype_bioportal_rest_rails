@@ -18,8 +18,11 @@ class Ontology < LinkedData::Record
 
   # Define Restful relationships for outputting links
   include Restful
-  resource_path "/ontologies/:id"
-  related_resources :metrics => Metrics, :properties => "/ontologies/:id/properties"
+  resource_path "/ontologies/:ontology"
+  related_resources :metrics => Metrics, :properties => "/ontologies/:ontology/properties",
+                    :reviews => "/ontologies/:ontology/reviews", :download => "/ontologies/:ontology/download",
+                    :views => "/ontologies/:ontology/views", :versions => "/ontologies/:ontology/versions",
+                    :classes => "/ontologies/:ontology/classes", :mappings => "/ontologies/:ontology/mappings"
 
   # Get queries from query module
   include LinkedData::Queries::Ontology
@@ -29,6 +32,7 @@ class Ontology < LinkedData::Record
     if id.downcase.to_s.eql?("all")
       self.all
     else
+      raise ActionController::RoutingError.new("Ontology not found") unless self.exists?(id)
       self.describe(id.upcase, options)
     end
   end

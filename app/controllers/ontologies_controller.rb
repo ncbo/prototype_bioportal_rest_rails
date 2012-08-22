@@ -2,7 +2,7 @@ class OntologiesController < ApplicationController
 
   def index
     ontologies = Ontology.all
-    render :json => ontologies.as_json(serializer_options)
+    restful_render(ontologies)
   end
 
   def show
