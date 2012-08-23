@@ -1,4 +1,4 @@
 class Metrics
-  include Restful
+  include RestfulLinks
   resource_path "/ontologies/:ontology/metrics"
 end

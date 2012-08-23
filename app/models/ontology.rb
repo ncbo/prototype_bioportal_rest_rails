@@ -17,7 +17,7 @@ class Ontology < LinkedData::Record
   @rdf_type = ["http://omv.ontoware.org/2005/05/ontology#Ontology", "http://bioportal.bioontology.org/metadata/OntologyContainer"]
 
   # Define Restful relationships for outputting links
-  include Restful
+  include RestfulLinks
   resource_path "/ontologies/:ontology"
   related_resources :metrics => Metrics, :properties => "/ontologies/:ontology/properties",
                     :reviews => "/ontologies/:ontology/reviews", :download => "/ontologies/:ontology/download",
@@ -32,7 +32,7 @@ class Ontology < LinkedData::Record
     if id.downcase.to_s.eql?("all")
       self.all
     else
-      raise ActionController::RoutingError.new("Ontology not found") unless self.exists?(id)
+      raise ActionController::RoutingError.new("Ontology not found") unless self.exists?(id.upcase)
       self.describe(id.upcase, options)
     end
   end
@@ -58,6 +58,29 @@ class Ontology < LinkedData::Record
     onts_list
   end
 
+  def root_classes
+    roots = RDFUtil.query(ROOT_CLASSES.gsub("%%ID%%", self.id))
+    classes = []
+    threads = []
+    queue = Queue.new
+    roots.each {|c| queue << c}
+    Rails.logger.debug "Number of roots: " + roots.length.to_s
+    max_threads = 100
+    thread_count = roots.length / 100 == 0 ? roots.length : max_threads
+    thread_count.times do
+      threads << Thread.new do
+        while !queue.empty?
+          klass = (queue.pop)["root"]
+          next if klass.nil? || klass["type"].eql?("bnode")
+          klass = Klass.find(klass["value"], self.id)
+          classes << klass
+        end
+      end
+    end
+    threads.each {|t| t.join}
+    classes
+  end
+
   def self.describe(id = nil, options = {})
     if options[:version]
       super(["#{@prefix}#{id}", "#{@prefix}#{id}/#{options[:version]}"])
@@ -76,14 +99,3 @@ class Ontology < LinkedData::Record
 
 end
 
-
-# Testing
-# require 'pp'
-
-# test = Ontology.find("ABA")
-# pp test
-# puts "valid: #{test.valid?}"
-# puts test.name
-# test.name = 11111
-# puts test.name
-# puts test.this_is_not_a_method

@@ -93,7 +93,8 @@ module LinkedData
     end
 
     def self.exists?(id)
-      RDFUtil.query("ASK WHERE { <%%ID%%> ?p ?o }".gsub("%%ID%%", "#{@prefix}/#{id}"))["boolean"]
+      results = RDFUtil.query("ASK WHERE { <%%ID%%> ?p ?o }".gsub("%%ID%%", "#{@prefix}#{id}"))
+      results["boolean"]
     end
 
     protected

@@ -1,5 +1,7 @@
 require File.expand_path('../linked_data/rdf_util', __FILE__)
 
+# Base object for ontology classes.
+# This object is read-only. Setting values for attributes will not propagate these values to the triplestore.
 class Klass
   include ActiveModel::Serialization
 
@@ -9,6 +11,7 @@ class Klass
   # Include queries from query module
   include LinkedData::Queries::Klass
 
+  # Default attributes. These were standardized by NCBO and each ontology has its own mapping to these values.
   attr_accessor :id, :ontology, :label, :synonym, :definition, :obsolete
 
   # Serialization options
@@ -16,19 +19,48 @@ class Klass
   serialize_methods :properties, :child_count, :parents, :children
 
   # Define Restful relationships for outputting links
-  include Restful
+  include RestfulLinks
   resource_path "/ontologies/:ontology/classes/:klass"
   related_resources :ontology => Ontology, :resources => "/resource_index/by_concept?conceptid=:klass"
 
-  def self.init
+  ####
+  ## Class methods
+  ####
+
+  # Find an existing class.
+  # @param [String] URI id for the class
+  # @param [String] id/acronym of the ontology where the class is located
+  # @option options options for finding classes
+  # @return [Klass]
+  def self.find(id, ontology, options = {})
+    klass = self.new
+    klass.id = id
+    klass.ontology = ontology.upcase
+    raise ActionController::RoutingError.new("Class not found") unless Klass.exists?(klass.id, klass.ontology)
+    klass.init
+    klass.populate_default_attr
+    klass
+  end
+
+  # Check whether or not the class exists
+  # @return [Boolean]
+  def self.exists?(id, ontology)
+    RDFUtil.query("ASK FROM <http://bioportal.bioontology.org/ontologies/%%ONT%%> WHERE { <%%ID%%> ?p ?o } ".gsub("%%ONT%%", ontology).gsub("%%ID%%", id))["boolean"]
+  end
+
+  ####
+  ## Instance methods
+  ####
+
+  # Provide values for default attributes
+  def init
     @synonym = []; @definition = [];
   end
 
-  def initialize(id, ontology, label, synonym, definition, obsolete = false, options = {})
-    @id = id; @ontology = ontology; @label = label; @synonym = synonym; @definition = definition; @obsolete = obsolete
-  end
-
-  # Custom json representation.
+  # Overrides default serialization method. This enables the "include" query string parameter to work and hides
+  # values by default so users only get a subsection of the available data.
+  # @option options [Symbol] :only list of attributes that should be shown. Can contain "all" to show all.
+  # @return [String] json representation of the object given the paramters provided
   def as_json(options = {})
     # If we need all attributes, then don't restrict using :only and include methods. Otherwise, just serialize the default or what's requested.
     if options[:only] && options[:only].include?("all")
@@ -50,21 +82,8 @@ class Klass
     obj_hash
   end
 
-  def self.find(id, ontology, options = {})
-    ont_id = ontology.upcase
-    self.init
-    @id = id
-    @ontology = ont_id
-    raise ActionController::RoutingError.new("Class not found") unless self.exists?
-    self.default_attr
-    self.new(@id, ont_id, @label, @synonym, @definition, @obsolete)
-  end
-
-  def self.exists?
-    RDFUtil.query("ASK FROM <http://bioportal.bioontology.org/ontologies/%%ONT%%> WHERE { <%%ID%%> ?p ?o } ".gsub("%%ONT%%", @ontology).gsub("%%ID%%", @id))["boolean"]
-  end
-
-  def self.default_attr
+  # Set the default attributes that every class should have.
+  def populate_default_attr
     @label = predicate_values("skos:prefLabel", @ontology).shift
     @synonym.concat predicate_values("skos:altLabel", @ontology)
     @definition.concat predicate_values("skos:definition", @ontology)
@@ -73,25 +92,45 @@ class Klass
     @obsolete = RDFUtil.query(OBSOLETE_QUERY.gsub("%%ONT%%", @ontology).gsub("%%ID%%", @id))["boolean"] unless @obsolete
   end
 
-  def self.predicate_values(predicate, ont_id)
+  # All of the properties for the term that exist in the triplestore.
+  # @return [Hash] properties
+  def properties
+    results = RDFUtil.query("DESCRIBE <#{@id}>")
+    convert_describe_results(results)
+  end
+
+  # Number of children the term has
+  # @return [Integer] count of children
+  def child_count
+    RDFUtil.query(CHILD_COUNT_QUERY.gsub("%%ID%%", @id).gsub("%%ONT%%", @ontology))[0]["childcount"]["value"].to_i
+  end
+
+  # URIs for child classes
+  # @return [Array] URIs for all child classes
+  def children
+    children = RDFUtil.query(CHILDREN_QUERY.gsub("%%ID%%", @id).gsub("%%ONT%%", @ontology))
+    RDFUtil.sparql_select_values(children)
+  end
+
+  # URIs for all parent classes
+  # @return [Array] URIs for all parent classes
+  def parents
+    parents = RDFUtil.query(PARENTS_QUERY.gsub("%%ID%%", @id).gsub("%%ONT%%", @ontology))
+    RDFUtil.sparql_select_values(parents)
+  end
+
+  private
+
+  def predicate_values(predicate, ont_id)
     query = PREDICATE_QUERY.gsub("%%ONT%%", ont_id).gsub("%%ID%%", @id).gsub("%%PRED%%", predicate)
     results = RDFUtil.query(query)
     values = []
     results.each do |result|
       result = result["o"]
       value = RDFUtil.convert_xsd(result["type"], result["datatype"], result["value"])
-      values << value unless value.nil? || value.empty?
+      values << value unless value.nil? || (value.respond_to?(:empty) && value.empty?)
     end
     values
-  end
-
-  def properties
-    results = RDFUtil.query("DESCRIBE <#{@id}>")
-    convert_describe_results(results)
-  end
-
-  def child_count
-    RDFUtil.query(CHILD_COUNT_QUERY.gsub("%%ID%%", @id).gsub("%%ONT%%", @ontology))[0]["childcount"]["value"].to_i
   end
 
   def convert_describe_results(results)
@@ -105,18 +144,9 @@ class Klass
     results_converted
   end
 
-  def children
-    children = RDFUtil.query(CHILDREN_QUERY.gsub("%%ID%%", @id).gsub("%%ONT%%", @ontology))
-    RDFUtil.sparql_select_values(children)
-  end
-
-  def parents
-    parents = RDFUtil.query(PARENTS_QUERY.gsub("%%ID%%", @id).gsub("%%ONT%%", @ontology))
-    RDFUtil.sparql_select_values(parents)
-  end
-
-  private
-
+  # Add the results of calling a list of instance methods to a hash with the method name as the key and return as the value
+  # @param [Hash] hash where the method results are to be added
+  # @param [Array, nil] list of methods that should get called
   def serialize_methods(hash, methods = nil)
     methods ||= serializable_methods
     methods.each do |method|
@@ -125,10 +155,3 @@ class Klass
   end
 
 end
-
-
-# Test code
-# require 'pp'
-
-# test = Klass.find("http://ontology.neuinfo.org/NIF/Dysfunction/NIF-Dysfunction.owl#birnlex_12561", "NIF")
-# pp test.properties
