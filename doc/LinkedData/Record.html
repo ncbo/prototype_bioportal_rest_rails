@@ -1,0 +1,919 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: LinkedData::Record
+  
+    &mdash; Documentation by YARD 0.7.5
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '..';
+  if (relpath != '') relpath += '/';
+</script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (R)</a> &raquo; 
+    <span class='title'><span class='object_link'><a href="../LinkedData.html" title="LinkedData (module)">LinkedData</a></span></span>
+     &raquo; 
+    <span class="title">Record</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a id="class_list_link" href="#">Class List</a>
+  
+    <a id="method_list_link" href="#">Method List</a>
+  
+    <a id="file_list_link" href="#">File List</a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: LinkedData::Record
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">OpenStruct</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">OpenStruct</li>
+          
+            <li class="next">LinkedData::Record</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+      <dt class="r2">Includes:</dt>
+      <dd class="r2">ActiveModel::Serialization, ActiveModel::Validations, <span class='object_link'><a href="Queries/Record.html" title="LinkedData::Queries::Record (module)">Queries::Record</a></span>, <span class='object_link'><a href="Serializer.html" title="LinkedData::Serializer (module)">Serializer</a></span></dd>
+      
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">app/models/linked_data/record.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<div id="subclasses">
+  <h2>Direct Known Subclasses</h2>
+  <p class="children"><span class='object_link'><a href="../Ontology.html" title="Ontology (class)">Ontology</a></span></p>
+</div>
+
+  <h2>Constant Summary</h2>
+  
+
+
+
+  <h2>Constant Summary</h2>
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="Queries/Record.html" title="LinkedData::Queries::Record (module)">Queries::Record</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Queries/Record.html#PREDICATE_QUERY-constant" title="LinkedData::Queries::Record::PREDICATE_QUERY (constant)">Queries::Record::PREDICATE_QUERY</a></span></p>
+
+
+  <h2>Class Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#predicate_map-class_method" title="predicate_map (class method)">+ (Object) <strong>predicate_map</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title readonly">readonly</span>
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute predicate_map.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#prefix-class_method" title="prefix (class method)">+ (Object) <strong>prefix</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title readonly">readonly</span>
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute prefix.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rdf_type-class_method" title="rdf_type (class method)">+ (Object) <strong>rdf_type</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title readonly">readonly</span>
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute rdf_type.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#attributes-instance_method" title="#attributes (instance method)">- (Object) <strong>attributes</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Methods to adhere to ActiveModel API.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#describe-class_method" title="describe (class method)">+ (Object) <strong>describe</strong>(ids = [], embed = []) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#exists%3F-class_method" title="exists? (class method)">+ (Boolean) <strong>exists?</strong>(id) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#predicates-class_method" title="predicates (class method)">+ (Object) <strong>predicates</strong>(rdf_type = nil) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#as_json-instance_method" title="#as_json (instance method)">- (Object) <strong>as_json</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Record) <strong>initialize</strong>(attributes = {}) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of Record.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#read_attribute_for_validation-instance_method" title="#read_attribute_for_validation (instance method)">- (Object) <strong>read_attribute_for_validation</strong>(key) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Serializer.html" title="LinkedData::Serializer (module)">Serializer</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Serializer.html#included-class_method" title="LinkedData::Serializer.included (method)">included</a></span>, <span class='object_link'><a href="Serializer.html#serializable_fields-instance_method" title="LinkedData::Serializer#serializable_fields (method)">#serializable_fields</a></span>, <span class='object_link'><a href="Serializer.html#serializable_fields_default-instance_method" title="LinkedData::Serializer#serializable_fields_default (method)">#serializable_fields_default</a></span>, <span class='object_link'><a href="Serializer.html#serializable_methods-instance_method" title="LinkedData::Serializer#serializable_methods (method)">#serializable_methods</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  <div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <p class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="LinkedData::Record (class)">Record</a></span></tt>) <strong>initialize</strong>(attributes = {}) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>A new instance of Record</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+16
+17
+18
+19
+20
+21</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/record.rb', line 16</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='rubyid_attributes identifier id'>attributes</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
+  <span class='rubyid_table identifier id'>table</span> <span class='assign token'>=</span> <span class='rubyid_attributes identifier id'>attributes</span><span class='lbrack token'>[</span><span class='symbol val'>:table</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span> <span class='integer val'>? </span><span class='lbrace token'>{</span><span class='rbrace token'>}</span> <span class='colon op'>:</span> <span class='rubyid_attributes identifier id'>attributes</span><span class='lbrack token'>[</span><span class='symbol val'>:table</span><span class='rbrack token'>]</span>
+  <span class='rubyid_super super kw'>super</span><span class='lparen token'>(</span><span class='rubyid_table identifier id'>table</span><span class='rparen token'>)</span>
+  <span class='rubyid_@predicate_map ivar id'>@predicate_map</span> <span class='assign token'>=</span> <span class='rubyid_attributes identifier id'>attributes</span><span class='lbrack token'>[</span><span class='symbol val'>:predicate_map</span><span class='rbrack token'>]</span> <span class='rubyid_unless unless_mod kw'>unless</span> <span class='rubyid_attributes identifier id'>attributes</span><span class='lbrack token'>[</span><span class='symbol val'>:predicate_map</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span>
+  <span class='rubyid_@attributes ivar id'>@attributes</span> <span class='assign token'>=</span> <span class='rubyid_@table ivar id'>@table</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="class_attr_details" class="attr_details">
+    <h2>Class Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <span id="predicate_map-class_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="predicate_map-class_method">
+  
+    + (<tt>Object</tt>) <strong>predicate_map</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute predicate_map</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+35
+36
+37</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/record.rb', line 35</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_predicate_map identifier id'>predicate_map</span>
+  <span class='rubyid_@predicate_map ivar id'>@predicate_map</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <span id="prefix-class_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="prefix-class_method">
+  
+    + (<tt>Object</tt>) <strong>prefix</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute prefix</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+32
+33
+34</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/record.rb', line 32</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_prefix identifier id'>prefix</span>
+  <span class='rubyid_@prefix ivar id'>@prefix</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <span id="rdf_type-class_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="rdf_type-class_method">
+  
+    + (<tt>Object</tt>) <strong>rdf_type</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute rdf_type</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+32
+33
+34</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/record.rb', line 32</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_rdf_type identifier id'>rdf_type</span>
+  <span class='rubyid_@rdf_type ivar id'>@rdf_type</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="attributes=-instance_method"></span>
+      <span id="attributes-instance_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="attributes-instance_method">
+  
+    - (<tt>Object</tt>) <strong>attributes</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Methods to adhere to ActiveModel API</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+15
+16
+17</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/record.rb', line 15</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_attributes identifier id'>attributes</span>
+  <span class='rubyid_@attributes ivar id'>@attributes</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="describe-class_method">
+  
+    + (<tt>Object</tt>) <strong>describe</strong>(ids = [], embed = []) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/record.rb', line 43</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_describe identifier id'>describe</span><span class='lparen token'>(</span><span class='rubyid_ids identifier id'>ids</span> <span class='assign token'>=</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='rubyid_embed identifier id'>embed</span> <span class='assign token'>=</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+  <span class='rubyid_results_converted identifier id'>results_converted</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span>
+  <span class='rubyid_ids identifier id'>ids</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_id identifier id'>id</span><span class='bitor op'>|</span>
+    <span class='rubyid_query identifier id'>query</span> <span class='assign token'>=</span> <span class='dstring node'>&quot;DESCRIBE &lt;#{id}&gt;&quot;</span>
+    <span class='rubyid_results identifier id'>results</span> <span class='assign token'>=</span> <span class='rubyid_RDFUtil constant id'>RDFUtil</span><span class='dot token'>.</span><span class='rubyid_query identifier id'>query</span><span class='lparen token'>(</span><span class='rubyid_query identifier id'>query</span><span class='rparen token'>)</span>
+
+    <span class='comment val'># TODO: This should not happen but it is, so we're going to make quash it for now</span>
+    <span class='rubyid_return return kw'>return</span> <span class='rubyid_nil nil kw'>nil</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_results identifier id'>results</span><span class='dot token'>.</span><span class='rubyid_empty? fid id'>empty?</span>
+
+    <span class='rubyid_results_converted identifier id'>results_converted</span><span class='dot token'>.</span><span class='rubyid_merge! fid id'>merge!</span> <span class='rubyid_convert_describe_results identifier id'>convert_describe_results</span><span class='lparen token'>(</span><span class='rubyid_results identifier id'>results</span><span class='comma token'>,</span> <span class='dstring node'>&quot;#{id}&quot;</span><span class='rparen token'>)</span>
+  <span class='rubyid_end end kw'>end</span>
+
+  <span class='comment val'># The value of the &quot;embeds&quot; list are predicates from the above objects whose values we should look up.</span>
+  <span class='rubyid_embed identifier id'>embed</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_predicate identifier id'>predicate</span><span class='bitor op'>|</span>
+    <span class='rubyid_id identifier id'>id</span> <span class='assign token'>=</span> <span class='rubyid_results_converted identifier id'>results_converted</span><span class='lbrack token'>[</span><span class='rubyid_predicate identifier id'>predicate</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_dup identifier id'>dup</span>
+    <span class='rubyid_id identifier id'>id</span> <span class='assign token'>=</span> <span class='rubyid_id identifier id'>id</span><span class='dot token'>.</span><span class='rubyid_kind_of? fid id'>kind_of?</span><span class='lparen token'>(</span><span class='rubyid_Array constant id'>Array</span><span class='rparen token'>)</span> <span class='question op'>?</span> <span class='rubyid_id identifier id'>id</span><span class='dot token'>.</span><span class='rubyid_shift identifier id'>shift</span> <span class='colon op'>:</span> <span class='rubyid_id identifier id'>id</span>
+    <span class='rubyid_query identifier id'>query</span> <span class='assign token'>=</span> <span class='dstring node'>&quot;DESCRIBE &lt;#{id}&gt;&quot;</span>
+    <span class='rubyid_results identifier id'>results</span> <span class='assign token'>=</span> <span class='rubyid_RDFUtil constant id'>RDFUtil</span><span class='dot token'>.</span><span class='rubyid_query identifier id'>query</span><span class='lparen token'>(</span><span class='rubyid_query identifier id'>query</span><span class='rparen token'>)</span>
+    <span class='rubyid_converted identifier id'>converted</span> <span class='assign token'>=</span> <span class='rubyid_convert_describe_results identifier id'>convert_describe_results</span><span class='lparen token'>(</span><span class='rubyid_results identifier id'>results</span><span class='comma token'>,</span> <span class='rubyid_id identifier id'>id</span><span class='rparen token'>)</span>
+    <span class='rubyid_results_converted identifier id'>results_converted</span><span class='dot token'>.</span><span class='rubyid_merge! fid id'>merge!</span> <span class='rubyid_converted identifier id'>converted</span> <span class='rubyid_unless unless_mod kw'>unless</span> <span class='rubyid_converted identifier id'>converted</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span>
+  <span class='rubyid_end end kw'>end</span>
+
+  <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_shorten identifier id'>shorten</span><span class='lparen token'>(</span><span class='rubyid_results_converted identifier id'>results_converted</span><span class='rparen token'>)</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="exists?-class_method">
+  
+    + (<tt>Boolean</tt>) <strong>exists?</strong>(id) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+95
+96
+97
+98</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/record.rb', line 95</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_exists? fid id'>exists?</span><span class='lparen token'>(</span><span class='rubyid_id identifier id'>id</span><span class='rparen token'>)</span>
+  <span class='rubyid_results identifier id'>results</span> <span class='assign token'>=</span> <span class='rubyid_RDFUtil constant id'>RDFUtil</span><span class='dot token'>.</span><span class='rubyid_query identifier id'>query</span><span class='lparen token'>(</span><span class='string val'>&quot;ASK WHERE { &lt;%%ID%%&gt; ?p ?o }&quot;</span><span class='dot token'>.</span><span class='rubyid_gsub identifier id'>gsub</span><span class='lparen token'>(</span><span class='string val'>&quot;%%ID%%&quot;</span><span class='comma token'>,</span> <span class='dstring node'>&quot;#{@prefix}#{id}&quot;</span><span class='rparen token'>)</span><span class='rparen token'>)</span>
+  <span class='rubyid_results identifier id'>results</span><span class='lbrack token'>[</span><span class='string val'>&quot;boolean&quot;</span><span class='rbrack token'>]</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="predicates-class_method">
+  
+    + (<tt>Object</tt>) <strong>predicates</strong>(rdf_type = nil) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/record.rb', line 68</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_predicates identifier id'>predicates</span><span class='lparen token'>(</span><span class='rubyid_rdf_type identifier id'>rdf_type</span> <span class='assign token'>=</span> <span class='rubyid_nil nil kw'>nil</span><span class='rparen token'>)</span>
+  <span class='rubyid_if if kw'>if</span> <span class='notop op'>!</span><span class='rubyid_$PREDICATES gvar id'>$PREDICATES</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span>
+    <span class='rubyid_@predicates ivar id'>@predicates</span> <span class='assign token'>=</span> <span class='rubyid_$PREDICATES gvar id'>$PREDICATES</span>
+  <span class='rubyid_else else kw'>else</span>
+    <span class='rubyid_if if kw'>if</span> <span class='rubyid_@predicates ivar id'>@predicates</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span>
+      <span class='rubyid_rdf_type identifier id'>rdf_type</span> <span class='assign token'>=</span> <span class='rubyid_@rdf_type ivar id'>@rdf_type</span><span class='dot token'>.</span><span class='rubyid_kind_of? fid id'>kind_of?</span><span class='lparen token'>(</span><span class='rubyid_Array constant id'>Array</span><span class='rparen token'>)</span> <span class='question op'>?</span> <span class='rubyid_@rdf_type ivar id'>@rdf_type</span> <span class='colon op'>:</span> <span class='lbrack token'>[</span><span class='rubyid_@rdf_type ivar id'>@rdf_type</span><span class='rbrack token'>]</span>
+      <span class='rubyid_results identifier id'>results</span> <span class='assign token'>=</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span>
+      <span class='rubyid_rdf_type identifier id'>rdf_type</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_type identifier id'>type</span><span class='bitor op'>|</span>
+        <span class='rubyid_result identifier id'>result</span> <span class='assign token'>=</span> <span class='rubyid_RDFUtil constant id'>RDFUtil</span><span class='dot token'>.</span><span class='rubyid_query identifier id'>query</span><span class='lparen token'>(</span><span class='rubyid_PREDICATE_QUERY constant id'>PREDICATE_QUERY</span><span class='dot token'>.</span><span class='rubyid_gsub identifier id'>gsub</span><span class='lparen token'>(</span><span class='string val'>&quot;%%RDF_TYPE%%&quot;</span><span class='comma token'>,</span> <span class='rubyid_type identifier id'>type</span><span class='rparen token'>)</span><span class='rparen token'>)</span>
+        <span class='rubyid_results identifier id'>results</span><span class='dot token'>.</span><span class='rubyid_concat identifier id'>concat</span> <span class='rubyid_result identifier id'>result</span> <span class='rubyid_unless unless_mod kw'>unless</span> <span class='rubyid_result identifier id'>result</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span>
+      <span class='rubyid_end end kw'>end</span>
+      <span class='rubyid_@predicates ivar id'>@predicates</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span>
+      <span class='rubyid_results identifier id'>results</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_result identifier id'>result</span><span class='bitor op'>|</span>
+        <span class='rubyid_predicate identifier id'>predicate</span> <span class='assign token'>=</span> <span class='rubyid_RDFUtil constant id'>RDFUtil</span><span class='dot token'>.</span><span class='rubyid_convert_xsd identifier id'>convert_xsd</span><span class='lparen token'>(</span><span class='rubyid_result identifier id'>result</span><span class='lbrack token'>[</span><span class='string val'>&quot;p&quot;</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>&quot;type&quot;</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='rubyid_result identifier id'>result</span><span class='lbrack token'>[</span><span class='string val'>&quot;p&quot;</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>&quot;datatype&quot;</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='rubyid_result identifier id'>result</span><span class='lbrack token'>[</span><span class='string val'>&quot;p&quot;</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>&quot;value&quot;</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+        <span class='rubyid_cardinality identifier id'>cardinality</span> <span class='assign token'>=</span> <span class='rubyid_RDFUtil constant id'>RDFUtil</span><span class='dot token'>.</span><span class='rubyid_convert_xsd identifier id'>convert_xsd</span><span class='lparen token'>(</span><span class='rubyid_result identifier id'>result</span><span class='lbrack token'>[</span><span class='string val'>&quot;c&quot;</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>&quot;type&quot;</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='rubyid_result identifier id'>result</span><span class='lbrack token'>[</span><span class='string val'>&quot;c&quot;</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>&quot;datatype&quot;</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='rubyid_result identifier id'>result</span><span class='lbrack token'>[</span><span class='string val'>&quot;c&quot;</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>&quot;value&quot;</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+        <span class='comment val'># puts result[&quot;s&quot;][&quot;value&quot;], predicate, cardinality, &quot;\n&quot; if cardinality &gt; 1</span>
+        <span class='rubyid_if if kw'>if</span> <span class='notop op'>!</span><span class='rubyid_@predicates ivar id'>@predicates</span><span class='lbrack token'>[</span><span class='rubyid_predicate identifier id'>predicate</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span> <span class='andop op'>&amp;&amp;</span> <span class='rubyid_@predicates ivar id'>@predicates</span><span class='lbrack token'>[</span><span class='rubyid_predicate identifier id'>predicate</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='symbol val'>:cardinality</span><span class='rbrack token'>]</span> <span class='lt op'>&lt;</span> <span class='rubyid_cardinality identifier id'>cardinality</span>
+          <span class='rubyid_@predicates ivar id'>@predicates</span><span class='lbrack token'>[</span><span class='rubyid_predicate identifier id'>predicate</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='symbol val'>:cardinality</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_cardinality identifier id'>cardinality</span>
+        <span class='rubyid_elsif elsif kw'>elsif</span> <span class='rubyid_@predicates ivar id'>@predicates</span><span class='lbrack token'>[</span><span class='rubyid_predicate identifier id'>predicate</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span>
+          <span class='rubyid_@predicates ivar id'>@predicates</span><span class='lbrack token'>[</span><span class='rubyid_predicate identifier id'>predicate</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='symbol val'>:cardinality</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_cardinality identifier id'>cardinality</span><span class='rbrace token'>}</span>
+        <span class='rubyid_end end kw'>end</span>
+      <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_$PREDICATES gvar id'>$PREDICATES</span> <span class='assign token'>=</span> <span class='rubyid_@predicates ivar id'>@predicates</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="as_json-instance_method">
+  
+    - (<tt>Object</tt>) <strong>as_json</strong>(options = {}) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+37
+38
+39
+40
+41</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/record.rb', line 37</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_as_json identifier id'>as_json</span><span class='lparen token'>(</span><span class='rubyid_options identifier id'>options</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
+  <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:only</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:only</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span> <span class='orop op'>||</span> <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:only</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_empty? fid id'>empty?</span> <span class='integer val'>? </span><span class='rubyid_serializable_fields_default identifier id'>serializable_fields_default</span> <span class='colon op'>:</span> <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:only</span><span class='rbrack token'>]</span>
+  <span class='rubyid_options identifier id'>options</span><span class='dot token'>.</span><span class='rubyid_extract! fid id'>extract!</span><span class='lparen token'>(</span><span class='symbol val'>:only</span><span class='rparen token'>)</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:only</span><span class='rbrack token'>]</span> <span class='andop op'>&amp;&amp;</span> <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:only</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_include? fid id'>include?</span><span class='lparen token'>(</span><span class='string val'>&quot;all&quot;</span><span class='rparen token'>)</span>
+  <span class='rubyid_@table ivar id'>@table</span><span class='dot token'>.</span><span class='rubyid_as_json identifier id'>as_json</span><span class='lparen token'>(</span><span class='rubyid_options identifier id'>options</span><span class='rparen token'>)</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="read_attribute_for_validation-instance_method">
+  
+    - (<tt>Object</tt>) <strong>read_attribute_for_validation</strong>(key) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+23
+24
+25</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/record.rb', line 23</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_read_attribute_for_validation identifier id'>read_attribute_for_validation</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='rparen token'>)</span>
+  <span class='rubyid_@attributes ivar id'>@attributes</span><span class='lbrack token'>[</span><span class='rubyid_key identifier id'>key</span><span class='rbrack token'>]</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Wed Aug 22 23:52:00 2012 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.7.5 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>

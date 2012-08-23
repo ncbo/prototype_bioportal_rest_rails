@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Module: LinkedData::Queries::Klass
+  
+    &mdash; Documentation by YARD 0.7.5
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '../..';
+  if (relpath != '') relpath += '/';
+</script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../_index.html">Index (K)</a> &raquo; 
+    <span class='title'><span class='object_link'><a href="../../LinkedData.html" title="LinkedData (module)">LinkedData</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Queries.html" title="LinkedData::Queries (module)">Queries</a></span></span>
+     &raquo; 
+    <span class="title">Klass</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a id="class_list_link" href="#">Class List</a>
+  
+    <a id="method_list_link" href="#">Method List</a>
+  
+    <a id="file_list_link" href="#">File List</a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Module: LinkedData::Queries::Klass
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+    <dt class="r1">Included in:</dt>
+    <dd class="r1"><span class='object_link'><a href="../../Klass.html" title="Klass (class)">Klass</a></span></dd>
+    
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">app/models/linked_data/queries/klass.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="OBSOLETE_QUERY-constant" class="">OBSOLETE_QUERY =
+          
+        </dt>
+        <dd><pre class="code"><span class='string val'>&quot;PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;\nASK FROM &lt;http://bioportal.bioontology.org/ontologies/%%ONT%%&gt; WHERE { &lt;%%ID%%&gt; a owl:DeprecatedClass }\n&quot;</span>
+</pre></dd>
+      
+        <dt id="PREDICATE_QUERY-constant" class="">PREDICATE_QUERY =
+          
+        </dt>
+        <dd><pre class="code"><span class='string val'>&quot;PREFIX owl:  &lt;http://www.w3.org/2002/07/owl#&gt;\nPREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;\nPREFIX skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;\n\nSELECT DISTINCT *\nFROM &lt;http://bioportal.bioontology.org/ontologies/%%ONT%%&gt;\nFROM &lt;http://bioportal.bioontology.org/ontologies/globals&gt;\nWHERE\n{\n&lt;%%ID%%&gt; %%PRED%% ?o\n}\n&quot;</span>
+</pre></dd>
+      
+        <dt id="CHILD_COUNT_QUERY-constant" class="">CHILD_COUNT_QUERY =
+          
+        </dt>
+        <dd><pre class="code"><span class='string val'>&quot;PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;\n\nSELECT (COUNT(?s) as ?childcount)\nFROM &lt;http://bioportal.bioontology.org/ontologies/%%ONT%%&gt;\nWHERE\n{\n?s rdfs:subClassOf &lt;%%ID%%&gt;\n}\n&quot;</span>
+</pre></dd>
+      
+        <dt id="CHILDREN_QUERY-constant" class="">CHILDREN_QUERY =
+          
+        </dt>
+        <dd><pre class="code"><span class='string val'>&quot;PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;\n\nSELECT ?child\nFROM &lt;http://bioportal.bioontology.org/ontologies/%%ONT%%&gt;\nWHERE\n{\n?child rdfs:subClassOf &lt;%%ID%%&gt;\n}\n&quot;</span>
+</pre></dd>
+      
+        <dt id="PARENTS_QUERY-constant" class="">PARENTS_QUERY =
+          
+        </dt>
+        <dd><pre class="code"><span class='string val'>&quot;PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;\n\nSELECT ?parent\nFROM &lt;http://bioportal.bioontology.org/ontologies/%%ONT%%&gt;\nWHERE\n{\n&lt;%%ID%%&gt; rdfs:subClassOf ?parent\n}\n&quot;</span>
+</pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+
+
+</div>
+    
+    <div id="footer">
+  Generated on Wed Aug 22 23:51:58 2012 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.7.5 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>

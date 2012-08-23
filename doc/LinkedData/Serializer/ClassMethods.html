@@ -1,0 +1,532 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Module: LinkedData::Serializer::ClassMethods
+  
+    &mdash; Documentation by YARD 0.7.5
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '../..';
+  if (relpath != '') relpath += '/';
+</script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../_index.html">Index (C)</a> &raquo; 
+    <span class='title'><span class='object_link'><a href="../../LinkedData.html" title="LinkedData (module)">LinkedData</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Serializer.html" title="LinkedData::Serializer (module)">Serializer</a></span></span>
+     &raquo; 
+    <span class="title">ClassMethods</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a id="class_list_link" href="#">Class List</a>
+  
+    <a id="method_list_link" href="#">Method List</a>
+  
+    <a id="file_list_link" href="#">File List</a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Module: LinkedData::Serializer::ClassMethods
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">app/models/linked_data/serializer.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+
+
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#serializable_fields_additional-instance_method" title="#serializable_fields_additional (instance method)">- (Object) <strong>serializable_fields_additional</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute serializable_fields_additional.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#serializable_fields_default-instance_method" title="#serializable_fields_default (instance method)">- (Object) <strong>serializable_fields_default</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute serializable_fields_default.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#serializable_methods-instance_method" title="#serializable_methods (instance method)">- (Object) <strong>serializable_methods</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute serializable_methods.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#serializable_fields-instance_method" title="#serializable_fields (instance method)">- (Object) <strong>serializable_fields</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#serialize_additional-instance_method" title="#serialize_additional (instance method)">- (Object) <strong>serialize_additional</strong>(*fields) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#serialize_default-instance_method" title="#serialize_default (instance method)">- (Object) <strong>serialize_default</strong>(*fields) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#serialize_methods-instance_method" title="#serialize_methods (instance method)">- (Object) <strong>serialize_methods</strong>(*methods) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="serializable_fields_additional=-instance_method"></span>
+      <span id="serializable_fields_additional-instance_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="serializable_fields_additional-instance_method">
+  
+    - (<tt>Object</tt>) <strong>serializable_fields_additional</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute serializable_fields_additional</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+26
+27
+28</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/serializer.rb', line 26</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_serializable_fields_additional identifier id'>serializable_fields_additional</span>
+  <span class='rubyid_@serializable_fields_additional ivar id'>@serializable_fields_additional</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="serializable_fields_default=-instance_method"></span>
+      <span id="serializable_fields_default-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="serializable_fields_default-instance_method">
+  
+    - (<tt>Object</tt>) <strong>serializable_fields_default</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute serializable_fields_default</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+26
+27
+28</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/serializer.rb', line 26</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_serializable_fields_default identifier id'>serializable_fields_default</span>
+  <span class='rubyid_@serializable_fields_default ivar id'>@serializable_fields_default</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="serializable_methods=-instance_method"></span>
+      <span id="serializable_methods-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="serializable_methods-instance_method">
+  
+    - (<tt>Object</tt>) <strong>serializable_methods</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute serializable_methods</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+26
+27
+28</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/serializer.rb', line 26</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_serializable_methods identifier id'>serializable_methods</span>
+  <span class='rubyid_@serializable_methods ivar id'>@serializable_methods</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="serializable_fields-instance_method">
+  
+    - (<tt>Object</tt>) <strong>serializable_fields</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+28
+29
+30</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/serializer.rb', line 28</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_serializable_fields identifier id'>serializable_fields</span>
+  <span class='rubyid_@serializable_fields_default ivar id'>@serializable_fields_default</span><span class='dot token'>.</span><span class='rubyid_concat identifier id'>concat</span> <span class='rubyid_@serializable_fields_additional ivar id'>@serializable_fields_additional</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="serialize_additional-instance_method">
+  
+    - (<tt>Object</tt>) <strong>serialize_additional</strong>(*fields) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+36
+37
+38</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/serializer.rb', line 36</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_serialize_additional identifier id'>serialize_additional</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='rubyid_fields identifier id'>fields</span><span class='rparen token'>)</span>
+  <span class='rubyid_@serializable_fields_additional ivar id'>@serializable_fields_additional</span> <span class='assign token'>=</span> <span class='rubyid_fields identifier id'>fields</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="serialize_default-instance_method">
+  
+    - (<tt>Object</tt>) <strong>serialize_default</strong>(*fields) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+32
+33
+34</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/serializer.rb', line 32</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_serialize_default identifier id'>serialize_default</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='rubyid_fields identifier id'>fields</span><span class='rparen token'>)</span>
+  <span class='rubyid_@serializable_fields_default ivar id'>@serializable_fields_default</span> <span class='assign token'>=</span> <span class='rubyid_fields identifier id'>fields</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="serialize_methods-instance_method">
+  
+    - (<tt>Object</tt>) <strong>serialize_methods</strong>(*methods) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+40
+41
+42</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/serializer.rb', line 40</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_serialize_methods identifier id'>serialize_methods</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='rubyid_methods identifier id'>methods</span><span class='rparen token'>)</span>
+  <span class='rubyid_@serializable_methods ivar id'>@serializable_methods</span> <span class='assign token'>=</span> <span class='rubyid_methods identifier id'>methods</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Wed Aug 22 23:51:59 2012 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.7.5 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>

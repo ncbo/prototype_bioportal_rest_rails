@@ -1,0 +1,608 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: RDFUtil
+  
+    &mdash; Documentation by YARD 0.7.5
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '';
+  if (relpath != '') relpath += '/';
+</script>
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index (R)</a> &raquo; 
+    
+    
+    <span class="title">RDFUtil</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a id="class_list_link" href="#">Class List</a>
+  
+    <a id="method_list_link" href="#">Method List</a>
+  
+    <a id="file_list_link" href="#">File List</a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: RDFUtil
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">RDFUtil</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">app/models/linked_data/rdf_util.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Utility methods for working with RDF data, mainly returned SPARQL query
+results from 4store</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="XSD_LITERAL_CONVERT-constant" class="">XSD_LITERAL_CONVERT =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Group of lambdas for handling XSD type conversion</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='lbrace token'>{</span>
+  <span class='string val'>&quot;http://www.w3.org/2001/XMLSchema#string&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_lambda identifier id'>lambda</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_value identifier id'>value</span><span class='bitor op'>|</span>
+    <span class='rubyid_value identifier id'>value</span>
+  <span class='rubyid_end end kw'>end</span><span class='comma token'>,</span>
+  <span class='string val'>&quot;http://www.w3.org/2001/XMLSchema#boolean&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_lambda identifier id'>lambda</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_value identifier id'>value</span><span class='bitor op'>|</span>
+    <span class='rubyid_value identifier id'>value</span><span class='dot token'>.</span><span class='rubyid_eql? fid id'>eql?</span><span class='lparen token'>(</span><span class='string val'>&quot;true&quot;</span><span class='rparen token'>)</span>
+  <span class='rubyid_end end kw'>end</span><span class='comma token'>,</span>
+  <span class='string val'>&quot;http://www.w3.org/2001/XMLSchema#integer&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_lambda identifier id'>lambda</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_value identifier id'>value</span><span class='bitor op'>|</span>
+    <span class='rubyid_value identifier id'>value</span><span class='dot token'>.</span><span class='rubyid_to_i identifier id'>to_i</span>
+  <span class='rubyid_end end kw'>end</span><span class='comma token'>,</span>
+  <span class='string val'>&quot;http://www.w3.org/2001/XMLSchema#double&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_lambda identifier id'>lambda</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_value identifier id'>value</span><span class='bitor op'>|</span>
+    <span class='rubyid_value identifier id'>value</span><span class='dot token'>.</span><span class='rubyid_to_f identifier id'>to_f</span>
+  <span class='rubyid_end end kw'>end</span><span class='comma token'>,</span>
+  <span class='string val'>&quot;http://www.w3.org/2001/XMLSchema#float&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_lambda identifier id'>lambda</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_value identifier id'>value</span><span class='bitor op'>|</span>
+    <span class='rubyid_value identifier id'>value</span><span class='dot token'>.</span><span class='rubyid_to_f identifier id'>to_f</span>
+  <span class='rubyid_end end kw'>end</span><span class='comma token'>,</span>
+  <span class='string val'>&quot;http://www.w3.org/2001/XMLSchema#dateTime&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_lambda identifier id'>lambda</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_value identifier id'>value</span><span class='bitor op'>|</span>
+    <span class='rubyid_DateTime constant id'>DateTime</span><span class='dot token'>.</span><span class='rubyid_parse identifier id'>parse</span><span class='lparen token'>(</span><span class='rubyid_value identifier id'>value</span><span class='rparen token'>)</span>
+  <span class='rubyid_end end kw'>end</span><span class='comma token'>,</span>
+  <span class='string val'>&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_lambda identifier id'>lambda</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_value identifier id'>value</span><span class='bitor op'>|</span>
+    <span class='rubyid_value identifier id'>value</span>
+  <span class='rubyid_end end kw'>end</span><span class='comma token'>,</span>
+  <span class='string val'>&quot;http://www.w3.org/2001/XMLSchema#datetime&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_lambda identifier id'>lambda</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_value identifier id'>value</span><span class='bitor op'>|</span>
+    <span class='rubyid_DateTime constant id'>DateTime</span><span class='dot token'>.</span><span class='rubyid_parse identifier id'>parse</span><span class='lparen token'>(</span><span class='rubyid_value identifier id'>value</span><span class='rparen token'>)</span>
+  <span class='rubyid_end end kw'>end</span>
+<span class='rbrace token'>}</span>
+</pre></dd>
+      
+        <dt id="endpoint-classvariable" class="">@@endpoint =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Address for the 4store server</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='string val'>&quot;http://bmir-dev1:8083/&quot;</span>
+</pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#convert_xsd-class_method" title="convert_xsd (class method)">+ (Object) <strong>convert_xsd</strong>(type, datatype, value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Takes returned value information and converts to appropriate Ruby object
+types.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#query-class_method" title="query (class method)">+ (Object) <strong>query</strong>(query, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Perform a query against the triplestore using HTTP.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#sparql_select_values-class_method" title="sparql_select_values (class method)">+ (Array) <strong>sparql_select_values</strong>(results) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Convert a list of SPARQL JSON values to proper Ruby objects.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="convert_xsd-class_method">
+  
+    + (<tt>Object</tt>) <strong>convert_xsd</strong>(type, datatype, value) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Takes returned value information and converts to appropriate Ruby object
+types</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>type</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>of value</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>XSD</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>datatype</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>in string form</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>converted value</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/rdf_util.rb', line 45</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_convert_xsd identifier id'>convert_xsd</span><span class='lparen token'>(</span><span class='rubyid_type identifier id'>type</span><span class='comma token'>,</span> <span class='rubyid_datatype identifier id'>datatype</span><span class='comma token'>,</span> <span class='rubyid_value identifier id'>value</span><span class='rparen token'>)</span>
+  <span class='rubyid_case case kw'>case</span> <span class='rubyid_type identifier id'>type</span>
+    <span class='rubyid_when when kw'>when</span> <span class='string val'>&quot;uri&quot;</span>
+      <span class='rubyid_value identifier id'>value</span>
+    <span class='rubyid_when when kw'>when</span> <span class='string val'>&quot;bnode&quot;</span>
+      <span class='rubyid_value identifier id'>value</span>
+    <span class='rubyid_when when kw'>when</span> <span class='string val'>&quot;literal&quot;</span>
+      <span class='rubyid_puts identifier id'>puts</span> <span class='rubyid_datatype identifier id'>datatype</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_XSD_LITERAL_CONVERT constant id'>XSD_LITERAL_CONVERT</span><span class='lbrack token'>[</span><span class='rubyid_datatype identifier id'>datatype</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span>
+      <span class='rubyid_debugger identifier id'>debugger</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_XSD_LITERAL_CONVERT constant id'>XSD_LITERAL_CONVERT</span><span class='lbrack token'>[</span><span class='rubyid_datatype identifier id'>datatype</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span>
+      <span class='rubyid_XSD_LITERAL_CONVERT constant id'>XSD_LITERAL_CONVERT</span><span class='lbrack token'>[</span><span class='rubyid_datatype identifier id'>datatype</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_call identifier id'>call</span><span class='lparen token'>(</span><span class='rubyid_value identifier id'>value</span><span class='rparen token'>)</span> <span class='rubyid_rescue rescue kw'>rescue</span> <span class='rubyid_value identifier id'>value</span>
+  <span class='rubyid_end end kw'>end</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="query-class_method">
+  
+    + (<tt>Object</tt>) <strong>query</strong>(query, options = {}) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Perform a query against the triplestore using HTTP</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>properly</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>formed SPARQL query</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a customizable set of options</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  
+    
+    
+    
+    
+    <h3>Options Hash (<tt>options</tt>):</h3>
+    <ul class="option">
+      
+        <li>
+          <span class="name">:full</span>
+          <span class="type">(<tt>Symbol</tt>)</span>
+          <span class="default">
+            
+          </span>
+          &mdash; <div class='inline'>
+<p>default: false. Setting to ‘true’ will return the whole json, false
+tries to find bindings and return those.</p>
+</div>
+        </li>
+      
+    </ul>
+  
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+73
+74
+75
+76
+77
+78
+79
+80
+81</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/rdf_util.rb', line 73</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_query identifier id'>query</span><span class='lparen token'>(</span><span class='rubyid_query identifier id'>query</span><span class='comma token'>,</span> <span class='rubyid_options identifier id'>options</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
+  <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:full</span><span class='rbrack token'>]</span> <span class='opasgn op'>||=</span> <span class='rubyid_false false kw'>false</span>
+  <span class='rubyid_start identifier id'>start</span> <span class='assign token'>=</span> <span class='rubyid_Time constant id'>Time</span><span class='dot token'>.</span><span class='rubyid_now identifier id'>now</span>
+  <span class='rubyid_data identifier id'>data</span> <span class='assign token'>=</span> <span class='rubyid_open identifier id'>open</span><span class='lparen token'>(</span><span class='dstring node'>&quot;#{@@endpoint}sparql/?query=#{CGI.escape(query)}&amp;output=json&quot;</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='rubyid_read identifier id'>read</span>
+  <span class='rubyid_parsed_data identifier id'>parsed_data</span> <span class='assign token'>=</span> <span class='rubyid_JSON constant id'>JSON</span><span class='dot token'>.</span><span class='rubyid_parse identifier id'>parse</span><span class='lparen token'>(</span><span class='rubyid_data identifier id'>data</span><span class='rparen token'>)</span>
+  <span class='rubyid_puts identifier id'>puts</span> <span class='dstring node'>&quot;Query from #{caller[0].split(&quot;:&quot;)[0].split(&quot;/&quot;).last}:#{caller[0].split(&quot; &quot;)[1].gsub(&quot;`&quot;, &quot;&quot;).gsub(&quot;'&quot;, &quot;&quot;)} #{Time.now - start}s&quot;</span>
+  <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:full</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_true true kw'>true</span> <span class='rubyid_unless unless_mod kw'>unless</span> <span class='rubyid_parsed_data identifier id'>parsed_data</span><span class='lbrack token'>[</span><span class='string val'>&quot;results&quot;</span><span class='rbrack token'>]</span> <span class='andop op'>&amp;&amp;</span> <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:full</span><span class='rbrack token'>]</span> <span class='eq op'>==</span> <span class='rubyid_false false kw'>false</span>
+  <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:full</span><span class='rbrack token'>]</span> <span class='eq op'>==</span> <span class='rubyid_true true kw'>true</span> <span class='question op'>?</span> <span class='rubyid_parsed_data identifier id'>parsed_data</span> <span class='colon op'>:</span> <span class='rubyid_parsed_data identifier id'>parsed_data</span><span class='lbrack token'>[</span><span class='string val'>&quot;results&quot;</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>&quot;bindings&quot;</span><span class='rbrack token'>]</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="sparql_select_values-class_method">
+  
+    + (<tt>Array</tt>) <strong>sparql_select_values</strong>(results) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Convert a list of SPARQL JSON values to proper Ruby objects</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>list</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>of results. Each item should be a hash with type, datatype, and value</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>list of converted values</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+61
+62
+63
+64
+65
+66
+67
+68</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/linked_data/rdf_util.rb', line 61</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_sparql_select_values identifier id'>sparql_select_values</span><span class='lparen token'>(</span><span class='rubyid_results identifier id'>results</span><span class='rparen token'>)</span>
+  <span class='rubyid_container identifier id'>container</span> <span class='assign token'>=</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span>
+  <span class='rubyid_results identifier id'>results</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_result identifier id'>result</span><span class='bitor op'>|</span>
+    <span class='rubyid_triple identifier id'>triple</span> <span class='assign token'>=</span> <span class='rubyid_result identifier id'>result</span><span class='dot token'>.</span><span class='rubyid_first identifier id'>first</span><span class='lbrack token'>[</span><span class='integer val'>1</span><span class='rbrack token'>]</span>
+    <span class='rubyid_container identifier id'>container</span> <span class='lshft op'>&lt;&lt;</span> <span class='rubyid_convert_xsd identifier id'>convert_xsd</span><span class='lparen token'>(</span><span class='rubyid_triple identifier id'>triple</span><span class='lbrack token'>[</span><span class='string val'>&quot;type&quot;</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='rubyid_triple identifier id'>triple</span><span class='lbrack token'>[</span><span class='string val'>&quot;datatype&quot;</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='rubyid_triple identifier id'>triple</span><span class='lbrack token'>[</span><span class='string val'>&quot;value&quot;</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_container identifier id'>container</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Wed Aug 22 23:51:59 2012 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.7.5 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>
