@@ -28,7 +28,10 @@ module LinkedData::Queries
         OPTIONAL {
           ?root <http://www.w3.org/2002/07/owl#equivalentClass> ?equiv
         }
-        FILTER (!bound(?super) && !bound(?equiv) && isIRI(?root))
+        OPTIONAL {
+          ?root <http://www.w3.org/2002/07/owl#deprecated> ?obsolete
+        }
+        FILTER (!bound(?super) && !bound(?equiv) && !bound(?obsolete) && isIRI(?root))
       }
     EOS
   end
