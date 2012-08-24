@@ -1,4 +1,3 @@
-# require File.expand_path('../linked_data/record', __FILE__)
 require File.expand_path('../linked_data/rdf_util', __FILE__)
 
 # This class represents an ontology in the triplestore. It relies on the LinkedData framework for retreiving and storing information.
