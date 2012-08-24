@@ -1,3 +1,4 @@
+# LinkedData::Queries classes provide constants that contain SPARQL queries that are used in their corresponding LinkedData::Record classes via mixin.
 module LinkedData::Queries
   module Klass
 

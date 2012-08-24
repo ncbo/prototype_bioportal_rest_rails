@@ -1,7 +1,8 @@
 require File.expand_path('../rdf_util', __FILE__)
 
-
+# LinkedData API provides a framework for storing and retreiving data in an RDF triplestore, in this case 4store.
 module LinkedData
+  # Record forms the base of the interaction with the triplestore. CRUD methods may be broken out in separate modules later.
   class Record < OpenStruct
     include ActiveModel::Validations
     include ActiveModel::Serialization
@@ -34,12 +35,22 @@ module LinkedData
     # Internal usage
     class << self; attr_reader :predicate_map end
 
+    # Convert the object to json using the fields set on each subclass.
+    # We should only serialize the @table variable as other data on the object is essentially metadata.
+    # @options options [:only] Array of Symbols providing a list of fields to serialize. If the string "all" is in the list then remove the restrictions.
+    # @return [Hash] json hash
     def as_json(options = {})
       options[:only] = options[:only].nil? || options[:only].empty? ? serializable_fields_default : options[:only]
       options.extract!(:only) if options[:only] && options[:only].include?("all")
       @table.as_json(options)
     end
 
+    # Create an object by running a series of describe queries
+    # @param [Array] list of the object ids to use as the basis for the object. This is essentially a set of subject URIs.
+    # @param [Array] list of predicate values where the predicate points to more information that should be included in the primary object.
+    #    For example, if you want to get the triples for the latest version of an ontology using the #lastVersion predicate that is returned
+    #    with an OntologyContainer, you can include the #lastVersion predicate as an embedded object and they will get merged.
+    # @return [Record]
     def self.describe(ids = [], embed = [])
       results_converted = {}
       ids.each do |id|
@@ -65,7 +76,9 @@ module LinkedData
       self.shorten(results_converted)
     end
 
-    def self.predicates(rdf_type = nil)
+    # Return the list of predicates for the object type, including cardinality
+    # @return [Hash] key String predicate => value Hash
+    def self.predicates
       if !$PREDICATES.nil?
         @predicates = $PREDICATES
       else
@@ -92,6 +105,8 @@ module LinkedData
       $PREDICATES = @predicates
     end
 
+    # Check whether an ontology with given id exists
+    # @param [String] ontology id
     def self.exists?(id)
       results = RDFUtil.query("ASK WHERE { <%%ID%%> ?p ?o }".gsub("%%ID%%", "#{@prefix}#{id}"))
       results["boolean"]
@@ -99,6 +114,10 @@ module LinkedData
 
     protected
 
+    # Given a result set, shorten the predicates to their last segment (after the # or last /)
+    # Return a new object of the appropriate type
+    # @param [Array] list of predicate => value pairs
+    # @return [Record]
     def self.shorten(results)
       @predicate_map = {}
       @table = {}
@@ -117,6 +136,9 @@ module LinkedData
       self.new(:table => @table, :predicate_map => @predicate_map)
     end
 
+    # Convert the results of a describe query into their appropriately typed objects
+    # @param [Array] list of results
+    # @param [String] URI of the object
     def self.convert_describe_results(results, object_id)
       return nil if results.empty?
       results_converted = {}

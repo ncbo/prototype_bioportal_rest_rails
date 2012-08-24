@@ -1,13 +1,14 @@
 # require File.expand_path('../linked_data/record', __FILE__)
 require File.expand_path('../linked_data/rdf_util', __FILE__)
 
+# This class represents an ontology in the triplestore. It relies on the LinkedData framework for retreiving and storing information.
+# It also adheres to the ActiveModel API where possible and uses a custom serializer mixin for handling the serialization of default attributes
+# and custom attributes that are provided as methods. Validations are handled by ActiveModel::Validations. Links are generated using the
+# RestfulLinks mixin at serialization (done via controller).
 class Ontology < LinkedData::Record
   # Validations
   validates_presence_of :administrator, :name
   # validates_presence_of :id, :name, :description, :contact, :format, :released, :viewingRestriction
-
-  # Potnentially aliasing names from triplestore to something more Ruby-like
-  # alias :id :acronym
 
   # Options for serializing (which fields)
   serialize_default :lastVersion, :administrator, :acronym, :name, :description, :contact, :homepage
@@ -27,6 +28,8 @@ class Ontology < LinkedData::Record
   # Get queries from query module
   include LinkedData::Queries::Ontology
 
+  # Find an ontology (or all ontologies)
+  # @param [String] id/acronym for ontology to find
   def self.find(id = nil, options = {})
     id ||= options[:id]
     if id.downcase.to_s.eql?("all")
@@ -37,6 +40,7 @@ class Ontology < LinkedData::Record
     end
   end
 
+  # Find all ontologies
   def self.all
     results = RDFUtil.query(ALL_ONTS)
     onts = {}
@@ -58,6 +62,7 @@ class Ontology < LinkedData::Record
     onts_list
   end
 
+  # Get the root classes for the ontology
   def root_classes
     roots = RDFUtil.query(ROOT_CLASSES.gsub("%%ID%%", self.id))
     classes = []
@@ -80,20 +85,26 @@ class Ontology < LinkedData::Record
     classes
   end
 
+  # Provide an alias for the ontology acronym as id
+  # This is used because acronym doesn't exist as an attribute until the ontology is retrieved from 4store
+  def id
+    self.acronym.upcase rescue ""
+  end
+
+  # Set value of id
+  def id=(id)
+    @table["acronym"] = id
+  end
+
+  private
+
+  # Ontology-specific describe that allows for describing a prior version or the most recent
   def self.describe(id = nil, options = {})
     if options[:version]
       super(["#{@prefix}#{id}", "#{@prefix}#{id}/#{options[:version]}"])
     else
       super(["#{@prefix}#{id}"], ["http://bioportal.bioontology.org/metadata/lastVersion"])
     end
-  end
-
-  def id
-    self.acronym.upcase rescue ""
-  end
-
-  def id=(id)
-    @table["acronym"] = id
   end
 
 end
