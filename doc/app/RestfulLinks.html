@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<title>module RestfulLinks - Rails Application Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/models/restful/restful_links.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-included">::included</a>
+    
+    <li><a href="#method-i-related_resources">#related_resources</a>
+    
+    <li><a href="#method-i-resource_path">#resource_path</a>
+    
+    <li><a href="#method-i-restful_links">#restful_links</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./LinkedData.html">LinkedData</a>
+  
+    <li><a href="./LinkedData/Queries.html">LinkedData::Queries</a>
+  
+    <li><a href="./LinkedData/Queries/Klass.html">LinkedData::Queries::Klass</a>
+  
+    <li><a href="./LinkedData/Queries/Ontology.html">LinkedData::Queries::Ontology</a>
+  
+    <li><a href="./LinkedData/Queries/Record.html">LinkedData::Queries::Record</a>
+  
+    <li><a href="./LinkedData/Record.html">LinkedData::Record</a>
+  
+    <li><a href="./LinkedData/Serializer.html">LinkedData::Serializer</a>
+  
+    <li><a href="./LinkedData/Serializer/ClassMethods.html">LinkedData::Serializer::ClassMethods</a>
+  
+    <li><a href="./RestfulLinks.html">RestfulLinks</a>
+  
+    <li><a href="./RestfulLinks/ClassMethods.html">RestfulLinks::ClassMethods</a>
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./Klass.html">Klass</a>
+  
+    <li><a href="./KlassesController.html">KlassesController</a>
+  
+    <li><a href="./Metrics.html">Metrics</a>
+  
+    <li><a href="./OntologiesController.html">OntologiesController</a>
+  
+    <li><a href="./Ontology.html">Ontology</a>
+  
+    <li><a href="./RDFUtil.html">RDFUtil</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module RestfulLinks</h1>
+
+  <div id="description" class="description">
+    
+<p>Provides a mechanism to create relationships between objects or declare
+related paths, which are used to generate hypermedia links for use in the
+API.</p>
+
+<p>To use, add the following to your target class:</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">SubResource</span>
+  <span class="ruby-identifier">resource_path</span> <span class="ruby-string">&quot;/resource/:parent_resource/sub/:sub_resource&quot;</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>The segments of the path that start with “:” should correspond to either
+the class name for the class you are declaring for or methods on the class
+that will return appropriate ids.</p>
+
+<p>To declare related classes, do the following:</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">SubResource</span>
+  <span class="ruby-identifier">related_resources</span> :<span class="ruby-identifier">resource</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Resource</span>, :<span class="ruby-identifier">another</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;/path/:sub_resource&quot;</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>Any related resources that are declared using the related class and not a
+string must also have the <a
+href="RestfulLinks.html#method-i-resource_path">#resource_path</a>
+declared.</p>
+
+<p>Objects using this API will need to have the following methods:</p>
+
+<pre>1. 'id', which outputs the id for the instance of the object. This is used to insert the id into the path.
+2. Any other segments starting with &quot;:&quot; should have a corresponding instance method.</pre>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-included" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">included</span><span
+            class="method-args">(base)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="included-source">
+            <pre><span class="ruby-comment"># File app/models/restful/restful_links.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">included</span>(<span class="ruby-identifier">base</span>)
+  <span class="ruby-identifier">base</span>.<span class="ruby-identifier">extend</span>(<span class="ruby-constant">ClassMethods</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- included-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- included-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-related_resources" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">related_resources</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns a list of related resources</p>
+          
+
+          
+          <div class="method-source-code" id="related_resources-source">
+            <pre><span class="ruby-comment"># File app/models/restful/restful_links.rb, line 29</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">related_resources</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">resources</span> <span class="ruby-operator">||</span> []
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- related_resources-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- related_resources-method -->
+
+    
+      <div id="method-i-resource_path" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">resource_path</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the object’s path</p>
+          
+
+          
+          <div class="method-source-code" id="resource_path-source">
+            <pre><span class="ruby-comment"># File app/models/restful/restful_links.rb, line 34</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">resource_path</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">path</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- resource_path-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- resource_path-method -->
+
+    
+      <div id="method-i-restful_links" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">restful_links</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Generate links for the object.</p>
+          
+
+          
+          <div class="method-source-code" id="restful_links-source">
+            <pre><span class="ruby-comment"># File app/models/restful/restful_links.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">restful_links</span>
+  <span class="ruby-identifier">links</span> = {}
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">resources</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">resource</span>, <span class="ruby-identifier">path</span><span class="ruby-operator">|</span>
+    <span class="ruby-comment"># If another class was provided as the path, get its path</span>
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">path</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">String</span>)
+      <span class="ruby-identifier">path</span> = <span class="ruby-identifier">path</span>.<span class="ruby-identifier">path</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment"># Replace objects in the path with appropriate information</span>
+    <span class="ruby-identifier">links</span>[<span class="ruby-identifier">resource</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">downcase</span>] = <span class="ruby-identifier">convert_path</span>(<span class="ruby-identifier">path</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-comment"># Represent yourself</span>
+  <span class="ruby-identifier">links</span>[<span class="ruby-string">&quot;self&quot;</span>] = <span class="ruby-identifier">convert_path</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">path</span>)
+  <span class="ruby-identifier">links</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- restful_links-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- restful_links-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

@@ -64,7 +64,6 @@ class Ontology < LinkedData::Record
     threads = []
     queue = Queue.new
     roots.each {|c| queue << c}
-    Rails.logger.debug "Number of roots: " + roots.length.to_s
     max_threads = 100
     thread_count = roots.length / 100 == 0 ? roots.length : max_threads
     thread_count.times do

@@ -26,3 +26,6 @@ gem 'debugger', :group => :development
 
 # HTTP server
 gem 'puma', :group => :development
+
+# Doc generation
+gem 'yard'

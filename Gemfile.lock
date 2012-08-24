@@ -92,6 +92,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.33)
+    yard (0.8.2.1)
 
 PLATFORMS
   ruby
@@ -102,3 +103,4 @@ DEPENDENCIES
   rails (= 3.2.3)
   rails-api
   sqlite3
+  yard
