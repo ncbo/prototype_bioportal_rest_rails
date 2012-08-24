@@ -88,8 +88,6 @@
     
     <li><a href="#method-c-all">::all</a>
     
-    <li><a href="#method-c-describe">::describe</a>
-    
     <li><a href="#method-c-find">::find</a>
     
     <li><a href="#method-i-id">#id</a>
@@ -164,6 +162,15 @@
 
   <div id="description" class="description">
     
+<p>This class represents an ontology in the triplestore. It relies on the <a
+href="LinkedData.html">LinkedData</a> framework for retreiving and storing
+information. It also adheres to the ActiveModel API where possible and uses
+a custom serializer mixin for handling the serialization of default
+attributes and custom attributes that are provided as methods. Validations
+are handled by ActiveModel::Validations. Links are generated using the <a
+href="RestfulLinks.html">RestfulLinks</a> mixin at serialization (done via
+controller).</p>
+
   </div><!-- description -->
 
   
@@ -195,12 +202,12 @@
 
         <div class="method-description">
           
-          
+          <p>Find all ontologies</p>
           
 
           
           <div class="method-source-code" id="all-source">
-            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 40</span>
+            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">all</span>
   <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-constant">ALL_ONTS</span>)
   <span class="ruby-identifier">onts</span> = {}
@@ -231,40 +238,6 @@
       </div><!-- all-method -->
 
     
-      <div id="method-c-describe" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">describe</span><span
-            class="method-args">(id = nil, options = {})</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-
-          
-          <div class="method-source-code" id="describe-source">
-            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 83</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">describe</span>(<span class="ruby-identifier">id</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">options</span> = {})
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:version</span>]
-    <span class="ruby-keyword">super</span>([<span class="ruby-node">&quot;#{@prefix}#{id}&quot;</span>, <span class="ruby-node">&quot;#{@prefix}#{id}/#{options[:version]}&quot;</span>])
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-keyword">super</span>([<span class="ruby-node">&quot;#{@prefix}#{id}&quot;</span>], [<span class="ruby-string">&quot;http://bioportal.bioontology.org/metadata/lastVersion&quot;</span>])
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- describe-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- describe-method -->
-
-    
       <div id="method-c-find" class="method-detail ">
         
         <div class="method-heading">
@@ -276,12 +249,13 @@
 
         <div class="method-description">
           
-          
+          <p>Find an ontology (or all ontologies) @param [String] id/acronym for
+ontology to find</p>
           
 
           
           <div class="method-source-code" id="find-source">
-            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 30</span>
+            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 33</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">id</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">options</span> = {})
   <span class="ruby-identifier">id</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:id</span>]
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-string">&quot;all&quot;</span>)
@@ -318,12 +292,14 @@
 
         <div class="method-description">
           
-          
+          <p>Provide an alias for the ontology acronym as id This is used because
+acronym doesn’t exist as an attribute until the ontology is retrieved from
+4store</p>
           
 
           
           <div class="method-source-code" id="id-source">
-            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 91</span>
+            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 90</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">id</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">acronym</span>.<span class="ruby-identifier">upcase</span> <span class="ruby-keyword">rescue</span> <span class="ruby-string">&quot;&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -348,7 +324,7 @@
 
         <div class="method-description">
           
-          
+          <p>Set value of id</p>
           
 
           
@@ -378,12 +354,12 @@
 
         <div class="method-description">
           
-          
+          <p>Get the root classes for the ontology</p>
           
 
           
           <div class="method-source-code" id="root_classes-source">
-            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 61</span>
+            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 66</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">root_classes</span>
   <span class="ruby-identifier">roots</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-constant">ROOT_CLASSES</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span>))
   <span class="ruby-identifier">classes</span> = []

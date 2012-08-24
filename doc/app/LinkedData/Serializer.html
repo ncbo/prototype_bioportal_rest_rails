@@ -138,6 +138,10 @@
 
   <div id="description" class="description">
     
+<p>The <a href="Serializer.html">Serializer</a> is used to set default fields
+and serializable methods for objects. Used when serializing methods to
+provide a flexible, dynamic way to show and hide fields.</p>
+
   </div><!-- description -->
 
   
@@ -174,7 +178,7 @@
 
           
           <div class="method-source-code" id="included-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 5</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 7</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">included</span>(<span class="ruby-identifier">base</span>)
   <span class="ruby-identifier">base</span>.<span class="ruby-identifier">extend</span>(<span class="ruby-constant">ClassMethods</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -205,12 +209,12 @@
 
         <div class="method-description">
           
-          
+          <p>Full set of serializable fields for the object</p>
           
 
           
           <div class="method-source-code" id="serializable_fields-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 9</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 12</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">serializable_fields</span>
   <span class="ruby-identifier">fields</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">serializable_fields_default</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">?</span> [] <span class="ruby-operator">:</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">serializable_fields_default</span>
   <span class="ruby-identifier">fields_additional</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">serializable_fields_additional</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">?</span> [] <span class="ruby-operator">:</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">serializable_fields_additional</span>
@@ -237,12 +241,12 @@
 
         <div class="method-description">
           
-          
+          <p>The default set of serializable fields</p>
           
 
           
           <div class="method-source-code" id="serializable_fields_default-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 15</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">serializable_fields_default</span>
   <span class="ruby-keyword">return</span> [] <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">serializable_fields_default</span>.<span class="ruby-identifier">nil?</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">serializable_fields_default</span>
@@ -268,12 +272,12 @@
 
         <div class="method-description">
           
-          
+          <p>The set of instance methods that can be serialized for the object</p>
           
 
           
           <div class="method-source-code" id="serializable_methods-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 20</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">serializable_methods</span>
   <span class="ruby-keyword">return</span> [] <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">serializable_methods</span>.<span class="ruby-identifier">nil?</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">serializable_methods</span>

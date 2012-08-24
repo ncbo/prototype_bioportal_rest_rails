@@ -215,12 +215,12 @@
 
         <div class="method-description">
           
-          
+          <p>Full set of serializable fields for the object</p>
           
 
           
           <div class="method-source-code" id="serializable_fields-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 28</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 34</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">serializable_fields</span>
   <span class="ruby-ivar">@serializable_fields_default</span>.<span class="ruby-identifier">concat</span> <span class="ruby-ivar">@serializable_fields_additional</span>
 <span class="ruby-keyword">end</span></pre>
@@ -245,12 +245,13 @@
 
         <div class="method-description">
           
-          
+          <p>Setter for additional fields (non-default) that the object can serialize
+@param [Symbol] list of symbols corresponding to attribute names</p>
           
 
           
           <div class="method-source-code" id="serialize_additional-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 36</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 49</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">serialize_additional</span>(*<span class="ruby-identifier">fields</span>)
   <span class="ruby-ivar">@serializable_fields_additional</span> = <span class="ruby-identifier">fields</span>
 <span class="ruby-keyword">end</span></pre>
@@ -275,12 +276,19 @@
 
         <div class="method-description">
           
-          
+          <p>Setter for the default serializable fields. Example:</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">TestClass</span>
+   <span class="ruby-identifier">serialize_default</span> :<span class="ruby-identifier">id</span>, :<span class="ruby-identifier">name</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>@param [Symbol] list of symbols corresponding to attribute names</p>
           
 
           
           <div class="method-source-code" id="serialize_default-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 32</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 43</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">serialize_default</span>(*<span class="ruby-identifier">fields</span>)
   <span class="ruby-ivar">@serializable_fields_default</span> = <span class="ruby-identifier">fields</span>
 <span class="ruby-keyword">end</span></pre>
@@ -305,12 +313,13 @@
 
         <div class="method-description">
           
-          
+          <p>Setter for methods that can be serialized @param [Symbol] list of symbols
+corresponding to instance method names</p>
           
 
           
           <div class="method-source-code" id="serialize_methods-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 40</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 55</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">serialize_methods</span>(*<span class="ruby-identifier">methods</span>)
   <span class="ruby-ivar">@serializable_methods</span> = <span class="ruby-identifier">methods</span>
 <span class="ruby-keyword">end</span></pre>

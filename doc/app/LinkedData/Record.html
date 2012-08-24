@@ -176,6 +176,9 @@
 
   <div id="description" class="description">
     
+<p><a href="Record.html">Record</a> forms the base of the interaction with the
+triplestore. CRUD methods may be broken out in separate modules later.</p>
+
   </div><!-- description -->
 
   
@@ -266,12 +269,21 @@
 
         <div class="method-description">
           
-          
+          <p>Create an object by running a series of describe queries @param [Array]
+list of the object ids to use as the basis for the object. This is
+essentially a set of subject URIs. @param [Array] list of predicate values
+where the predicate points to more information that should be included in
+the primary object.</p>
+
+<pre>For example, if you want to get the triples for the latest version of an ontology using the #lastVersion predicate that is returned
+with an OntologyContainer, you can include the #lastVersion predicate as an embedded object and they will get merged.</pre>
+
+<p>@return [Record]</p>
           
 
           
           <div class="method-source-code" id="describe-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 43</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 54</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">describe</span>(<span class="ruby-identifier">ids</span> = [], <span class="ruby-identifier">embed</span> = [])
   <span class="ruby-identifier">results_converted</span> = {}
   <span class="ruby-identifier">ids</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
@@ -317,12 +329,12 @@
 
         <div class="method-description">
           
-          
+          <p>Check whether an ontology with given id exists @param [String] ontology id</p>
           
 
           
           <div class="method-source-code" id="exists-3F-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 95</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 110</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">id</span>)
   <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-string">&quot;ASK WHERE { &lt;%%ID%%&gt; ?p ?o }&quot;</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-node">&quot;#{@prefix}#{id}&quot;</span>))
   <span class="ruby-identifier">results</span>[<span class="ruby-string">&quot;boolean&quot;</span>]
@@ -353,7 +365,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 16</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 17</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">attributes</span> = {})
   <span class="ruby-identifier">table</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-value">:table</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">?</span> {} <span class="ruby-operator">:</span> <span class="ruby-identifier">attributes</span>[<span class="ruby-value">:table</span>]
   <span class="ruby-keyword">super</span>(<span class="ruby-identifier">table</span>)
@@ -374,20 +386,21 @@
         
         <div class="method-heading">
           <span class="method-name">predicates</span><span
-            class="method-args">(rdf_type = nil)</span>
+            class="method-args">()</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
 
         <div class="method-description">
           
-          
+          <p>Return the list of predicates for the object type, including cardinality
+@return [Hash] key String predicate =&gt; value Hash</p>
           
 
           
           <div class="method-source-code" id="predicates-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 68</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">predicates</span>(<span class="ruby-identifier">rdf_type</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 81</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">predicates</span>
   <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">$PREDICATES</span>.<span class="ruby-identifier">nil?</span>
     <span class="ruby-ivar">@predicates</span> = <span class="ruby-identifier">$PREDICATES</span>
   <span class="ruby-keyword">else</span>
@@ -440,12 +453,13 @@
 
         <div class="method-description">
           
-          
+          <p>Convert the results of a describe query into their appropriately typed
+objects @param [Array] list of results @param [String] URI of the object</p>
           
 
           
           <div class="method-source-code" id="convert_describe_results-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 120</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 142</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">convert_describe_results</span>(<span class="ruby-identifier">results</span>, <span class="ruby-identifier">object_id</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">results</span>.<span class="ruby-identifier">empty?</span>
   <span class="ruby-identifier">results_converted</span> = {}
@@ -477,12 +491,14 @@
 
         <div class="method-description">
           
-          
+          <p>Given a result set, shorten the predicates to their last segment (after the
+# or last /) Return a new object of the appropriate type @param [Array]
+list of predicate =&gt; value pairs @return [Record]</p>
           
 
           
           <div class="method-source-code" id="shorten-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 102</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 121</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">shorten</span>(<span class="ruby-identifier">results</span>)
   <span class="ruby-ivar">@predicate_map</span> = {}
   <span class="ruby-ivar">@table</span> = {}
@@ -527,12 +543,16 @@
 
         <div class="method-description">
           
-          
+          <p>Convert the object to json using the fields set on each subclass. We should
+only serialize the @table variable as other data on the object is
+essentially metadata. @options options [:only] Array of Symbols providing a
+list of fields to serialize. If the string “all” is in the list then remove
+the restrictions. @return [Hash] json hash</p>
           
 
           
           <div class="method-source-code" id="as_json-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 37</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">as_json</span>(<span class="ruby-identifier">options</span> = {})
   <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>] = <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>].<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">serializable_fields_default</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>]
   <span class="ruby-identifier">options</span>.<span class="ruby-identifier">extract!</span>(<span class="ruby-value">:only</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-string">&quot;all&quot;</span>)
@@ -564,7 +584,7 @@
 
           
           <div class="method-source-code" id="read_attribute_for_validation-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 23</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 24</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">read_attribute_for_validation</span>(<span class="ruby-identifier">key</span>)
   <span class="ruby-ivar">@attributes</span>[<span class="ruby-identifier">key</span>]
 <span class="ruby-keyword">end</span></pre>
