@@ -96,19 +96,25 @@
     
     <li><a href="#method-c-convert_describe_results">::convert_describe_results</a>
     
-    <li><a href="#method-c-describe">::describe</a>
-    
     <li><a href="#method-c-exists-3F">::exists?</a>
     
     <li><a href="#method-c-new">::new</a>
     
     <li><a href="#method-c-predicates">::predicates</a>
     
-    <li><a href="#method-c-shorten">::shorten</a>
-    
     <li><a href="#method-i-as_json">#as_json</a>
     
+    <li><a href="#method-i-convert_describe_results">#convert_describe_results</a>
+    
+    <li><a href="#method-i-create_attributes">#create_attributes</a>
+    
+    <li><a href="#method-i-from_linked_data">#from_linked_data</a>
+    
     <li><a href="#method-i-read_attribute_for_validation">#read_attribute_for_validation</a>
+    
+    <li><a href="#method-i-set_attributes">#set_attributes</a>
+    
+    <li><a href="#method-i-shorten_predicate">#shorten_predicate</a>
     
   </ul>
 </nav>
@@ -152,6 +158,8 @@
     <li><a href="../RestfulLinks/ClassMethods.html">RestfulLinks::ClassMethods</a>
   
     <li><a href="../ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="../HomeController.html">HomeController</a>
   
     <li><a href="../Klass.html">Klass</a>
   
@@ -258,66 +266,6 @@ triplestore. CRUD methods may be broken out in separate modules later.</p>
       <h3 class="section-header">Public Class Methods</h3>
 
     
-      <div id="method-c-describe" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">describe</span><span
-            class="method-args">(ids = [], embed = [])</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Create an object by running a series of describe queries @param [Array]
-list of the object ids to use as the basis for the object. This is
-essentially a set of subject URIs. @param [Array] list of predicate values
-where the predicate points to more information that should be included in
-the primary object.</p>
-
-<pre>For example, if you want to get the triples for the latest version of an ontology using the #lastVersion predicate that is returned
-with an OntologyContainer, you can include the #lastVersion predicate as an embedded object and they will get merged.</pre>
-
-<p>@return [Record]</p>
-          
-
-          
-          <div class="method-source-code" id="describe-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 54</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">describe</span>(<span class="ruby-identifier">ids</span> = [], <span class="ruby-identifier">embed</span> = [])
-  <span class="ruby-identifier">results_converted</span> = {}
-  <span class="ruby-identifier">ids</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">query</span> = <span class="ruby-node">&quot;DESCRIBE &lt;#{id}&gt;&quot;</span>
-    <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">query</span>)
-
-    <span class="ruby-comment"># TODO: This should not happen but it is, so we're going to make quash it for now</span>
-    <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">results</span>.<span class="ruby-identifier">empty?</span>
-
-    <span class="ruby-identifier">results_converted</span>.<span class="ruby-identifier">merge!</span> <span class="ruby-identifier">convert_describe_results</span>(<span class="ruby-identifier">results</span>, <span class="ruby-node">&quot;#{id}&quot;</span>)
-  <span class="ruby-keyword">end</span>
-
-  <span class="ruby-comment"># The value of the &quot;embeds&quot; list are predicates from the above objects whose values we should look up.</span>
-  <span class="ruby-identifier">embed</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">predicate</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">id</span> = <span class="ruby-identifier">results_converted</span>[<span class="ruby-identifier">predicate</span>].<span class="ruby-identifier">dup</span>
-    <span class="ruby-identifier">id</span> = <span class="ruby-identifier">id</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Array</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">shift</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">id</span>
-    <span class="ruby-identifier">query</span> = <span class="ruby-node">&quot;DESCRIBE &lt;#{id}&gt;&quot;</span>
-    <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">query</span>)
-    <span class="ruby-identifier">converted</span> = <span class="ruby-identifier">convert_describe_results</span>(<span class="ruby-identifier">results</span>, <span class="ruby-identifier">id</span>)
-    <span class="ruby-identifier">results_converted</span>.<span class="ruby-identifier">merge!</span> <span class="ruby-identifier">converted</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">converted</span>.<span class="ruby-identifier">nil?</span>
-  <span class="ruby-keyword">end</span>
-
-  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">shorten</span>(<span class="ruby-identifier">results_converted</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- describe-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- describe-method -->
-
-    
       <div id="method-c-exists-3F" class="method-detail ">
         
         <div class="method-heading">
@@ -334,7 +282,7 @@ with an OntologyContainer, you can include the #lastVersion predicate as an embe
 
           
           <div class="method-source-code" id="exists-3F-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 110</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 79</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">id</span>)
   <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-string">&quot;ASK WHERE { &lt;%%ID%%&gt; ?p ?o }&quot;</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-node">&quot;#{@prefix}#{id}&quot;</span>))
   <span class="ruby-identifier">results</span>[<span class="ruby-string">&quot;boolean&quot;</span>]
@@ -399,7 +347,7 @@ with an OntologyContainer, you can include the #lastVersion predicate as an embe
 
           
           <div class="method-source-code" id="predicates-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 81</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 50</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">predicates</span>
   <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">$PREDICATES</span>.<span class="ruby-identifier">nil?</span>
     <span class="ruby-ivar">@predicates</span> = <span class="ruby-identifier">$PREDICATES</span>
@@ -453,13 +401,13 @@ with an OntologyContainer, you can include the #lastVersion predicate as an embe
 
         <div class="method-description">
           
-          <p>Convert the results of a describe query into their appropriately typed
-objects @param [Array] list of results @param [String] URI of the object</p>
+          <p>(see self.<a
+href="Record.html#method-i-convert_describe_results">#convert_describe_results</a>)</p>
           
 
           
           <div class="method-source-code" id="convert_describe_results-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 142</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 157</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">convert_describe_results</span>(<span class="ruby-identifier">results</span>, <span class="ruby-identifier">object_id</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">results</span>.<span class="ruby-identifier">empty?</span>
   <span class="ruby-identifier">results_converted</span> = {}
@@ -478,52 +426,6 @@ objects @param [Array] list of results @param [String] URI of the object</p>
 
         
       </div><!-- convert_describe_results-method -->
-
-    
-      <div id="method-c-shorten" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">shorten</span><span
-            class="method-args">(results)</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Given a result set, shorten the predicates to their last segment (after the
-# or last /) Return a new object of the appropriate type @param [Array]
-list of predicate =&gt; value pairs @return [Record]</p>
-          
-
-          
-          <div class="method-source-code" id="shorten-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 121</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">shorten</span>(<span class="ruby-identifier">results</span>)
-  <span class="ruby-ivar">@predicate_map</span> = {}
-  <span class="ruby-ivar">@table</span> = {}
-  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">results</span>.<span class="ruby-identifier">nil?</span>
-  <span class="ruby-identifier">results</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">predicate</span>, <span class="ruby-identifier">values</span><span class="ruby-operator">|</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">predicate</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-node">&quot;#&quot;</span>)
-      <span class="ruby-identifier">short_name</span> = <span class="ruby-identifier">predicate</span>.<span class="ruby-identifier">split</span>(<span class="ruby-node">&quot;#&quot;</span>).<span class="ruby-identifier">last</span>
-      <span class="ruby-ivar">@predicate_map</span>[<span class="ruby-identifier">short_name</span>] = <span class="ruby-identifier">predicate</span>
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">short_name</span> = <span class="ruby-identifier">predicate</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;/&quot;</span>).<span class="ruby-identifier">last</span>
-      <span class="ruby-ivar">@predicate_map</span>[<span class="ruby-identifier">short_name</span>] = <span class="ruby-identifier">predicate</span>
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-identifier">values_cardinality</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">predicates</span>[<span class="ruby-identifier">predicate</span>][<span class="ruby-value">:cardinality</span>] <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">values</span>.<span class="ruby-identifier">shift</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">values</span>
-    <span class="ruby-ivar">@table</span>[<span class="ruby-identifier">short_name</span>] = <span class="ruby-identifier">values_cardinality</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:table</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@table</span>, <span class="ruby-value">:predicate_map</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@predicate_map</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- shorten-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- shorten-method -->
 
     
     </section><!-- protected-class-method-details -->
@@ -599,6 +501,211 @@ the restrictions. @return [Hash] json hash</p>
 
     
     </section><!-- public-instance-method-details -->
+  
+     <section id="protected-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Protected Instance Methods</h3>
+
+    
+      <div id="method-i-convert_describe_results" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">convert_describe_results</span><span
+            class="method-args">(results, object_id)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Convert the results of a describe query into their appropriately typed
+objects @param [Array] list of results @param [String] URI of the object</p>
+          
+
+          
+          <div class="method-source-code" id="convert_describe_results-source">
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 152</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">convert_describe_results</span>(<span class="ruby-identifier">results</span>, <span class="ruby-identifier">object_id</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">convert_describe_results</span>(<span class="ruby-identifier">results</span>, <span class="ruby-identifier">object_id</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- convert_describe_results-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- convert_describe_results-method -->
+
+    
+      <div id="method-i-create_attributes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_attributes</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="create_attributes-source">
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 128</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_attributes</span>
+  <span class="ruby-identifier">predicates</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">predicates</span>
+  <span class="ruby-identifier">predicates</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">predicate</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">short_name</span> = <span class="ruby-identifier">shorten_predicate</span>(<span class="ruby-identifier">predicate</span>)
+    <span class="ruby-ivar">@table</span>[<span class="ruby-identifier">short_name</span>] = <span class="ruby-identifier">value</span>[<span class="ruby-value">:cardinality</span>] <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-string">&quot;&quot;</span> <span class="ruby-operator">:</span> []
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- create_attributes-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- create_attributes-method -->
+
+    
+      <div id="method-i-from_linked_data" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">from_linked_data</span><span
+            class="method-args">(ids = [], embed = [])</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Create an object by running a series of describe queries @param [Array]
+list of the object ids to use as the basis for the object. This is
+essentially a set of subject URIs. @param [Array] list of predicate values
+where the predicate points to more information that should be included in
+the primary object.</p>
+
+<pre>For example, if you want to get the triples for the latest version of an ontology using the #lastVersion predicate that is returned
+with an OntologyContainer, you can include the #lastVersion predicate as an embedded object and they will get merged.</pre>
+
+<p>@return [Record]</p>
+          
+
+          
+          <div class="method-source-code" id="from_linked_data-source">
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 92</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">from_linked_data</span>(<span class="ruby-identifier">ids</span> = [], <span class="ruby-identifier">embed</span> = [])
+  <span class="ruby-identifier">results_converted</span> = {}
+  <span class="ruby-identifier">ids</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">query</span> = <span class="ruby-node">&quot;DESCRIBE &lt;#{id}&gt;&quot;</span>
+    <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">query</span>)
+
+    <span class="ruby-comment"># TODO: This should not happen but it is, so we're going to make quash it for now</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">results</span>.<span class="ruby-identifier">empty?</span>
+
+    <span class="ruby-identifier">results_converted</span>.<span class="ruby-identifier">merge!</span> <span class="ruby-identifier">convert_describe_results</span>(<span class="ruby-identifier">results</span>, <span class="ruby-node">&quot;#{id}&quot;</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># The value of the &quot;embeds&quot; list are predicates from the above objects whose values we should look up.</span>
+  <span class="ruby-identifier">embed</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">predicate</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">id</span> = <span class="ruby-identifier">results_converted</span>[<span class="ruby-identifier">predicate</span>].<span class="ruby-identifier">dup</span>
+    <span class="ruby-identifier">id</span> = <span class="ruby-identifier">id</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Array</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">shift</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">id</span>
+    <span class="ruby-identifier">query</span> = <span class="ruby-node">&quot;DESCRIBE &lt;#{id}&gt;&quot;</span>
+    <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">query</span>)
+    <span class="ruby-identifier">converted</span> = <span class="ruby-identifier">convert_describe_results</span>(<span class="ruby-identifier">results</span>, <span class="ruby-identifier">id</span>)
+    <span class="ruby-identifier">results_converted</span>.<span class="ruby-identifier">merge!</span> <span class="ruby-identifier">converted</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">converted</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">shorten</span>(<span class="ruby-identifier">results_converted</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- from_linked_data-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- from_linked_data-method -->
+
+    
+      <div id="method-i-set_attributes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_attributes</span><span
+            class="method-args">(results)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Given a result set, shorten the predicates to their last segment (after the
+# or last /) Return a new object of the appropriate type @param [Array]
+list of predicate =&gt; value pairs @return [Record]</p>
+          
+
+          
+          <div class="method-source-code" id="set_attributes-source">
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 140</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes</span>(<span class="ruby-identifier">results</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">results</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-identifier">results</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">predicate</span>, <span class="ruby-identifier">values</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">short_name</span> = <span class="ruby-identifier">shorten_predicate</span>(<span class="ruby-identifier">predicate</span>)
+    <span class="ruby-identifier">values_cardinality</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">predicates</span>[<span class="ruby-identifier">predicate</span>][<span class="ruby-value">:cardinality</span>] <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">values</span>.<span class="ruby-identifier">shift</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">values</span>
+    <span class="ruby-ivar">@table</span>[<span class="ruby-identifier">short_name</span>] = <span class="ruby-identifier">values_cardinality</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- set_attributes-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- set_attributes-method -->
+
+    
+      <div id="method-i-shorten_predicate" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">shorten_predicate</span><span
+            class="method-args">(predicate)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="shorten_predicate-source">
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 117</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">shorten_predicate</span>(<span class="ruby-identifier">predicate</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">predicate</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-node">&quot;#&quot;</span>)
+    <span class="ruby-identifier">short_name</span> = <span class="ruby-identifier">predicate</span>.<span class="ruby-identifier">split</span>(<span class="ruby-node">&quot;#&quot;</span>).<span class="ruby-identifier">last</span>
+    <span class="ruby-ivar">@predicate_map</span>[<span class="ruby-identifier">short_name</span>] = <span class="ruby-identifier">predicate</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">short_name</span> = <span class="ruby-identifier">predicate</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;/&quot;</span>).<span class="ruby-identifier">last</span>
+    <span class="ruby-ivar">@predicate_map</span>[<span class="ruby-identifier">short_name</span>] = <span class="ruby-identifier">predicate</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">short_name</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- shorten_predicate-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- shorten_predicate-method -->
+
+    
+    </section><!-- protected-instance-method-details -->
   
   </section><!-- 5Buntitled-5D -->
 

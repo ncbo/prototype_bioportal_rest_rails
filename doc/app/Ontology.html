@@ -139,6 +139,8 @@
   
     <li><a href="./ApplicationController.html">ApplicationController</a>
   
+    <li><a href="./HomeController.html">HomeController</a>
+  
     <li><a href="./Klass.html">Klass</a>
   
     <li><a href="./KlassesController.html">KlassesController</a>
@@ -207,7 +209,7 @@ controller).</p>
 
           
           <div class="method-source-code" id="all-source">
-            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 44</span>
+            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 43</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">all</span>
   <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-constant">ALL_ONTS</span>)
   <span class="ruby-identifier">onts</span> = {}
@@ -255,7 +257,7 @@ ontology to find</p>
 
           
           <div class="method-source-code" id="find-source">
-            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 33</span>
+            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 32</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">id</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">options</span> = {})
   <span class="ruby-identifier">id</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:id</span>]
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-string">&quot;all&quot;</span>)
@@ -299,7 +301,7 @@ acronym doesn’t exist as an attribute until the ontology is retrieved from
 
           
           <div class="method-source-code" id="id-source">
-            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 90</span>
+            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 89</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">id</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">acronym</span>.<span class="ruby-identifier">upcase</span> <span class="ruby-keyword">rescue</span> <span class="ruby-string">&quot;&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -329,7 +331,7 @@ acronym doesn’t exist as an attribute until the ontology is retrieved from
 
           
           <div class="method-source-code" id="id-3D-source">
-            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 95</span>
+            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 94</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">id=</span>(<span class="ruby-identifier">id</span>)
   <span class="ruby-ivar">@table</span>[<span class="ruby-string">&quot;acronym&quot;</span>] = <span class="ruby-identifier">id</span>
 <span class="ruby-keyword">end</span></pre>
@@ -359,7 +361,7 @@ acronym doesn’t exist as an attribute until the ontology is retrieved from
 
           
           <div class="method-source-code" id="root_classes-source">
-            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 66</span>
+            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 65</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">root_classes</span>
   <span class="ruby-identifier">roots</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-constant">ROOT_CLASSES</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span>))
   <span class="ruby-identifier">classes</span> = []
