@@ -10,7 +10,11 @@ class HomeController < ApplicationController
         :mappings => "#{$BASE_UI_URL}/mappings",
         :reviews => "#{$BASE_UI_URL}/reviews",
         :notes => "#{$BASE_UI_URL}/notes",
-        :projects => "#{$BASE_UI_URL}/projects",
+        :views => "#{$BASE_UI_URL}/views",
+        :categories => "#{$BASE_UI_URL}/categories",
+        :groups => "#{$BASE_UI_URL}/groups",
+        :metrics => "#{$BASE_UI_URL}/metrics",
+        :projects => "#{$BASE_UI_URL}/projects"
       }
     }
   end
