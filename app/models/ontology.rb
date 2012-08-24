@@ -10,7 +10,8 @@ class Ontology < LinkedData::Record
   # validates_presence_of :id, :name, :description, :contact, :format, :released, :viewingRestriction
 
   # Options for serializing (which fields)
-  serialize_default :lastVersion, :administrator, :acronym, :name, :description, :contact, :homepage
+  serialize_default :lastVersion, :administrator, :acronym, :name, :description
+  # serialize_default :lastVersion, :administrator, :acronym, :name, :description, :contact, :homepage
 
   # Necessary values for working with LinkedData::Record
   @prefix = "http://bioportal.bioontology.org/ontologies/"
@@ -35,7 +36,7 @@ class Ontology < LinkedData::Record
       self.all
     else
       raise ActionController::RoutingError.new("Ontology not found") unless self.exists?(id.upcase)
-      self.describe(id.upcase, options)
+      Ontology.new(:create_from_id => id.upcase, :options => options)
     end
   end
 
@@ -55,7 +56,7 @@ class Ontology < LinkedData::Record
     end
     onts_list = []
     onts.each do |ont_id, ont|
-      ont_obj = Ontology.shorten(ont)
+      ont_obj = Ontology.new(:create_from_results => ont)
       onts_list << ont_obj
     end
     onts_list
@@ -97,8 +98,8 @@ class Ontology < LinkedData::Record
 
   private
 
-  # Ontology-specific describe that allows for describing a prior version or the most recent
-  def self.describe(id = nil, options = {})
+  # Ontology-specific retrieval method that allows for getting a prior version or the most recent ontology
+  def from_linked_data(id = nil, options = {})
     if options[:version]
       super(["#{@prefix}#{id}", "#{@prefix}#{id}/#{options[:version]}"])
     else
