@@ -7,7 +7,7 @@ gem 'rails', '3.2.3'
 
 gem 'rails-api'
 
-gem 'sqlite3', :group => :development
+gem 'sqlite3'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -16,7 +16,7 @@ gem 'sqlite3', :group => :development
 # gem 'jbuilder'
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Deploy with Capistrano
 # gem 'capistrano', :group => :development
@@ -28,4 +28,4 @@ gem 'debugger', :group => :development
 gem 'puma', :group => :development
 
 # Doc generation
-gem 'yard'
+gem 'yard'. :group => :development
