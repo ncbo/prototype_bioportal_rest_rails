@@ -28,4 +28,4 @@ gem 'debugger', :group => :development
 gem 'puma', :group => :development
 
 # Doc generation
-gem 'yard'. :group => :development
+gem 'yard', :group => :development
