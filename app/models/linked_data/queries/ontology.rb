@@ -26,10 +26,10 @@ module LinkedData::Queries
           ?root rdfs:subClassOf ?super
         }
         OPTIONAL {
-          ?root <http://www.w3.org/2002/07/owl#equivalentClass> ?equiv
+          ?root owl:equivalentClass ?equiv
         }
         OPTIONAL {
-          ?root <http://www.w3.org/2002/07/owl#deprecated> ?obsolete
+          ?root owl:deprecated ?obsolete
         }
         FILTER (!bound(?super) && !bound(?equiv) && !bound(?obsolete) && isIRI(?root))
       }
