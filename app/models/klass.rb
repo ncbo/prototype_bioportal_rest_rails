@@ -23,6 +23,11 @@ class Klass
   resource_path "/ontologies/:ontology/classes/:klass"
   related_resources :ontology => Ontology, :resources => "/resource_index/by_concept?conceptid=:klass"
 
+  LABEL = "http://www.w3.org/2004/02/skos/core#prefLabel"
+  SYNONYM = "http://www.w3.org/2004/02/skos/core#altLabel"
+  DEFINITION = "http://www.w3.org/2004/02/skos/core#definition"
+  OBSOLETE = "http://www.w3.org/2002/07/owl#deprecated"
+
   ####
   ## Class methods
   ####
@@ -93,11 +98,11 @@ class Klass
       values[attribute] = values[attribute].nil? ? [] : values[attribute]
       values[attribute] << value unless value.nil? || (value.respond_to?(:empty) && value.empty?)
     end
-    @label = values["http://www.w3.org/2004/02/skos/core#prefLabel"].shift
-    @synonym.concat values["http://www.w3.org/2004/02/skos/core#altLabel"]
-    @definition.concat values["http://www.w3.org/2004/02/skos/core#definition"]
-    obsolete = values["http://www.w3.org/2002/07/owl#deprecated"]
-    @obsolete = obsolete.shift == true unless obsolete.nil?
+    @label = (values[LABEL] || [""]).shift
+    @synonym.concat values[SYNONYM] || []
+    @definition.concat values[DEFINITION] || []
+    obsolete = values[OBSOLETE] || []
+    @obsolete = obsolete.shift == true
   end
 
   # All of the properties for the term that exist in the triplestore.
