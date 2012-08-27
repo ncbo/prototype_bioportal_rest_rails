@@ -17,6 +17,8 @@ gem 'sqlite3'
 
 # Use unicorn as the app server
 gem 'unicorn'
+gem 'puma'
+gem 'thin'
 
 # Deploy with Capistrano
 # gem 'capistrano', :group => :development
