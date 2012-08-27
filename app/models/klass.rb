@@ -36,7 +36,6 @@ class Klass
     klass = self.new
     klass.id = id
     klass.ontology = ontology.upcase
-    raise ActionController::RoutingError.new("Class not found") unless Klass.exists?(klass.id, klass.ontology)
     klass.init
     klass.populate_default_attr
     klass
@@ -84,12 +83,21 @@ class Klass
 
   # Set the default attributes that every class should have.
   def populate_default_attr
-    @label = predicate_values("skos:prefLabel", @ontology).shift
-    @synonym.concat predicate_values("skos:altLabel", @ontology)
-    @definition.concat predicate_values("skos:definition", @ontology)
-    @obsolete = predicate_values("owl:deprecated", @ontology).shift == true
-    # Try another way to get obsolete information
-    @obsolete = RDFUtil.query(OBSOLETE_QUERY.gsub("%%ONT%%", @ontology).gsub("%%ID%%", @id))["boolean"] unless @obsolete
+    query = BASE_ATTR_QUERY.gsub("%%ONT%%", @ontology).gsub("%%ID%%", @id)
+    results = RDFUtil.query(query)
+    raise ActionController::RoutingError.new("Class not found") if results.empty?
+    values = {}
+    results.each do |result|
+      value = RDFUtil.convert_xsd(result["value"]["type"], result["value"]["datatype"], result["value"]["value"])
+      attribute = result["bpProp"]["value"]
+      values[attribute] = values[attribute].nil? ? [] : values[attribute]
+      values[attribute] << value unless value.nil? || (value.respond_to?(:empty) && value.empty?)
+    end
+    @label = values["http://www.w3.org/2004/02/skos/core#prefLabel"].shift
+    @synonym.concat values["http://www.w3.org/2004/02/skos/core#altLabel"]
+    @definition.concat values["http://www.w3.org/2004/02/skos/core#definition"]
+    obsolete = values["http://www.w3.org/2002/07/owl#deprecated"]
+    @obsolete = obsolete.shift == true unless obsolete.nil?
   end
 
   # All of the properties for the term that exist in the triplestore.
@@ -120,18 +128,6 @@ class Klass
   end
 
   private
-
-  def predicate_values(predicate, ont_id)
-    query = PREDICATE_QUERY.gsub("%%ONT%%", ont_id).gsub("%%ID%%", @id).gsub("%%PRED%%", predicate)
-    results = RDFUtil.query(query)
-    values = []
-    results.each do |result|
-      result = result["o"]
-      value = RDFUtil.convert_xsd(result["type"], result["datatype"], result["value"])
-      values << value unless value.nil? || (value.respond_to?(:empty) && value.empty?)
-    end
-    values
-  end
 
   def convert_describe_results(results)
     results_converted = {}

@@ -7,17 +7,19 @@ module LinkedData::Queries
       ASK FROM <http://bioportal.bioontology.org/ontologies/%%ONT%%> WHERE { <%%ID%%> a owl:DeprecatedClass }
     EOS
 
-    PREDICATE_QUERY = <<-EOS
+    BASE_ATTR_QUERY = <<-EOS
       PREFIX owl:  <http://www.w3.org/2002/07/owl#>
       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
       PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
-      SELECT DISTINCT *
+
+      SELECT ?attribute ?value ?bpProp
       FROM <http://bioportal.bioontology.org/ontologies/%%ONT%%>
       FROM <http://bioportal.bioontology.org/ontologies/globals>
-      WHERE
-      {
-        <%%ID%%> %%PRED%% ?o
+      WHERE {
+        <%%ID%%> ?attribute ?value .
+        ?attribute  rdfs:subPropertyOf ?bpProp .
+        FILTER ( ?attribute = skos:prefLabel || ?attribute = skos:altLabel || ?attribute = skos:definition || ?attribute = owl:deprecated )
       }
     EOS
 
