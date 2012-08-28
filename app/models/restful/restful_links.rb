@@ -35,6 +35,11 @@ module RestfulLinks
     self.class.path
   end
 
+  # Get the path with segments replaced appropriately
+  def canonical_path
+    convert_path(resource_path)
+  end
+
   # Generate links for the object.
   def restful_links
     links = {}
