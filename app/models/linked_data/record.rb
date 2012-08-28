@@ -49,6 +49,7 @@ module LinkedData
     def as_json(options = {})
       options[:only] = options[:only].nil? || options[:only].empty? ? serializable_fields_default : options[:only]
       options.extract!(:only) if options[:only] && options[:only].include?("all")
+      options[:only].map! {|e| e.to_sym} if options[:only]
       @table.as_json(options)
     end
 
