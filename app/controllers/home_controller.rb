@@ -39,6 +39,9 @@ class HomeController < ApplicationController
             "/notes/{noteid}",
             "/projects"
           ],
+          :views => [
+            "/views"
+          ],
           :ontology_related => [
             "/ontologies/{acronym}/reviews",
             "/ontologies/{acronym}/projects",
@@ -59,11 +62,8 @@ class HomeController < ApplicationController
             "/search",
             "/view_extractor",
             "/recommender",
-            "/annotator"
-          ],
-          :general => [
             "/resource_index",
-            "/views"
+            "/annotator"
           ]
         }
       ]
