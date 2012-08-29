@@ -11,7 +11,7 @@ class HomeController < ApplicationController
     EOS
     doc_intro.gsub!("\n", "").gsub!(/ {2,}/, " ").strip!
 
-    render :json => {
+    json = {
       :links => { :ontologies => $BASE_UI_URL + Ontology.path.gsub("/:ontology", "") },
       :demo => [
         doc_intro,
@@ -68,6 +68,8 @@ class HomeController < ApplicationController
         }
       ]
     }
+
+    restful_render(json)
   end
 
 end

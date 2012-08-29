@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  include ActionController::MimeResponds
 
   # Look for the 'include' param in the request and set appropriately
   def serializer_options
@@ -21,7 +22,13 @@ class ApplicationController < ActionController::API
       json = obj.as_json(serializer_options)
       add_links(json, obj)
     end
-    render :json => json
+    respond_to do |format|
+      format.html do
+        @object_for_render = obj
+        render "layouts/jsonview"
+      end
+      format.json { render :json => json }
+    end
   end
 
   private

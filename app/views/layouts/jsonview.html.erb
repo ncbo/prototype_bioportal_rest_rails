@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+
+  <!-- Force IE to use latest rendering engine -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+  <!-- Provide a nice-looking view for browsers -->
+  <link rel="stylesheet" href="/jsonview/jsonview.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  <script src="/jsonview/jsonview.js" type="text/javascript"></script>
+</head>
+<body>
+
+  <div id="jsonview"></div>
+
+  <script>
+    var json = <%=@object_for_render.to_json.html_safe%>
+    var jsonFormatter = new JSONFormatter();
+    var newHtml = jsonFormatter.jsonToHTML(json, null, "page title");
+    document.getElementById("jsonview").innerHTML = newHtml;
+  </script>
+</body>
+</head>
+</html>
