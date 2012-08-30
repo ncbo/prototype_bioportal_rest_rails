@@ -58,12 +58,28 @@ class HomeController < ApplicationController
             "/ontologies/{acronym}/classes/{classid}/notes",
             "/ontologies/{acronym}/classes/{classid}/mappings"
           ],
+          :annotator => [
+            "/annotator"
+          ],
+          :resource_index => [
+            "/resource_index/search",
+            "/resource_index/resources",
+            "/resource_index/resources/{resource_id}",
+            "/resource_index/statistics/system",
+            "/resource_index/statistics/ontologies",
+            "/resource_index/statistics/ontologies/{acronym}",
+            "/resource_index/statistics/resources",
+            "/resource_index/statistics/resources/{resource_id}",
+            "/resource_index/populations/history",
+            "/resource_index/populations/resources/{resource_id}",
+            "/resource_index/populations/ontologies",
+            "/resource_index/popular_concepts",
+            "/resource_index/resources/{resource_id}/popular_concepts"
+          ],
           :process_endpoints => [
             "/search",
             "/view_extractor",
-            "/recommender",
-            "/resource_index",
-            "/annotator"
+            "/recommender"
           ]
         }
       ]
