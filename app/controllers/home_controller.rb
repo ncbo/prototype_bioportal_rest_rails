@@ -70,9 +70,9 @@ class HomeController < ApplicationController
             "/resource_index/statistics/ontologies/{acronym}",
             "/resource_index/statistics/resources",
             "/resource_index/statistics/resources/{resource_id}",
-            "/resource_index/populations/history",
-            "/resource_index/populations/resources/{resource_id}",
-            "/resource_index/populations/ontologies",
+            "/resource_index/populations/all",
+            "/resource_index/populations/current/resources/{resource_id}",
+            "/resource_index/populations/current/ontologies",
             "/resource_index/popular_concepts",
             "/resource_index/resources/{resource_id}/popular_concepts"
           ],
