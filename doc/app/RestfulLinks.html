@@ -66,6 +66,8 @@
     
     <li><a href="#method-c-included">::included</a>
     
+    <li><a href="#method-i-canonical_path">#canonical_path</a>
+    
     <li><a href="#method-i-related_resources">#related_resources</a>
     
     <li><a href="#method-i-resource_path">#resource_path</a>
@@ -228,6 +230,36 @@ declared.</p>
       <h3 class="section-header">Public Instance Methods</h3>
 
     
+      <div id="method-i-canonical_path" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">canonical_path</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Get the path with segments replaced appropriately</p>
+          
+
+          
+          <div class="method-source-code" id="canonical_path-source">
+            <pre><span class="ruby-comment"># File app/models/restful/restful_links.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">canonical_path</span>
+  <span class="ruby-identifier">convert_path</span>(<span class="ruby-identifier">resource_path</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- canonical_path-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- canonical_path-method -->
+
+    
       <div id="method-i-related_resources" class="method-detail ">
         
         <div class="method-heading">
@@ -304,7 +336,7 @@ declared.</p>
 
           
           <div class="method-source-code" id="restful_links-source">
-            <pre><span class="ruby-comment"># File app/models/restful/restful_links.rb, line 39</span>
+            <pre><span class="ruby-comment"># File app/models/restful/restful_links.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">restful_links</span>
   <span class="ruby-identifier">links</span> = {}
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">resources</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">resource</span>, <span class="ruby-identifier">path</span><span class="ruby-operator">|</span>

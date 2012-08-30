@@ -194,6 +194,34 @@ for attributes will not propagate these values to the triplestore.</p>
     
 
     
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="DEFINITION">DEFINITION
+        
+        <dd class="description">
+        
+      
+        <dt id="LABEL">LABEL
+        
+        <dd class="description">
+        
+      
+        <dt id="OBSOLETE">OBSOLETE
+        
+        <dd class="description">
+        
+      
+        <dt id="SYNONYM">SYNONYM
+        
+        <dd class="description">
+        
+      
+      </dl>
+    </section>
+    
 
     
     <!-- Attributes -->
@@ -310,7 +338,7 @@ its own mapping to these values.</p>
 
           
           <div class="method-source-code" id="exists-3F-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 47</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 51</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">id</span>, <span class="ruby-identifier">ontology</span>)
   <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-string">&quot;ASK FROM &lt;http://bioportal.bioontology.org/ontologies/%%ONT%%&gt; WHERE { &lt;%%ID%%&gt; ?p ?o } &quot;</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ONT%%&quot;</span>, <span class="ruby-identifier">ontology</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-identifier">id</span>))[<span class="ruby-string">&quot;boolean&quot;</span>]
 <span class="ruby-keyword">end</span></pre>
@@ -342,12 +370,11 @@ options options for finding classes @return [Klass]</p>
 
           
           <div class="method-source-code" id="find-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 35</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 40</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">id</span>, <span class="ruby-identifier">ontology</span>, <span class="ruby-identifier">options</span> = {})
   <span class="ruby-identifier">klass</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">id</span> = <span class="ruby-identifier">id</span>
   <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">ontology</span> = <span class="ruby-identifier">ontology</span>.<span class="ruby-identifier">upcase</span>
-  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">RoutingError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;Class not found&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-constant">Klass</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">klass</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">ontology</span>)
   <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">init</span>
   <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">populate_default_attr</span>
   <span class="ruby-identifier">klass</span>
@@ -388,7 +415,7 @@ attributes that should be shown. Can contain “all” to show all. @return
 
           
           <div class="method-source-code" id="as_json-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 64</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 68</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">as_json</span>(<span class="ruby-identifier">options</span> = {})
   <span class="ruby-comment"># If we need all attributes, then don't restrict using :only and include methods. Otherwise, just serialize the default or what's requested.</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-string">&quot;all&quot;</span>)
@@ -435,7 +462,7 @@ attributes that should be shown. Can contain “all” to show all. @return
 
           
           <div class="method-source-code" id="child_count-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 104</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 117</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">child_count</span>
   <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-constant">CHILD_COUNT_QUERY</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-ivar">@id</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ONT%%&quot;</span>, <span class="ruby-ivar">@ontology</span>))[<span class="ruby-value">0</span>][<span class="ruby-string">&quot;childcount&quot;</span>][<span class="ruby-string">&quot;value&quot;</span>].<span class="ruby-identifier">to_i</span>
 <span class="ruby-keyword">end</span></pre>
@@ -465,7 +492,7 @@ attributes that should be shown. Can contain “all” to show all. @return
 
           
           <div class="method-source-code" id="children-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 110</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 123</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">children</span>
   <span class="ruby-identifier">children</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-constant">CHILDREN_QUERY</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-ivar">@id</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ONT%%&quot;</span>, <span class="ruby-ivar">@ontology</span>))
   <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">sparql_select_values</span>(<span class="ruby-identifier">children</span>)
@@ -496,7 +523,7 @@ attributes that should be shown. Can contain “all” to show all. @return
 
           
           <div class="method-source-code" id="init-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 56</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 60</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">init</span>
   <span class="ruby-ivar">@synonym</span> = []; <span class="ruby-ivar">@definition</span> = [];
 <span class="ruby-keyword">end</span></pre>
@@ -526,7 +553,7 @@ attributes that should be shown. Can contain “all” to show all. @return
 
           
           <div class="method-source-code" id="parents-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 117</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 130</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">parents</span>
   <span class="ruby-identifier">parents</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-constant">PARENTS_QUERY</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-ivar">@id</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ONT%%&quot;</span>, <span class="ruby-ivar">@ontology</span>))
   <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">sparql_select_values</span>(<span class="ruby-identifier">parents</span>)
@@ -557,14 +584,23 @@ attributes that should be shown. Can contain “all” to show all. @return
 
           
           <div class="method-source-code" id="populate_default_attr-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 86</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 90</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">populate_default_attr</span>
-  <span class="ruby-ivar">@label</span> = <span class="ruby-identifier">predicate_values</span>(<span class="ruby-string">&quot;skos:prefLabel&quot;</span>, <span class="ruby-ivar">@ontology</span>).<span class="ruby-identifier">shift</span>
-  <span class="ruby-ivar">@synonym</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">predicate_values</span>(<span class="ruby-string">&quot;skos:altLabel&quot;</span>, <span class="ruby-ivar">@ontology</span>)
-  <span class="ruby-ivar">@definition</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">predicate_values</span>(<span class="ruby-string">&quot;skos:definition&quot;</span>, <span class="ruby-ivar">@ontology</span>)
-  <span class="ruby-ivar">@obsolete</span> = <span class="ruby-identifier">predicate_values</span>(<span class="ruby-string">&quot;owl:deprecated&quot;</span>, <span class="ruby-ivar">@ontology</span>).<span class="ruby-identifier">shift</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">true</span>
-  <span class="ruby-comment"># Try another way to get obsolete information</span>
-  <span class="ruby-ivar">@obsolete</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-constant">OBSOLETE_QUERY</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ONT%%&quot;</span>, <span class="ruby-ivar">@ontology</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-ivar">@id</span>))[<span class="ruby-string">&quot;boolean&quot;</span>] <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@obsolete</span>
+  <span class="ruby-identifier">query</span> = <span class="ruby-constant">BASE_ATTR_QUERY</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ONT%%&quot;</span>, <span class="ruby-ivar">@ontology</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-ivar">@id</span>)
+  <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">query</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">RoutingError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;Class not found&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">results</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">values</span> = {}
+  <span class="ruby-identifier">results</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">result</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">value</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">convert_xsd</span>(<span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;value&quot;</span>][<span class="ruby-string">&quot;type&quot;</span>], <span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;value&quot;</span>][<span class="ruby-string">&quot;datatype&quot;</span>], <span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;value&quot;</span>][<span class="ruby-string">&quot;value&quot;</span>])
+    <span class="ruby-identifier">attribute</span> = <span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;bpProp&quot;</span>][<span class="ruby-string">&quot;value&quot;</span>]
+    <span class="ruby-identifier">values</span>[<span class="ruby-identifier">attribute</span>] = <span class="ruby-identifier">values</span>[<span class="ruby-identifier">attribute</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">?</span> [] <span class="ruby-operator">:</span> <span class="ruby-identifier">values</span>[<span class="ruby-identifier">attribute</span>]
+    <span class="ruby-identifier">values</span>[<span class="ruby-identifier">attribute</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">value</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">value</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:empty</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">empty?</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@label</span> = (<span class="ruby-identifier">values</span>[<span class="ruby-constant">LABEL</span>] <span class="ruby-operator">||</span> [<span class="ruby-string">&quot;&quot;</span>]).<span class="ruby-identifier">shift</span>
+  <span class="ruby-ivar">@synonym</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">values</span>[<span class="ruby-constant">SYNONYM</span>] <span class="ruby-operator">||</span> []
+  <span class="ruby-ivar">@definition</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">values</span>[<span class="ruby-constant">DEFINITION</span>] <span class="ruby-operator">||</span> []
+  <span class="ruby-identifier">obsolete</span> = <span class="ruby-identifier">values</span>[<span class="ruby-constant">OBSOLETE</span>] <span class="ruby-operator">||</span> []
+  <span class="ruby-ivar">@obsolete</span> = <span class="ruby-identifier">obsolete</span>.<span class="ruby-identifier">shift</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">true</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- populate_default_attr-source -->
           
@@ -593,7 +629,7 @@ attributes that should be shown. Can contain “all” to show all. @return
 
           
           <div class="method-source-code" id="properties-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 97</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 110</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">properties</span>
   <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-node">&quot;DESCRIBE &lt;#{@id}&gt;&quot;</span>)
   <span class="ruby-identifier">convert_describe_results</span>(<span class="ruby-identifier">results</span>)

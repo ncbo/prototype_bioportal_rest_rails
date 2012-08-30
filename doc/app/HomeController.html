@@ -64,7 +64,17 @@
 </nav>
 
     
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
     
+    <li><a href="#method-i-index">#index</a>
+    
+  </ul>
+</nav>
+
   </div>
 
   <div id="project-metadata">
@@ -146,6 +156,125 @@
 
     <!-- Methods -->
     
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/home_controller.rb, line 3</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+    <span class="ruby-identifier">demo_ontology</span> = <span class="ruby-constant">Ontology</span>.<span class="ruby-identifier">find</span>(<span class="ruby-string">&quot;NCIT&quot;</span>)
+    <span class="ruby-identifier">demo_class</span> = <span class="ruby-constant">Klass</span>.<span class="ruby-identifier">find</span>(<span class="ruby-node">&quot;http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#Anatomic_Structure_System_or_Substance&quot;</span>, <span class="ruby-string">&quot;NCIT&quot;</span>)
+
+    <span class="ruby-identifier">doc_intro</span> = <span class="ruby-string">&quot;      The following links can be used to see the functionality available in the API.
+      Generally, you can add 'include={property}' when browsing a resource or set of resources to return a custom set of properties.
+      The API is meant to be navigated like a normal web page, by starting at the root and following the resource URLs in the 'links' list.
+&quot;</span>
+    <span class="ruby-identifier">doc_intro</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-string">&quot;\n&quot;</span>, <span class="ruby-string">&quot;&quot;</span>).<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">%r {2,}/</span>, <span class="ruby-string">&quot; &quot;</span>).<span class="ruby-identifier">strip!</span>
+
+    <span class="ruby-identifier">json</span> = {
+      <span class="ruby-value">:links</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-value">:ontologies</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">$BASE_UI_URL</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Ontology</span>.<span class="ruby-identifier">path</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;/:ontology&quot;</span>, <span class="ruby-string">&quot;&quot;</span>) },
+      <span class="ruby-value">:demo</span> =<span class="ruby-operator">&gt;</span> [
+        <span class="ruby-identifier">doc_intro</span>,
+        <span class="ruby-value">:ontologies</span> =<span class="ruby-operator">&gt;</span> {
+          <span class="ruby-value">:ontology</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">demo_ontology</span>.<span class="ruby-identifier">canonical_path</span>,
+          <span class="ruby-value">:ontology_all_properties</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">demo_ontology</span>.<span class="ruby-identifier">canonical_path</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;?include=all&quot;</span>,
+          <span class="ruby-value">:ontology_only_name_and_acronym</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">demo_ontology</span>.<span class="ruby-identifier">canonical_path</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;?include=name,acronym&quot;</span>
+        },
+        <span class="ruby-value">:classes</span> =<span class="ruby-operator">&gt;</span> {
+          <span class="ruby-value">:root_classes</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">demo_ontology</span>.<span class="ruby-identifier">canonical_path</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;/classes/roots&quot;</span>,
+          <span class="ruby-value">:class</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">demo_class</span>.<span class="ruby-identifier">canonical_path</span>,
+          <span class="ruby-value">:class_all_properties</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">demo_class</span>.<span class="ruby-identifier">canonical_path</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;?include=all&quot;</span>,
+          <span class="ruby-value">:class_only_label_and_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">demo_class</span>.<span class="ruby-identifier">canonical_path</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;?include=label,id&quot;</span>
+        }
+      ],
+      <span class="ruby-value">:planned_resources</span> =<span class="ruby-operator">&gt;</span> [
+        <span class="ruby-string">&quot;The following resources are planned but not yet implemented&quot;</span>,
+        {
+          <span class="ruby-value">:ontology_artifacts</span> =<span class="ruby-operator">&gt;</span> [
+            <span class="ruby-string">&quot;/metrics&quot;</span>,
+            <span class="ruby-string">&quot;/reviews&quot;</span>,
+            <span class="ruby-string">&quot;/categories&quot;</span>,
+            <span class="ruby-string">&quot;/groups&quot;</span>,
+            <span class="ruby-string">&quot;/mappings/{mappingid}&quot;</span>,
+            <span class="ruby-string">&quot;/notes/{noteid}&quot;</span>,
+            <span class="ruby-string">&quot;/projects&quot;</span>
+          ],
+          <span class="ruby-value">:views</span> =<span class="ruby-operator">&gt;</span> [
+            <span class="ruby-string">&quot;/views&quot;</span>
+          ],
+          <span class="ruby-value">:ontology_related</span> =<span class="ruby-operator">&gt;</span> [
+            <span class="ruby-string">&quot;/ontologies/{acronym}/reviews&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/projects&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/properties&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/notes&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/mappings&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/views&quot;</span>
+          ],
+          <span class="ruby-value">:class_related</span> =<span class="ruby-operator">&gt;</span> [
+            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{classid}&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{classid}/instances&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{classid}/instances/{instance_id}&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/tree -- this replaces 'path to root' and provides an expanded tree structure for a given class&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{classid}/notes&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{classid}/mappings&quot;</span>
+          ],
+          <span class="ruby-value">:annotator</span> =<span class="ruby-operator">&gt;</span> [
+            <span class="ruby-string">&quot;/annotator&quot;</span>
+          ],
+          <span class="ruby-value">:resource_index</span> =<span class="ruby-operator">&gt;</span> [
+            <span class="ruby-string">&quot;/resource_index/search&quot;</span>,
+            <span class="ruby-string">&quot;/resource_index/resources&quot;</span>,
+            <span class="ruby-string">&quot;/resource_index/resources/{resource_id}&quot;</span>,
+            <span class="ruby-string">&quot;/resource_index/statistics/system&quot;</span>,
+            <span class="ruby-string">&quot;/resource_index/statistics/ontologies&quot;</span>,
+            <span class="ruby-string">&quot;/resource_index/statistics/ontologies/{acronym}&quot;</span>,
+            <span class="ruby-string">&quot;/resource_index/statistics/resources&quot;</span>,
+            <span class="ruby-string">&quot;/resource_index/statistics/resources/{resource_id}&quot;</span>,
+            <span class="ruby-string">&quot;/resource_index/populations/all&quot;</span>,
+            <span class="ruby-string">&quot;/resource_index/populations/current/resources/{resource_id}&quot;</span>,
+            <span class="ruby-string">&quot;/resource_index/populations/current/ontologies&quot;</span>,
+            <span class="ruby-string">&quot;/resource_index/popular_concepts&quot;</span>,
+            <span class="ruby-string">&quot;/resource_index/resources/{resource_id}/popular_concepts&quot;</span>
+          ],
+          <span class="ruby-value">:process_endpoints</span> =<span class="ruby-operator">&gt;</span> [
+            <span class="ruby-string">&quot;/search&quot;</span>,
+            <span class="ruby-string">&quot;/view_extractor&quot;</span>,
+            <span class="ruby-string">&quot;/recommender&quot;</span>
+          ]
+        }
+      ]
+    }
+
+    <span class="ruby-identifier">restful_render</span>(<span class="ruby-identifier">json</span>)
+  <span class="ruby-keyword">end</span></pre>
+          </div><!-- index-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- index-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
   </section><!-- 5Buntitled-5D -->
 
 </div><!-- documentation -->
