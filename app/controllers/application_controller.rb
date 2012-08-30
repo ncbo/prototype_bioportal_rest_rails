@@ -24,7 +24,7 @@ class ApplicationController < ActionController::API
     end
     respond_to do |format|
       format.html do
-        @object_for_render = obj
+        @object_for_render = json
         render "layouts/jsonview"
       end
       format.json { render :json => json }
