@@ -51,15 +51,14 @@ class HomeController < ApplicationController
             "/ontologies/{acronym}/views"
           ],
           :class_related => [
-            "/ontologies/{acronym}/classes/{classid}",
-            "/ontologies/{acronym}/classes/{classid}/instances",
-            "/ontologies/{acronym}/classes/{classid}/instances/{instance_id}",
-            "/ontologies/{acronym}/classes/tree -- this replaces 'path to root' and provides an expanded tree structure for a given class",
-            "/ontologies/{acronym}/classes/{classid}/notes",
-            "/ontologies/{acronym}/classes/{classid}/mappings"
-          ],
-          :annotator => [
-            "/annotator"
+            "/ontologies/{acronym}/classes/{class_id}",
+            "/ontologies/{acronym}/classes/{class_id}/instances",
+            "/ontologies/{acronym}/classes/{class_id}/instances/{instance_id}",
+            "/ontologies/{acronym}/classes/{class_id}/tree_to_root -- this replaces 'path to root' and provides an expanded tree structure for a given class",
+            "/ontologies/{acronym}/classes/{class_id}/notes",
+            "/ontologies/{acronym}/classes/{class_id}/mappings",
+            "/ontologies/{acronym}/classes/{class_id}/ancestors",
+            "/ontologies/{acronym}/classes/{class_id}/descendants"
           ],
           :resource_index => [
             "/resource_index/search",
@@ -79,7 +78,8 @@ class HomeController < ApplicationController
           :process_endpoints => [
             "/search",
             "/view_extractor",
-            "/recommender"
+            "/recommender",
+            "/annotator"
           ]
         }
       ]
