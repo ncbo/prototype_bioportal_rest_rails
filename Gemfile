@@ -15,7 +15,7 @@ gem 'sqlite3'
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 
-# Use unicorn as the app server
+# Ruby app server options
 gem 'unicorn'
 gem 'puma'
 gem 'thin'
@@ -26,8 +26,6 @@ gem 'thin'
 # Debugging
 gem 'debugger', :group => :development
 
-# HTTP server
-gem 'puma', :group => :development
-
 # Doc generation
 gem 'yard', :group => :development
+
