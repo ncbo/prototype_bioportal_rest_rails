@@ -28,6 +28,7 @@ class ApplicationController < ActionController::API
         render "layouts/jsonview"
       end
       format.json { render :json => json }
+      format.jsonp { render_jsonp(json) }
     end
   end
 
@@ -41,4 +42,18 @@ class ApplicationController < ActionController::API
     hash
   end
 
+  def render_jsonp(json, options={})
+    callback, variable = params[:callback], params[:variable]
+    callback ||= "func"
+    response = begin
+      if callback && variable
+        "var #{variable} = #{json};\n#{callback}(#{variable});"
+      elsif variable
+        "var #{variable} = #{json};"
+      else
+        "#{callback}(#{json});"
+      end
+    end
+    render({:content_type => :js, :text => response}.merge(options))
+  end
 end
