@@ -15,4 +15,15 @@ class KlassesController < ApplicationController
     restful_render(klass)
   end
 
+  def children
+    id = params[:id]
+    ontology = params[:ontology]
+    klass = Klass.find(id, ontology)
+    children = []
+    klass.children.each do |child|
+      children << Klass.find(child, ontology)
+    end
+    restful_render(children)
+  end
+
 end
