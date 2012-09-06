@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<link href="simpletree.css" rel="stylesheet" type="text/css">
+		<link href="chosen.css" rel="stylesheet" type="text/css">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0.beta6/handlebars.min.js"></script>		
+		<script src="jquery.simple.tree.js"></script>
+		<script src="https://raw.github.com/harvesthq/chosen/master/chosen/chosen.jquery.min.js"></script>
+</head>
+<body style="font-family: sans-serif;">
+
+	<div id="ontology_select_container">
+		<img src="images/spinner.gif"> loading...
+	</div>
+
+	<ul class="simpleTree" style="padding: 1em;">
+		<li class="root" id="start_tree"></li>
+	</ul>
+	
+	<!-- Handlebars templates -->
+	<script id="ontology_select_template" type="text/x-handlebars-template">
+		<select id="ontology_select" data-placeholder="Choose ontology...">
+			<option value=""></option>
+			{{#each ontologies}}
+			<option value="{{this.acronym}}">{{this.name}} | {{this.acronym}}</option>
+			{{/each}}
+		</select>
+	</script>
+	
+	<script id="tree_node" type="text/x-handlebars-template">
+		<li id="{{clean_id}}">
+			<a href="/ontologies/{{ontology}}/classes/{{clean_id}}">{{label}}</a>
+			{{#if children}}
+			<ul class="ajax" style="display: none;">
+				<li>
+					<a href="/ontologies/{{ontology}}/classes/{{clean_id}}/children?format=json&include=id,label,ontology,child_count"></a>
+				</li>
+			</ul>
+			{{/if}}
+		</li>
+	</script>
+	
+	<script>
+	var tree_node_source = $("#tree_node").html();
+	var tree_node_template = Handlebars.compile(tree_node_source);
+	var ontology_select_source = $("#ontology_select_template").html();
+	var ontology_select_template = Handlebars.compile(ontology_select_source);
+	
+	$(document).ready(function(){
+		$.getJSON('/ontologies', function(data){
+			var container = {};
+			container.ontologies = data;
+			$("#ontology_select_container").html(ontology_select_template(container))
+			$("#ontology_select").chosen();
+		})
+		
+		$("#ontology_select").live("change", function(event){
+			console.log(event)
+			getRoots($("#ontology_select").val(), initTree)
+		})
+	})
+	
+	function getRoots(ontology, callback) {
+		$("#start_tree").html('<img src="images/spinner.gif"> loading...')
+		$.getJSON(
+		    '/ontologies/'+ontology+'/classes/roots?include=id,label,ontology,child_count',
+		    function(data) {
+					$("#start_tree").html(formatNodes(data));
+					if (typeof callback === "function") callback();
+		    }
+		);
+	}
+	
+	function formatNodes(nodes) {
+		var nodes_formatted = [];
+		$.each(nodes, function(index, klass){
+			klass.clean_id = encodeURIComponent(klass.id)
+			klass.children = klass.child_count > 0
+			nodes_formatted.push(tree_node_template(klass))
+		});
+		return nodes_formatted;
+	}
+
+	function initTree() {
+	  var simpleTreeCollection = jQuery('.simpleTree').simpleTree({
+	    autoclose: false,
+			drag: false,
+	    animate: false,
+			ajaxFormatter: formatNodes,
+	    afterClick:function(node){
+	    },
+	    afterDblClick:function(node){
+	    },
+	    afterAjax:function()
+	    {
+	    }
+	  });
+		$(".simpleTree a").removeClass("active")
+	}
+	
+	// getRoots("ncit", initTree);
+	</script>
+
+</body>
+</html>
