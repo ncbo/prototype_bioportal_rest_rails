@@ -59,6 +59,7 @@ class Ontology < LinkedData::Record
       ont_obj = Ontology.new(:create_from_results => ont)
       onts_list << ont_obj
     end
+    onts_list.sort! {|a, b| a.name.downcase <=> b.name.downcase}
     onts_list
   end
 
@@ -82,6 +83,7 @@ class Ontology < LinkedData::Record
       end
     end
     threads.each {|t| t.join}
+    classes.sort! {|a, b| a.label.downcase <=> b.label.downcase}
     classes
   end
 
