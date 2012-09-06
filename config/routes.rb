@@ -5,6 +5,7 @@ BioportalApi::Application.routes.draw do
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
+  match 'ontologies/:ontology/classes/:id/children' => 'klasses#children', :id => /.+/
   match 'ontologies/:ontology/classes/:id' => 'klasses#show', :id => /.+/
   match 'ontologies/:ontology/classes' => 'klasses#index'
 
