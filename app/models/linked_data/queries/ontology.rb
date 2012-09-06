@@ -31,7 +31,10 @@ module LinkedData::Queries
         OPTIONAL {
           ?root owl:deprecated ?obsolete
         }
-        FILTER (!bound(?super) && !bound(?equiv) && !bound(?obsolete) && isIRI(?root))
+        OPTIONAL {
+          ?root <http://bioportal.bioontology.org/ontologies/umls/isRoot> ?isRoot
+        }
+        FILTER ((!bound(?super) || bound(?isRoot)) && !bound(?equiv) && !bound(?obsolete) && isIRI(?root))
       }
     EOS
   end
