@@ -21,7 +21,8 @@ class Klass
   # Define Restful relationships for outputting links
   include RestfulLinks
   resource_path "/ontologies/:ontology/classes/:klass"
-  related_resources :ontology => Ontology, :resources => "/resource_index/by_concept?conceptid=:klass"
+  related_resources :ontology => Ontology, :resources => "/resource_index/by_concept?conceptid=:klass",
+                    :children => "/ontologies/:ontology/classes/:klass/children"
 
   LABEL = "http://www.w3.org/2004/02/skos/core#prefLabel"
   SYNONYM = "http://www.w3.org/2004/02/skos/core#altLabel"
