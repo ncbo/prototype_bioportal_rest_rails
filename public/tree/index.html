@@ -66,10 +66,14 @@
 		$.getJSON(
 		    '/ontologies/'+ontology+'/classes/roots?include=id,label,ontology,child_count',
 		    function(data) {
-					$("#start_tree").html(formatNodes(data));
-					if (typeof callback === "function") callback();
+				$("#start_tree").html(formatNodes(data));
+				if (typeof callback === "function") callback();
 		    }
-		);
+		).error(
+			function() {
+				$("#start_tree").html('Error, try again')
+			}
+		)
 	}
 	
 	function formatNodes(nodes) {
