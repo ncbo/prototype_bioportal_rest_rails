@@ -111,12 +111,19 @@ module LinkedData
 
       # The value of the "embeds" list are predicates from the above objects whose values we should look up.
       embed.each do |predicate|
-        id = results_converted[predicate].dup
+        predicate_uri = predicate.kind_of?(String) ? predicate : predicate.first[1]
+        id = results_converted[predicate_uri].dup
         id = id.kind_of?(Array) ? id.shift : id
         query = "DESCRIBE <#{id}>"
         results = RDFUtil.query(query)
         converted = convert_describe_results(results, id)
-        results_converted.merge! converted unless converted.nil?
+        if predicate.kind_of?(String)
+          results_converted.merge! converted unless converted.nil?
+        else
+          embedded = {}
+          converted.each {|k, v| embedded[shorten_predicate(k)] = v}
+          results_converted[predicate.first[0].to_s] = embedded
+        end
       end
 
       set_attributes(results_converted)
@@ -152,7 +159,7 @@ module LinkedData
       return if results.nil?
       results.each do |predicate, values|
         short_name = shorten_predicate(predicate)
-        values_cardinality = self.class.predicates[predicate][:cardinality] == 1 ? values.shift : values
+        values_cardinality = self.class.predicates[predicate][:cardinality] == 1 ? values.shift : values rescue values
         self.send("#{short_name}=", values_cardinality)
       end
     end

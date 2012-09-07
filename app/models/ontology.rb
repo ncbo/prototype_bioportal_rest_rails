@@ -105,7 +105,7 @@ class Ontology < LinkedData::Record
     if options[:version]
       super(["#{@prefix}#{id}", "#{@prefix}#{id}/#{options[:version]}"])
     else
-      super(["#{@prefix}#{id}"], ["http://bioportal.bioontology.org/metadata/lastVersion"])
+      super(["#{@prefix}#{id}"], ["http://bioportal.bioontology.org/metadata/lastVersion", :contact => "http://bioportal.bioontology.org/metadata/contact"])
     end
   end
 
