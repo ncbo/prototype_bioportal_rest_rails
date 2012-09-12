@@ -6,7 +6,7 @@ class OntologiesController < ApplicationController
   end
 
   def show
-    ont = Ontology.find(params[:id], :version => params[:version])
+    ont = Ontology.find(params[:id], :submission => params[:ontology_submission_id])
     restful_render(ont)
   end
 

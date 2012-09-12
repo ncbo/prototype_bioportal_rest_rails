@@ -10,16 +10,12 @@ class Ontology < LinkedData::Record
   # validates_presence_of :id, :name, :description, :contact, :format, :released, :viewingRestriction
 
   # Options for serializing (which fields)
-  serialize_default :lastVersion, :administrator, :acronym, :name, :description
-  # serialize_default :lastVersion, :administrator, :acronym, :name, :description, :contact, :homepage
+  serialize_default :acronym, :name, :description
   do_not_serialize :type
 
   # Necessary values for working with LinkedData::Record
   @prefix = "#{$RDF_ID_BASE}/ontologies/"
   @rdf_type = ["http://omv.ontoware.org/2005/05/ontology#Ontology", "#{$RDF_ID_BASE}/metadata/OntologyContainer"]
-  @custom_short_names = {
-    "http://omv.ontoware.org/2005/05/ontology#version" => "versionName"
-  }
 
   # Define Restful relationships for outputting links
   include RestfulLinks
@@ -36,12 +32,8 @@ class Ontology < LinkedData::Record
   # @param [String] id/acronym for ontology to find
   def self.find(id = nil, options = {})
     id ||= options[:id]
-    if id.downcase.to_s.eql?("all")
-      self.all
-    else
-      raise ActionController::RoutingError.new("Ontology not found") unless self.exists?(id.upcase)
-      Ontology.new(:create_from_id => id.upcase, :options => options)
-    end
+    raise ActionController::RoutingError.new("Ontology not found") unless self.exists?(id.upcase)
+    Ontology.new(:create_from_id => id.upcase, :options => options)
   end
 
   # Find all ontologies
@@ -104,12 +96,15 @@ class Ontology < LinkedData::Record
 
   private
 
-  # Ontology-specific retrieval method that allows for getting a prior version or the most recent ontology
+  # Ontology-specific retrieval method that allows for getting a prior submission or the most recent ontology
   def from_linked_data(id = nil, options = {})
-    if options[:version]
-      super(["#{@prefix}#{id}", "#{@prefix}#{id}/#{options[:version]}"], [:contact => "#{$RDF_ID_BASE}/metadata/contact"])
+    if options[:submission]
+      super(["#{@prefix}#{id}", "#{@prefix}#{id}/#{options[:submission]}"], [:contact => "#{$RDF_ID_BASE}/metadata/contact"])
     else
-      super(["#{@prefix}#{id}"], ["#{$RDF_ID_BASE}/metadata/lastVersion", :contact => "#{$RDF_ID_BASE}/metadata/contact"])
+      super(["#{@prefix}#{id}"], [:contact => "#{$RDF_ID_BASE}/metadata/contact"]) do |embed, additional_ids, results_converted|
+        submissions = results_converted["http://data.bioontology.org/metadata/hasSubmission"].sort {|a, b| RDFUtil.last_fragment(b) <=> RDFUtil.last_fragment(a)}
+        additional_ids << submissions.first
+      end
     end
   end
 

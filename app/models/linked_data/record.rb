@@ -23,7 +23,7 @@ module LinkedData
       if attributes[:create_from_results]
         set_attributes(attributes[:create_from_results])
       elsif attributes[:create_from_id]
-        from_linked_data(self.class.prefix + attributes[:create_from_id])
+        from_linked_data(self.class.prefix + attributes[:create_from_id], attributes[:options])
       end
       @attributes = @table
     end
@@ -93,7 +93,6 @@ module LinkedData
     # @param [String] ontology id
     def self.exists?(id)
       results = RDFUtil.query("ASK WHERE { <%%ID%%> ?p ?o }".gsub("%%ID%%", "#{@prefix}#{id}"))
-      puts "ASK WHERE { <%%ID%%> ?p ?o }".gsub("%%ID%%", "#{@prefix}#{id}")
       results["boolean"]
     end
 
@@ -108,19 +107,21 @@ module LinkedData
     def from_linked_data(ids = [], embed = [])
       results_converted = {}
       ids.each do |id|
-        query = "DESCRIBE <#{id}>"
-        results = RDFUtil.query(query)
+        results_converted.merge! describe_object(id)
+      end
 
-        # TODO: This should not happen but it is, so we're going to make quash it for now
-        next if results.empty?
+      # Provide the opportunity to merge and/or embed multiple objects based on the from the original describe query
+      additional_ids = []
+      yield embed, additional_ids, results_converted if block_given?
 
-        results_converted.merge! convert_describe_results(results, "#{id}")
+      additional_ids.each do |id|
+        results_converted.merge! describe_object(id)
       end
 
       # The value of the "embeds" list are predicates from the above objects whose values we should look up.
       embed.each do |predicate|
         predicate_uri = predicate.kind_of?(String) ? predicate : predicate.first[1]
-        id = results_converted[predicate_uri].dup
+        id = results_converted[predicate_uri].dup rescue next
         id = id.kind_of?(Array) ? id.shift : id
         query = "DESCRIBE <#{id}>"
         results = RDFUtil.query(query)
@@ -135,6 +136,19 @@ module LinkedData
       end
 
       set_attributes(results_converted)
+    end
+
+    # Given an id, return a hash with properly-converted objects
+    # @param [String] URI id for object in triplestore
+    # @return [Hash]
+    def describe_object(id)
+      query = "DESCRIBE <#{id}>"
+      results = RDFUtil.query(query)
+
+      # TODO: This should not happen but it is, so we're going to make quash it for now
+      return {} if results.empty?
+
+      convert_describe_results(results, "#{id}")
     end
 
     # Given a URI, get the last segment
