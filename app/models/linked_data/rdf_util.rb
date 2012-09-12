@@ -55,6 +55,36 @@ class RDFUtil
     end
   end
 
+  # Convert a URI to it's last segment
+  # Examples:
+  #    http://example.org/domain/test => test
+  #    http://example.org/domain#test => test
+  def self.last_fragment(uri)
+    if uri.include?("#")
+      uri = uri.split("#").last
+    else
+      uri = uri.split("/").last
+    end
+    # Try to coerce the string to a typed value
+    unless uri.respond_to?("empty?") && uri.empty?
+      # Try float
+      value = Float(uri) rescue nil
+      # If nil (not float) or length != original length (missing decimal), then try integer
+      if value.nil? || value.to_s.length != uri.length
+        value = Integer(uri) rescue nil
+      end
+      # Try boolean
+      if value.nil?
+        if uri.downcase.eql?("true") || uri.downcase.eql?("false")
+          value = uri.downcase.eql?("true")
+        end
+      end
+      # Default back to string
+      value = uri if value.nil?
+    end
+    value || uri
+  end
+
   # Convert a list of SPARQL JSON values to proper Ruby objects
   # @param [Array] list of results. Each item should be a hash with type, datatype, and value
   # @return [Array] list of converted values
@@ -73,6 +103,7 @@ class RDFUtil
   def self.query(query, options = {})
     options[:full] ||= false
     start = Time.now
+    # puts "#{@@endpoint}sparql/?query=#{CGI.escape(query)}&output=json"
     data = open("#{@@endpoint}sparql/?query=#{CGI.escape(query)}&output=json").read
     parsed_data = JSON.parse(data)
     # puts "Query from #{caller[0].split(":")[0].split("/").last}:#{caller[0].split(" ")[1].gsub("`", "").gsub("'", "")} #{Time.now - start}s"

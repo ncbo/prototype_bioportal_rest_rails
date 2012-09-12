@@ -21,6 +21,12 @@ module LinkedData
       self.class.serializable_fields_default
     end
 
+    # Fields that should never get serialized
+    def nonserializable_fields
+      return [] if self.class.nonserializable_fields.nil?
+      self.class.nonserializable_fields
+    end
+
     # The set of instance methods that can be serialized for the object
     def serializable_methods
       return [] if self.class.serializable_methods.nil?
@@ -28,7 +34,7 @@ module LinkedData
     end
 
     module ClassMethods
-      attr_accessor :serializable_fields_default, :serializable_fields_additional, :serializable_methods
+      attr_accessor :serializable_fields_default, :serializable_fields_additional, :nonserializable_fields, :serializable_methods
 
       # Full set of serializable fields for the object
       def serializable_fields
@@ -42,6 +48,12 @@ module LinkedData
       # @param [Symbol] list of symbols corresponding to attribute names
       def serialize_default(*fields)
         @serializable_fields_default = fields
+      end
+
+      # Setter for non-serializable fields (should never get serialized)
+      # @param [Symbol] list of symbols corresponding to attribute names
+      def do_not_serialize(*fields)
+        @nonserializable_fields = fields
       end
 
       # Setter for additional fields (non-default) that the object can serialize

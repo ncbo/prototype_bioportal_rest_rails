@@ -37,7 +37,7 @@ module LinkedData
     ####
 
     # These values should be provided in the subclass and are required
-    class << self; attr_reader :prefix, :rdf_type end
+    class << self; attr_reader :prefix, :rdf_type, :custom_short_names end
 
     # Internal usage
     class << self; attr_reader :predicate_map end
@@ -50,7 +50,14 @@ module LinkedData
       options[:only] = options[:only].nil? || options[:only].empty? ? serializable_fields_default : options[:only]
       options.extract!(:only) if options[:only] && options[:only].include?("all")
       options[:only].map! {|e| e.to_sym} if options[:only]
-      @table.as_json(options)
+      json = @table.as_json(options)
+      nonserializable_fields.each do |field|
+        json.delete(field.to_s)
+        json.values.each do |value|
+          value.delete(field.to_s) if value.kind_of?(Hash)
+        end
+      end
+      json
     end
 
     # Return the list of predicates for the object type, including cardinality
@@ -86,6 +93,7 @@ module LinkedData
     # @param [String] ontology id
     def self.exists?(id)
       results = RDFUtil.query("ASK WHERE { <%%ID%%> ?p ?o }".gsub("%%ID%%", "#{@prefix}#{id}"))
+      puts "ASK WHERE { <%%ID%%> ?p ?o }".gsub("%%ID%%", "#{@prefix}#{id}")
       results["boolean"]
     end
 
@@ -132,13 +140,10 @@ module LinkedData
     # Given a URI, get the last segment
     # @param [String] predicate value
     def shorten_predicate(predicate)
-      if predicate.include?("#")
-        short_name = predicate.split("#").last
-        @predicate_map[short_name] = predicate
-      else
-        short_name = predicate.split("/").last
-        @predicate_map[short_name] = predicate
-      end
+      short_name = RDFUtil.last_fragment(predicate)
+      custom_short_names = self.class.custom_short_names
+      short_name = custom_short_names[predicate] unless custom_short_names.nil? || custom_short_names[predicate].nil?
+      @predicate_map[short_name] = predicate
       short_name
     end
 
@@ -159,6 +164,8 @@ module LinkedData
       return if results.nil?
       results.each do |predicate, values|
         short_name = shorten_predicate(predicate)
+        # Remove BP URI if found
+        values.map! {|v| v.respond_to?("starts_with?") && v.starts_with?($RDF_ID_BASE) ? RDFUtil.last_fragment(v) : v} if values.kind_of?(Array)
         values_cardinality = self.class.predicates[predicate][:cardinality] == 1 ? values.shift : values rescue values
         self.send("#{short_name}=", values_cardinality)
       end

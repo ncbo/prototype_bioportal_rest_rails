@@ -205,6 +205,19 @@ triplestore. CRUD methods may be broken out in separate modules later.</p>
       <h3 class="section-header">Attributes</h3>
 
       
+      <div id="attribute-c-custom_short_names" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">custom_short_names</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
       <div id="attribute-c-predicate_map" class="method-detail">
         <div class="method-heading attribute-method-heading">
           <span class="method-name">predicate_map</span><span
@@ -282,9 +295,10 @@ triplestore. CRUD methods may be broken out in separate modules later.</p>
 
           
           <div class="method-source-code" id="exists-3F-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 87</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 94</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">id</span>)
   <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-string">&quot;ASK WHERE { &lt;%%ID%%&gt; ?p ?o }&quot;</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-node">&quot;#{@prefix}#{id}&quot;</span>))
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;ASK WHERE { &lt;%%ID%%&gt; ?p ?o }&quot;</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-node">&quot;#{@prefix}#{id}&quot;</span>)
   <span class="ruby-identifier">results</span>[<span class="ruby-string">&quot;boolean&quot;</span>]
 <span class="ruby-keyword">end</span></pre>
           </div><!-- exists-3F-source -->
@@ -354,7 +368,7 @@ triplestore. CRUD methods may be broken out in separate modules later.</p>
 
           
           <div class="method-source-code" id="predicates-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 58</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 65</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">predicates</span>
   <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">$PREDICATES</span>.<span class="ruby-identifier">nil?</span>
     <span class="ruby-ivar">@predicates</span> = <span class="ruby-identifier">$PREDICATES</span>
@@ -414,7 +428,7 @@ href="Record.html#method-i-convert_describe_results">#convert_describe_results</
 
           
           <div class="method-source-code" id="convert_describe_results-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 168</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 182</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">convert_describe_results</span>(<span class="ruby-identifier">results</span>, <span class="ruby-identifier">object_id</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">results</span>.<span class="ruby-identifier">empty?</span>
   <span class="ruby-identifier">results_converted</span> = {}
@@ -466,7 +480,14 @@ the restrictions. @return [Hash] json hash</p>
   <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>] = <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>].<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">serializable_fields_default</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>]
   <span class="ruby-identifier">options</span>.<span class="ruby-identifier">extract!</span>(<span class="ruby-value">:only</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-string">&quot;all&quot;</span>)
   <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>].<span class="ruby-identifier">map!</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_sym</span>} <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>]
-  <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">as_json</span>(<span class="ruby-identifier">options</span>)
+  <span class="ruby-identifier">json</span> = <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">as_json</span>(<span class="ruby-identifier">options</span>)
+  <span class="ruby-identifier">nonserializable_fields</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">field</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">json</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>)
+    <span class="ruby-identifier">json</span>.<span class="ruby-identifier">values</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">value</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Hash</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">json</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- as_json-source -->
           
@@ -531,7 +552,7 @@ objects @param [Array] list of results @param [String] URI of the object</p>
 
           
           <div class="method-source-code" id="convert_describe_results-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 163</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 177</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">convert_describe_results</span>(<span class="ruby-identifier">results</span>, <span class="ruby-identifier">object_id</span>)
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">convert_describe_results</span>(<span class="ruby-identifier">results</span>, <span class="ruby-identifier">object_id</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -562,7 +583,7 @@ objects @param [Array] list of results @param [String] URI of the object</p>
 
           
           <div class="method-source-code" id="create_attributes-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 139</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 151</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create_attributes</span>
   <span class="ruby-identifier">predicates</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">predicates</span>
   <span class="ruby-identifier">predicates</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">predicate</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
@@ -605,7 +626,7 @@ with an OntologyContainer, you can include the #lastVersion predicate as an embe
 
           
           <div class="method-source-code" id="from_linked_data-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 100</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 108</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">from_linked_data</span>(<span class="ruby-identifier">ids</span> = [], <span class="ruby-identifier">embed</span> = [])
   <span class="ruby-identifier">results_converted</span> = {}
   <span class="ruby-identifier">ids</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
@@ -620,12 +641,19 @@ with an OntologyContainer, you can include the #lastVersion predicate as an embe
 
   <span class="ruby-comment"># The value of the &quot;embeds&quot; list are predicates from the above objects whose values we should look up.</span>
   <span class="ruby-identifier">embed</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">predicate</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">id</span> = <span class="ruby-identifier">results_converted</span>[<span class="ruby-identifier">predicate</span>].<span class="ruby-identifier">dup</span>
+    <span class="ruby-identifier">predicate_uri</span> = <span class="ruby-identifier">predicate</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">String</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">predicate</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">predicate</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">1</span>]
+    <span class="ruby-identifier">id</span> = <span class="ruby-identifier">results_converted</span>[<span class="ruby-identifier">predicate_uri</span>].<span class="ruby-identifier">dup</span>
     <span class="ruby-identifier">id</span> = <span class="ruby-identifier">id</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Array</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">shift</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">id</span>
     <span class="ruby-identifier">query</span> = <span class="ruby-node">&quot;DESCRIBE &lt;#{id}&gt;&quot;</span>
     <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">query</span>)
     <span class="ruby-identifier">converted</span> = <span class="ruby-identifier">convert_describe_results</span>(<span class="ruby-identifier">results</span>, <span class="ruby-identifier">id</span>)
-    <span class="ruby-identifier">results_converted</span>.<span class="ruby-identifier">merge!</span> <span class="ruby-identifier">converted</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">converted</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">predicate</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">String</span>)
+      <span class="ruby-identifier">results_converted</span>.<span class="ruby-identifier">merge!</span> <span class="ruby-identifier">converted</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">converted</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">embedded</span> = {}
+      <span class="ruby-identifier">converted</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">embedded</span>[<span class="ruby-identifier">shorten_predicate</span>(<span class="ruby-identifier">k</span>)] = <span class="ruby-identifier">v</span>}
+      <span class="ruby-identifier">results_converted</span>[<span class="ruby-identifier">predicate</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span>] = <span class="ruby-identifier">embedded</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 
   <span class="ruby-identifier">set_attributes</span>(<span class="ruby-identifier">results_converted</span>)
@@ -658,12 +686,14 @@ list of predicate =&gt; value pairs @return [Record]</p>
 
           
           <div class="method-source-code" id="set_attributes-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 151</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 163</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes</span>(<span class="ruby-identifier">results</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">results</span>.<span class="ruby-identifier">nil?</span>
   <span class="ruby-identifier">results</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">predicate</span>, <span class="ruby-identifier">values</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">short_name</span> = <span class="ruby-identifier">shorten_predicate</span>(<span class="ruby-identifier">predicate</span>)
-    <span class="ruby-identifier">values_cardinality</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">predicates</span>[<span class="ruby-identifier">predicate</span>][<span class="ruby-value">:cardinality</span>] <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">values</span>.<span class="ruby-identifier">shift</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">values</span>
+    <span class="ruby-comment"># Remove BP URI if found</span>
+    <span class="ruby-identifier">values</span>.<span class="ruby-identifier">map!</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-string">&quot;starts_with?&quot;</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">starts_with?</span>(<span class="ruby-identifier">$RDF_ID_BASE</span>) <span class="ruby-operator">?</span> <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">last_fragment</span>(<span class="ruby-identifier">v</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">v</span>} <span class="ruby-keyword">if</span> <span class="ruby-identifier">values</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Array</span>)
+    <span class="ruby-identifier">values_cardinality</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">predicates</span>[<span class="ruby-identifier">predicate</span>][<span class="ruby-value">:cardinality</span>] <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">values</span>.<span class="ruby-identifier">shift</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">values</span> <span class="ruby-keyword">rescue</span> <span class="ruby-identifier">values</span>
     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{short_name}=&quot;</span>, <span class="ruby-identifier">values_cardinality</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
@@ -693,15 +723,12 @@ list of predicate =&gt; value pairs @return [Record]</p>
 
           
           <div class="method-source-code" id="shorten_predicate-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 127</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/record.rb, line 142</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">shorten_predicate</span>(<span class="ruby-identifier">predicate</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">predicate</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-node">&quot;#&quot;</span>)
-    <span class="ruby-identifier">short_name</span> = <span class="ruby-identifier">predicate</span>.<span class="ruby-identifier">split</span>(<span class="ruby-node">&quot;#&quot;</span>).<span class="ruby-identifier">last</span>
-    <span class="ruby-ivar">@predicate_map</span>[<span class="ruby-identifier">short_name</span>] = <span class="ruby-identifier">predicate</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">short_name</span> = <span class="ruby-identifier">predicate</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;/&quot;</span>).<span class="ruby-identifier">last</span>
-    <span class="ruby-ivar">@predicate_map</span>[<span class="ruby-identifier">short_name</span>] = <span class="ruby-identifier">predicate</span>
-  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">short_name</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">last_fragment</span>(<span class="ruby-identifier">predicate</span>)
+  <span class="ruby-identifier">custom_short_names</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">custom_short_names</span>
+  <span class="ruby-identifier">short_name</span> = <span class="ruby-identifier">custom_short_names</span>[<span class="ruby-identifier">predicate</span>] <span class="ruby-keyword">unless</span> <span class="ruby-identifier">custom_short_names</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">custom_short_names</span>[<span class="ruby-identifier">predicate</span>].<span class="ruby-identifier">nil?</span>
+  <span class="ruby-ivar">@predicate_map</span>[<span class="ruby-identifier">short_name</span>] = <span class="ruby-identifier">predicate</span>
   <span class="ruby-identifier">short_name</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- shorten_predicate-source -->

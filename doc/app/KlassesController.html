@@ -70,6 +70,8 @@
 
   <ul class="link-list">
     
+    <li><a href="#method-i-children">#children</a>
+    
     <li><a href="#method-i-index">#index</a>
     
     <li><a href="#method-i-show">#show</a>
@@ -162,6 +164,43 @@
       <h3 class="section-header">Public Instance Methods</h3>
 
     
+      <div id="method-i-children" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">children</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="children-source">
+            <pre><span class="ruby-comment"># File app/controllers/klasses_controller.rb, line 18</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">children</span>
+  <span class="ruby-identifier">id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
+  <span class="ruby-identifier">ontology</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:ontology</span>]
+  <span class="ruby-identifier">klass</span> = <span class="ruby-constant">Klass</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">id</span>, <span class="ruby-identifier">ontology</span>)
+  <span class="ruby-identifier">children</span> = []
+  <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">child</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">children</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Klass</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">child</span>, <span class="ruby-identifier">ontology</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">restful_render</span>(<span class="ruby-identifier">children</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- children-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- children-method -->
+
+    
       <div id="method-i-index" class="method-detail ">
         
         <div class="method-heading">
@@ -180,7 +219,7 @@
           <div class="method-source-code" id="index-source">
             <pre><span class="ruby-comment"># File app/controllers/klasses_controller.rb, line 3</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
-  <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-value">:links</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-value">:roots</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">$BASE_UI_URL</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Klass</span>.<span class="ruby-identifier">path</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;:ontology&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-value">:ontology</span>].<span class="ruby-identifier">upcase</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;:klass&quot;</span>, <span class="ruby-string">&quot;roots&quot;</span>)} }
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-value">:links</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-value">:roots</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">$BASE_REST_URL</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Klass</span>.<span class="ruby-identifier">path</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;:ontology&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-value">:ontology</span>].<span class="ruby-identifier">upcase</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;:klass&quot;</span>, <span class="ruby-string">&quot;roots&quot;</span>)} }
 <span class="ruby-keyword">end</span></pre>
           </div><!-- index-source -->
           

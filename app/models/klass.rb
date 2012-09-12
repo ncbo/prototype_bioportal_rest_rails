@@ -50,7 +50,7 @@ class Klass
   # Check whether or not the class exists
   # @return [Boolean]
   def self.exists?(id, ontology)
-    RDFUtil.query("ASK FROM <http://bioportal.bioontology.org/ontologies/%%ONT%%> WHERE { <%%ID%%> ?p ?o } ".gsub("%%ONT%%", ontology).gsub("%%ID%%", id))["boolean"]
+    RDFUtil.query("ASK FROM <#{$GRAPH_ID_BASE}/ontologies/%%ONT%%> WHERE { <%%ID%%> ?p ?o } ".gsub("%%ONT%%", ontology).gsub("%%ID%%", id))["boolean"]
   end
 
   ####
@@ -109,7 +109,7 @@ class Klass
   # All of the properties for the term that exist in the triplestore.
   # @return [Hash] properties
   def properties
-    results = RDFUtil.query("DESCRIBE <#{@id}>")
+    results = RDFUtil.query("DESCRIBE <#{@id}> FROM <#{$GRAPH_ID_BASE}/ontologies/#{@ontology}>")
     convert_describe_results(results)
   end
 

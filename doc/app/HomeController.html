@@ -188,7 +188,7 @@
     <span class="ruby-identifier">doc_intro</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-string">&quot;\n&quot;</span>, <span class="ruby-string">&quot;&quot;</span>).<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">%r {2,}/</span>, <span class="ruby-string">&quot; &quot;</span>).<span class="ruby-identifier">strip!</span>
 
     <span class="ruby-identifier">json</span> = {
-      <span class="ruby-value">:links</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-value">:ontologies</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">$BASE_UI_URL</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Ontology</span>.<span class="ruby-identifier">path</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;/:ontology&quot;</span>, <span class="ruby-string">&quot;&quot;</span>) },
+      <span class="ruby-value">:links</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-value">:ontologies</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">$BASE_REST_URL</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Ontology</span>.<span class="ruby-identifier">path</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;/:ontology&quot;</span>, <span class="ruby-string">&quot;&quot;</span>) },
       <span class="ruby-value">:demo</span> =<span class="ruby-operator">&gt;</span> [
         <span class="ruby-identifier">doc_intro</span>,
         <span class="ruby-value">:ontologies</span> =<span class="ruby-operator">&gt;</span> {
@@ -227,15 +227,14 @@
             <span class="ruby-string">&quot;/ontologies/{acronym}/views&quot;</span>
           ],
           <span class="ruby-value">:class_related</span> =<span class="ruby-operator">&gt;</span> [
-            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{classid}&quot;</span>,
-            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{classid}/instances&quot;</span>,
-            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{classid}/instances/{instance_id}&quot;</span>,
-            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/tree -- this replaces 'path to root' and provides an expanded tree structure for a given class&quot;</span>,
-            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{classid}/notes&quot;</span>,
-            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{classid}/mappings&quot;</span>
-          ],
-          <span class="ruby-value">:annotator</span> =<span class="ruby-operator">&gt;</span> [
-            <span class="ruby-string">&quot;/annotator&quot;</span>
+            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{class_id}&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{class_id}/instances&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{class_id}/instances/{instance_id}&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{class_id}/tree_to_root -- this replaces 'path to root' and provides an expanded tree structure for a given class&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{class_id}/notes&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{class_id}/mappings&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{class_id}/ancestors&quot;</span>,
+            <span class="ruby-string">&quot;/ontologies/{acronym}/classes/{class_id}/descendants&quot;</span>
           ],
           <span class="ruby-value">:resource_index</span> =<span class="ruby-operator">&gt;</span> [
             <span class="ruby-string">&quot;/resource_index/search&quot;</span>,
@@ -255,7 +254,8 @@
           <span class="ruby-value">:process_endpoints</span> =<span class="ruby-operator">&gt;</span> [
             <span class="ruby-string">&quot;/search&quot;</span>,
             <span class="ruby-string">&quot;/view_extractor&quot;</span>,
-            <span class="ruby-string">&quot;/recommender&quot;</span>
+            <span class="ruby-string">&quot;/recommender&quot;</span>,
+            <span class="ruby-string">&quot;/annotator&quot;</span>
           ]
         }
       ]

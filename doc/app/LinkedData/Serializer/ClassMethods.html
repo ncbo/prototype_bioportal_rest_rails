@@ -64,6 +64,8 @@
 
   <ul class="link-list">
     
+    <li><a href="#method-i-do_not_serialize">#do_not_serialize</a>
+    
     <li><a href="#method-i-serializable_fields">#serializable_fields</a>
     
     <li><a href="#method-i-serialize_additional">#serialize_additional</a>
@@ -158,6 +160,19 @@
       <h3 class="section-header">Attributes</h3>
 
       
+      <div id="attribute-i-nonserializable_fields" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">nonserializable_fields</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
       <div id="attribute-i-serializable_fields_additional" class="method-detail">
         <div class="method-heading attribute-method-heading">
           <span class="method-name">serializable_fields_additional</span><span
@@ -206,6 +221,37 @@
       <h3 class="section-header">Public Instance Methods</h3>
 
     
+      <div id="method-i-do_not_serialize" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">do_not_serialize</span><span
+            class="method-args">(*fields)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Setter for non-serializable fields (should never get serialized) @param
+[Symbol] list of symbols corresponding to attribute names</p>
+          
+
+          
+          <div class="method-source-code" id="do_not_serialize-source">
+            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 55</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">do_not_serialize</span>(*<span class="ruby-identifier">fields</span>)
+  <span class="ruby-ivar">@nonserializable_fields</span> = <span class="ruby-identifier">fields</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- do_not_serialize-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- do_not_serialize-method -->
+
+    
       <div id="method-i-serializable_fields" class="method-detail ">
         
         <div class="method-heading">
@@ -222,7 +268,7 @@
 
           
           <div class="method-source-code" id="serializable_fields-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 34</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 40</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">serializable_fields</span>
   <span class="ruby-ivar">@serializable_fields_default</span>.<span class="ruby-identifier">concat</span> <span class="ruby-ivar">@serializable_fields_additional</span>
 <span class="ruby-keyword">end</span></pre>
@@ -253,7 +299,7 @@
 
           
           <div class="method-source-code" id="serialize_additional-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 49</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 61</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">serialize_additional</span>(*<span class="ruby-identifier">fields</span>)
   <span class="ruby-ivar">@serializable_fields_additional</span> = <span class="ruby-identifier">fields</span>
 <span class="ruby-keyword">end</span></pre>
@@ -290,7 +336,7 @@
 
           
           <div class="method-source-code" id="serialize_default-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 43</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 49</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">serialize_default</span>(*<span class="ruby-identifier">fields</span>)
   <span class="ruby-ivar">@serializable_fields_default</span> = <span class="ruby-identifier">fields</span>
 <span class="ruby-keyword">end</span></pre>
@@ -321,7 +367,7 @@ corresponding to instance method names</p>
 
           
           <div class="method-source-code" id="serialize_methods-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 55</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 67</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">serialize_methods</span>(*<span class="ruby-identifier">methods</span>)
   <span class="ruby-ivar">@serializable_methods</span> = <span class="ruby-identifier">methods</span>
 <span class="ruby-keyword">end</span></pre>

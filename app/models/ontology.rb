@@ -12,10 +12,14 @@ class Ontology < LinkedData::Record
   # Options for serializing (which fields)
   serialize_default :lastVersion, :administrator, :acronym, :name, :description
   # serialize_default :lastVersion, :administrator, :acronym, :name, :description, :contact, :homepage
+  do_not_serialize :type
 
   # Necessary values for working with LinkedData::Record
-  @prefix = "http://bioportal.bioontology.org/ontologies/"
-  @rdf_type = ["http://omv.ontoware.org/2005/05/ontology#Ontology", "http://bioportal.bioontology.org/metadata/OntologyContainer"]
+  @prefix = "#{$RDF_ID_BASE}/ontologies/"
+  @rdf_type = ["http://omv.ontoware.org/2005/05/ontology#Ontology", "#{$RDF_ID_BASE}/metadata/OntologyContainer"]
+  @custom_short_names = {
+    "http://omv.ontoware.org/2005/05/ontology#version" => "versionName"
+  }
 
   # Define Restful relationships for outputting links
   include RestfulLinks
@@ -103,9 +107,9 @@ class Ontology < LinkedData::Record
   # Ontology-specific retrieval method that allows for getting a prior version or the most recent ontology
   def from_linked_data(id = nil, options = {})
     if options[:version]
-      super(["#{@prefix}#{id}", "#{@prefix}#{id}/#{options[:version]}"])
+      super(["#{@prefix}#{id}", "#{@prefix}#{id}/#{options[:version]}"], [:contact => "#{$RDF_ID_BASE}/metadata/contact"])
     else
-      super(["#{@prefix}#{id}"], ["http://bioportal.bioontology.org/metadata/lastVersion", :contact => "http://bioportal.bioontology.org/metadata/contact"])
+      super(["#{@prefix}#{id}"], ["#{$RDF_ID_BASE}/metadata/lastVersion", :contact => "#{$RDF_ID_BASE}/metadata/contact"])
     end
   end
 

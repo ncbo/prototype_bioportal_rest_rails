@@ -66,6 +66,8 @@
     
     <li><a href="#method-c-included">::included</a>
     
+    <li><a href="#method-i-nonserializable_fields">#nonserializable_fields</a>
+    
     <li><a href="#method-i-serializable_fields">#serializable_fields</a>
     
     <li><a href="#method-i-serializable_fields_default">#serializable_fields_default</a>
@@ -200,6 +202,37 @@ provide a flexible, dynamic way to show and hide fields.</p>
       <h3 class="section-header">Public Instance Methods</h3>
 
     
+      <div id="method-i-nonserializable_fields" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">nonserializable_fields</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Fields that should never get serialized</p>
+          
+
+          
+          <div class="method-source-code" id="nonserializable_fields-source">
+            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">nonserializable_fields</span>
+  <span class="ruby-keyword">return</span> [] <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">nonserializable_fields</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">nonserializable_fields</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- nonserializable_fields-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- nonserializable_fields-method -->
+
+    
       <div id="method-i-serializable_fields" class="method-detail ">
         
         <div class="method-heading">
@@ -279,7 +312,7 @@ provide a flexible, dynamic way to show and hide fields.</p>
 
           
           <div class="method-source-code" id="serializable_methods-source">
-            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 25</span>
+            <pre><span class="ruby-comment"># File app/models/linked_data/serializer.rb, line 31</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">serializable_methods</span>
   <span class="ruby-keyword">return</span> [] <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">serializable_methods</span>.<span class="ruby-identifier">nil?</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">serializable_methods</span>

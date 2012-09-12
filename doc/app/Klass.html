@@ -338,9 +338,9 @@ its own mapping to these values.</p>
 
           
           <div class="method-source-code" id="exists-3F-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 51</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 52</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">id</span>, <span class="ruby-identifier">ontology</span>)
-  <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-string">&quot;ASK FROM &lt;http://bioportal.bioontology.org/ontologies/%%ONT%%&gt; WHERE { &lt;%%ID%%&gt; ?p ?o } &quot;</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ONT%%&quot;</span>, <span class="ruby-identifier">ontology</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-identifier">id</span>))[<span class="ruby-string">&quot;boolean&quot;</span>]
+  <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-node">&quot;ASK FROM &lt;#{$GRAPH_ID_BASE}/ontologies/%%ONT%%&gt; WHERE { &lt;%%ID%%&gt; ?p ?o } &quot;</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ONT%%&quot;</span>, <span class="ruby-identifier">ontology</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-identifier">id</span>))[<span class="ruby-string">&quot;boolean&quot;</span>]
 <span class="ruby-keyword">end</span></pre>
           </div><!-- exists-3F-source -->
           
@@ -370,7 +370,7 @@ options options for finding classes @return [Klass]</p>
 
           
           <div class="method-source-code" id="find-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 40</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 41</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">id</span>, <span class="ruby-identifier">ontology</span>, <span class="ruby-identifier">options</span> = {})
   <span class="ruby-identifier">klass</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">id</span> = <span class="ruby-identifier">id</span>
@@ -415,7 +415,7 @@ attributes that should be shown. Can contain “all” to show all. @return
 
           
           <div class="method-source-code" id="as_json-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 68</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 69</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">as_json</span>(<span class="ruby-identifier">options</span> = {})
   <span class="ruby-comment"># If we need all attributes, then don't restrict using :only and include methods. Otherwise, just serialize the default or what's requested.</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:only</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-string">&quot;all&quot;</span>)
@@ -462,7 +462,7 @@ attributes that should be shown. Can contain “all” to show all. @return
 
           
           <div class="method-source-code" id="child_count-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 117</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 118</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">child_count</span>
   <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-constant">CHILD_COUNT_QUERY</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-ivar">@id</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ONT%%&quot;</span>, <span class="ruby-ivar">@ontology</span>))[<span class="ruby-value">0</span>][<span class="ruby-string">&quot;childcount&quot;</span>][<span class="ruby-string">&quot;value&quot;</span>].<span class="ruby-identifier">to_i</span>
 <span class="ruby-keyword">end</span></pre>
@@ -492,7 +492,7 @@ attributes that should be shown. Can contain “all” to show all. @return
 
           
           <div class="method-source-code" id="children-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 123</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 124</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">children</span>
   <span class="ruby-identifier">children</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-constant">CHILDREN_QUERY</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-ivar">@id</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ONT%%&quot;</span>, <span class="ruby-ivar">@ontology</span>))
   <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">sparql_select_values</span>(<span class="ruby-identifier">children</span>)
@@ -523,7 +523,7 @@ attributes that should be shown. Can contain “all” to show all. @return
 
           
           <div class="method-source-code" id="init-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 60</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 61</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">init</span>
   <span class="ruby-ivar">@synonym</span> = []; <span class="ruby-ivar">@definition</span> = [];
 <span class="ruby-keyword">end</span></pre>
@@ -553,7 +553,7 @@ attributes that should be shown. Can contain “all” to show all. @return
 
           
           <div class="method-source-code" id="parents-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 130</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 131</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">parents</span>
   <span class="ruby-identifier">parents</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-constant">PARENTS_QUERY</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-ivar">@id</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ONT%%&quot;</span>, <span class="ruby-ivar">@ontology</span>))
   <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">sparql_select_values</span>(<span class="ruby-identifier">parents</span>)
@@ -584,7 +584,7 @@ attributes that should be shown. Can contain “all” to show all. @return
 
           
           <div class="method-source-code" id="populate_default_attr-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 90</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 91</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">populate_default_attr</span>
   <span class="ruby-identifier">query</span> = <span class="ruby-constant">BASE_ATTR_QUERY</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ONT%%&quot;</span>, <span class="ruby-ivar">@ontology</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-ivar">@id</span>)
   <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">query</span>)
@@ -629,9 +629,9 @@ attributes that should be shown. Can contain “all” to show all. @return
 
           
           <div class="method-source-code" id="properties-source">
-            <pre><span class="ruby-comment"># File app/models/klass.rb, line 110</span>
+            <pre><span class="ruby-comment"># File app/models/klass.rb, line 111</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">properties</span>
-  <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-node">&quot;DESCRIBE &lt;#{@id}&gt;&quot;</span>)
+  <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-node">&quot;DESCRIBE &lt;#{@id}&gt; FROM &lt;#{$GRAPH_ID_BASE}/ontologies/#{@ontology}&gt;&quot;</span>)
   <span class="ruby-identifier">convert_describe_results</span>(<span class="ruby-identifier">results</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- properties-source -->

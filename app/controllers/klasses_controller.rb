@@ -1,7 +1,7 @@
 class KlassesController < ApplicationController
 
   def index
-    render :json => { :links => { :roots => $BASE_UI_URL + Klass.path.gsub(":ontology", params[:ontology].upcase).gsub(":klass", "roots")} }
+    render :json => { :links => { :roots => $BASE_REST_URL + Klass.path.gsub(":ontology", params[:ontology].upcase).gsub(":klass", "roots")} }
   end
 
   def show

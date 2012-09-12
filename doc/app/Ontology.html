@@ -209,7 +209,7 @@ controller).</p>
 
           
           <div class="method-source-code" id="all-source">
-            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 44</span>
+            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 48</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">all</span>
   <span class="ruby-identifier">results</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-constant">ALL_ONTS</span>)
   <span class="ruby-identifier">onts</span> = {}
@@ -228,6 +228,7 @@ controller).</p>
     <span class="ruby-identifier">ont_obj</span> = <span class="ruby-constant">Ontology</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:create_from_results</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ont</span>)
     <span class="ruby-identifier">onts_list</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ont_obj</span>
   <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">onts_list</span>.<span class="ruby-identifier">sort!</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">b</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span>}
   <span class="ruby-identifier">onts_list</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- all-source -->
@@ -257,7 +258,7 @@ ontology to find</p>
 
           
           <div class="method-source-code" id="find-source">
-            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 33</span>
+            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 37</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">id</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">options</span> = {})
   <span class="ruby-identifier">id</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:id</span>]
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-string">&quot;all&quot;</span>)
@@ -301,7 +302,7 @@ acronym doesn’t exist as an attribute until the ontology is retrieved from
 
           
           <div class="method-source-code" id="id-source">
-            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 90</span>
+            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 96</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">id</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">acronym</span>.<span class="ruby-identifier">upcase</span> <span class="ruby-keyword">rescue</span> <span class="ruby-string">&quot;&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -331,7 +332,7 @@ acronym doesn’t exist as an attribute until the ontology is retrieved from
 
           
           <div class="method-source-code" id="id-3D-source">
-            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 95</span>
+            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 101</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">id=</span>(<span class="ruby-identifier">id</span>)
   <span class="ruby-ivar">@table</span>[<span class="ruby-string">&quot;acronym&quot;</span>] = <span class="ruby-identifier">id</span>
 <span class="ruby-keyword">end</span></pre>
@@ -361,7 +362,7 @@ acronym doesn’t exist as an attribute until the ontology is retrieved from
 
           
           <div class="method-source-code" id="root_classes-source">
-            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 66</span>
+            <pre><span class="ruby-comment"># File app/models/ontology.rb, line 71</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">root_classes</span>
   <span class="ruby-identifier">roots</span> = <span class="ruby-constant">RDFUtil</span>.<span class="ruby-identifier">query</span>(<span class="ruby-constant">ROOT_CLASSES</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;%%ID%%&quot;</span>, <span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span>))
   <span class="ruby-identifier">classes</span> = []
@@ -381,6 +382,7 @@ acronym doesn’t exist as an attribute until the ontology is retrieved from
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">threads</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">join</span>}
+  <span class="ruby-identifier">classes</span>.<span class="ruby-identifier">sort!</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">label</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">b</span>.<span class="ruby-identifier">label</span>.<span class="ruby-identifier">downcase</span>}
   <span class="ruby-identifier">classes</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- root_classes-source -->

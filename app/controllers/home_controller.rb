@@ -12,7 +12,7 @@ class HomeController < ApplicationController
     doc_intro.gsub!("\n", "").gsub!(/ {2,}/, " ").strip!
 
     json = {
-      :links => { :ontologies => $BASE_UI_URL + Ontology.path.gsub("/:ontology", "") },
+      :links => { :ontologies => $BASE_REST_URL + Ontology.path.gsub("/:ontology", "") },
       :demo => [
         doc_intro,
         :ontologies => {

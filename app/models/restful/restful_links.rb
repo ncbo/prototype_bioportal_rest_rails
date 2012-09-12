@@ -69,7 +69,7 @@ module RestfulLinks
       attribute = resource.downcase == self.class.name.downcase ? "id" : resource
       path.gsub!(":#{resource}", CGI.escape(self.send(attribute.to_sym)))
     end
-    @base_url = request.fullpath rescue $BASE_UI_URL
+    @base_url = request.fullpath rescue $BASE_REST_URL
     @base_url + path
   end
 

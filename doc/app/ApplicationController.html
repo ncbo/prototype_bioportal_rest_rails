@@ -210,6 +210,7 @@ serialize</p>
       <span class="ruby-identifier">render</span> <span class="ruby-string">&quot;layouts/jsonview&quot;</span>
     <span class="ruby-keyword">end</span>
     <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">json</span> }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">jsonp</span> { <span class="ruby-identifier">render_jsonp</span>(<span class="ruby-identifier">json</span>) }
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- restful_render-source -->

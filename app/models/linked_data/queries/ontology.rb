@@ -2,14 +2,14 @@
 module LinkedData::Queries
   module Ontology
     ALL_ONTS = <<-EOS
-      PREFIX bp: <http://bioportal.bioontology.org/metadata/>
+      PREFIX bp: <#{$RDF_ID_BASE}/metadata/>
 
       SELECT DISTINCT *
       WHERE
       {
         ?s a bp:OntologyContainer .
         ?s ?p ?o .
-        OPTIONAL { ?s bp:relatedOntology ?viewOf }
+        OPTIONAL { ?s bp:viewOf ?viewOf }
         FILTER (!bound(?viewOf))
       }
     EOS
@@ -19,7 +19,7 @@ module LinkedData::Queries
       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
       SELECT DISTINCT ?root
-      FROM <http://bioportal.bioontology.org/ontologies/%%ID%%>
+      FROM <#{$GRAPH_ID_BASE}/ontologies/%%ID%%>
       WHERE {
         ?root a owl:Class .
         OPTIONAL {
