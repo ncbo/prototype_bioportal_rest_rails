@@ -22,7 +22,7 @@ class Ontology < LinkedData::Record
   resource_path "/ontologies/:ontology"
   related_resources :metrics => Metrics, :properties => "/ontologies/:ontology/properties",
                     :reviews => "/ontologies/:ontology/reviews", :download => "/ontologies/:ontology/download",
-                    :views => "/ontologies/:ontology/views", :versions => "/ontologies/:ontology/versions",
+                    :views => "/ontologies/:ontology/views", :submissions => "/ontologies/:ontology/submissions",
                     :classes => "/ontologies/:ontology/classes", :mappings => "/ontologies/:ontology/mappings"
 
   # Get queries from query module
