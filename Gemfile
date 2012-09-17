@@ -29,3 +29,7 @@ gem 'debugger', :group => :development
 # Doc generation
 gem 'yard', :group => :development
 
+group :development do
+  gem 'rack-perftools_profiler', :require => 'rack/perftools_profiler'
+end
+

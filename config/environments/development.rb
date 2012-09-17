@@ -34,4 +34,10 @@ BioportalApi::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # Enable threaded mode
+  config.threadsafe!
+
+  # Profiling setup
+  config.middleware.use ::Rack::PerftoolsProfiler, :default_printer => 'pdf', :bundler => true
 end
