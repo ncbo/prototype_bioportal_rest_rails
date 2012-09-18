@@ -2,9 +2,9 @@
 
 unless ENV["RAKE"]
   # Thread.new do
-    puts "Getting predicates from triplestore for ontology"
-    predicates = Ontology.predicates
-    puts predicates
-    $PREDICATES = predicates
+    # puts "Getting predicates from triplestore for ontology"
+    # predicates = Ontology.predicates
+    # puts predicates
+    # $PREDICATES = predicates
   # end
 end

@@ -1,13 +1,14 @@
 require 'open-uri'
 require 'json'
 require 'cgi'
+require 'patron'
+require 'em-synchrony/em-http'
 
 # Utility methods for working with RDF data, mainly returned SPARQL query results from 4store
 class RDFUtil
 
   # Address for the 4store server
-  @@endpoint = "http://bmir-dev1:8083/"
-  # @@endpoint = "http://sparql.bioontology.org/sparql/?apikey=24e0e77e-54e0-11e0-9d7b-005056aa3316"
+  @@endpoint = "http://bmir-dev1:8083"
 
   # Group of lambdas for handling XSD type conversion
   XSD_LITERAL_CONVERT = {
@@ -65,23 +66,24 @@ class RDFUtil
     else
       uri = uri.split("/").last
     end
+    value = nil
     # Try to coerce the string to a typed value
-    unless uri.respond_to?("empty?") && uri.empty?
-      # Try float
-      value = Float(uri) rescue nil
-      # If nil (not float) or length != original length (missing decimal), then try integer
-      if value.nil? || value.to_s.length != uri.length
-        value = Integer(uri) rescue nil
-      end
-      # Try boolean
-      if value.nil?
-        if uri.downcase.eql?("true") || uri.downcase.eql?("false")
-          value = uri.downcase.eql?("true")
-        end
-      end
-      # Default back to string
-      value = uri if value.nil?
-    end
+    # unless uri.respond_to?("empty?") && uri.empty?
+    #   # Try float
+    #   value = Float(uri) rescue nil
+    #   # If nil (not float) or length != original length (missing decimal), then try integer
+    #   if value.nil? || value.to_s.length != uri.length
+    #     value = Integer(uri) rescue nil
+    #   end
+    #   # Try boolean
+    #   if value.nil?
+    #     if uri.downcase.eql?("true") || uri.downcase.eql?("false")
+    #       value = uri.downcase.eql?("true")
+    #     end
+    #   end
+    #   # Default back to string
+    #   value = uri if value.nil?
+    # end
     value || uri
   end
 
@@ -104,7 +106,22 @@ class RDFUtil
     options[:full] ||= false
     start = Time.now
     # puts "#{@@endpoint}sparql/?query=#{CGI.escape(query)}&output=json"
-    data = open("#{@@endpoint}sparql/?query=#{CGI.escape(query)}&output=json").read
+    # File.open("queries.log", 'a+') {|f| f.write("#{@@endpoint}sparql/?query=#{CGI.escape(query)}&output=json\n") }
+    open_uri = false
+    path = "/sparql/?query=#{CGI.escape(query)}&output=json"
+    if open_uri
+      data = open(@@endpoint + path).read
+    else
+      # EventMachine
+      http = EM::HttpRequest.new(@@endpoint + path).get
+      data = http.response
+
+      # Patron
+      # sess = Patron::Session.new
+      # sess.timeout = 60
+      # sess.base_url = @@endpoint
+      # data = sess.get(path).body
+    end
     parsed_data = JSON.parse(data)
     # puts "Query from #{caller[0].split(":")[0].split("/").last}:#{caller[0].split(" ")[1].gsub("`", "").gsub("'", "")} #{Time.now - start}s"
     options[:full] = true unless parsed_data["results"] && options[:full] == false

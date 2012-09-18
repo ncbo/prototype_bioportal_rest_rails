@@ -33,3 +33,10 @@ group :development do
   gem 'rack-perftools_profiler', :require => 'rack/perftools_profiler'
 end
 
+# Faster HTTP client
+gem 'patron'
+
+# Async
+gem 'rack-fiber_pool', :require => 'rack/fiber_pool'
+gem 'em-synchrony'
+gem 'em-http-request'
