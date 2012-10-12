@@ -1,8 +1,9 @@
 require 'open-uri'
 require 'json'
 require 'cgi'
-require 'patron'
-require 'em-synchrony/em-http'
+# require 'patron'
+# require 'em-synchrony/em-http'
+# require 'http_client'
 
 # Utility methods for working with RDF data, mainly returned SPARQL query results from 4store
 class RDFUtil
@@ -107,20 +108,26 @@ class RDFUtil
     start = Time.now
     # puts "#{@@endpoint}sparql/?query=#{CGI.escape(query)}&output=json"
     # File.open("queries.log", 'a+') {|f| f.write("#{@@endpoint}sparql/?query=#{CGI.escape(query)}&output=json\n") }
-    open_uri = false
+    open_uri = true
     path = "/sparql/?query=#{CGI.escape(query)}&output=json"
     if open_uri
       data = open(@@endpoint + path).read
     else
       # EventMachine
-      http = EM::HttpRequest.new(@@endpoint + path).get
-      data = http.response
+      # http = EM::HttpRequest.new(@@endpoint + ":" + @@endpoint_port + path).get
+      # data = http.response
 
       # Patron
       # sess = Patron::Session.new
       # sess.timeout = 60
-      # sess.base_url = @@endpoint
+      # sess.base_url = @@endpoint + ":" + @@endpoint_port
       # data = sess.get(path).body
+
+      # jRuby HTTP Client
+      # client = HTTP::Client.new(:default_host => @@endpoint)
+      # puts path
+      # data = @@client.get(path)
+      # puts data
     end
     parsed_data = JSON.parse(data)
     # puts "Query from #{caller[0].split(":")[0].split("/").last}:#{caller[0].split(" ")[1].gsub("`", "").gsub("'", "")} #{Time.now - start}s"
