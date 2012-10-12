@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 gem 'rails', '3.2.3'
 
@@ -7,7 +7,7 @@ gem 'rails', '3.2.3'
 
 gem 'rails-api'
 
-gem 'sqlite3'
+# gem 'sqlite3'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -16,27 +16,33 @@ gem 'sqlite3'
 # gem 'jbuilder'
 
 # Ruby app server options
-gem 'unicorn'
-gem 'puma'
-gem 'thin'
+# gem 'unicorn'
+# gem 'puma'
+gem 'thin', :platform => :ruby
+# gem 'rainbows'
 
 # Deploy with Capistrano
 # gem 'capistrano', :group => :development
 
 # Debugging
-gem 'debugger', :group => :development
+# gem 'debugger', :group => :development
 
 # Doc generation
-gem 'yard', :group => :development
+# gem 'yard', :group => :development
 
 group :development do
   gem 'rack-perftools_profiler', :require => 'rack/perftools_profiler'
 end
 
 # Faster HTTP client
-gem 'patron'
+# gem 'patron'
+# gem 'jruby-httpclient', :platform => :jruby
 
 # Async
-gem 'rack-fiber_pool', :require => 'rack/fiber_pool'
-gem 'em-synchrony'
-gem 'em-http-request'
+# gem 'rack-fiber_pool', :require => 'rack/fiber_pool'
+# gem 'em-synchrony'
+# gem 'em-http-request'
+
+# gem 'warbler'
+# gem 'jruby-openssl'
+# gem 'activerecord-jdbcmysql-adapter'
