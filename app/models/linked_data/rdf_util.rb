@@ -69,22 +69,22 @@ class RDFUtil
     end
     value = nil
     # Try to coerce the string to a typed value
-    # unless uri.respond_to?("empty?") && uri.empty?
-    #   # Try float
-    #   value = Float(uri) rescue nil
-    #   # If nil (not float) or length != original length (missing decimal), then try integer
-    #   if value.nil? || value.to_s.length != uri.length
-    #     value = Integer(uri) rescue nil
-    #   end
-    #   # Try boolean
-    #   if value.nil?
-    #     if uri.downcase.eql?("true") || uri.downcase.eql?("false")
-    #       value = uri.downcase.eql?("true")
-    #     end
-    #   end
-    #   # Default back to string
-    #   value = uri if value.nil?
-    # end
+    unless uri.respond_to?("empty?") && uri.empty?
+      # Try float
+      value = Float(uri) rescue nil
+      # If nil (not float) or length != original length (missing decimal), then try integer
+      if value.nil? || value.to_s.length != uri.length
+        value = Integer(uri) rescue nil
+      end
+      # Try boolean
+      if value.nil?
+        if uri.downcase.eql?("true") || uri.downcase.eql?("false")
+          value = uri.downcase.eql?("true")
+        end
+      end
+      # Default back to string
+      value = uri if value.nil?
+    end
     value || uri
   end
 
